@@ -1,0 +1,14 @@
+name = "setBgColor"
+description = "Sets the background color of the canvas. Any transparent pixels will appear as this color."
+isScreen = true
+parameters = [ "color" ]
+pdata = [
+	"The color value you want as background color."
+]
+seeAlso = [ "setColor", "setColors" ]
+example = """
+$.screen( "300x200" );
+$.setColor( "white" );
+$.line( 0, 0, 300, 200 );
+$.setBgColor( "blue" );
+"""

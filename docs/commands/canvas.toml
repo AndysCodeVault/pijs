@@ -1,0 +1,8 @@
+name = "canvas"
+description = "Returns the canvas element used by the screen."
+isScreen = true
+parameters = [ ]
+example = """
+$.screen("300x200");
+$.canvas().className = "purple";
+$.print("\\n\\nThe background is now purple.");"""

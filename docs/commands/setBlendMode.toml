@@ -1,0 +1,23 @@
+name = "setBlendMode"
+description = "Sets the blend mode when drawing. Normal will set the pixel to the exact color. Blended will mix the colors if the alpha channel of the current color is not 100%."
+isScreen = true
+parameters = [ "mode" ]
+pdata = [
+  "The mode of blend choices are normal or blended."
+]
+seeAlso = [ "setPen", "setPixelMode" ]
+example = """
+$.ready(function () {
+	$.screen( "5x5" );
+	$.setColor( "rgba(255,0,0,1)" );
+	$.pset( 1, 2 );
+	$.pset( 2, 2 );
+	$.pset( 3, 2 );
+	$.render();
+	$.setBlendMode( "blended" );
+	$.setColor( "rgba(0,255,0,0.5)" );
+	$.pset( 2, 2 );
+	$.setColor( "rgba(0,0,255,0.5)" );
+	$.pset( 3, 2 );
+});
+"""

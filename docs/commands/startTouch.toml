@@ -1,0 +1,18 @@
+name = "startTouch"
+description = """
+Starts the touch event listeners for the screen. This will get called automatically when any
+touch command gets called.
+"""
+isScreen = true
+parameters = [ ]
+seeAlso = [ "intouch", "ontouch", "setPinchZoom", "stopTouch" ]
+example = """
+$.screen( "4x4" );
+$.startTouch();
+$.setPinchZoom( false );
+$.ontouch( "start", function ( touches ) {
+	var touch = touches[ 0 ];
+	$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+	$.pset( touch.x, touch.y );
+} );
+"""

@@ -1,0 +1,32 @@
+################################################################################
+## All
+################################################################################
+
+[[builds]]
+
+name = "pi"
+
+files = [
+	"src/pi.js",
+	"src/pi-util.js",
+	"src/pi-keyboard.js",
+	"src/pi-gamepad.js",
+	"src/pi-font.js",
+	"src/pi-screen.js",
+	"src/pi-screen-mouse.js",
+	"src/pi-screen-touch.js",
+	"src/pi-screen-commands.js",
+	"src/pi-screen-helper.js",
+	"src/pi-screen-graphics.js",
+	"src/pi-screen-paint.js",
+	"src/pi-screen-bezier.js",
+	"src/pi-screen-images.js",
+	"src/pi-screen-print.js",
+	"src/pi-screen-table.js",
+	"src/pi-screen-draw.js",
+	"src/pi-sound.js",
+	"src/pi-play.js",
+	"src/fonts/font-data.js",
+	"src/pi-pal.js",
+	"src/pi-init.js"
+]

@@ -1,0 +1,15 @@
+name = "clearKeys"
+description = "Clears event handlers for keyboard events."
+isScreen = false
+parameters = [ ]
+seeAlso = [ "onkey" ]
+example = """
+$.screen("300x200");
+$.print("\\n");
+$.onkey( "any", "down", function (key) {
+\t$.print(key.key + " pressed.");
+});
+$.onkey( "Escape", "down", function (key) {
+\t$.print(key.key + " pressed.");
+\t$.clearKeys();
+});"""

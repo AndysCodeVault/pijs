@@ -1,0 +1,31 @@
+name = "clearEvents"
+description = "Clears event handlers for mouse and touch events on the screen."
+isScreen = false
+parameters = [ ]
+seeAlso = [ "offmouse", "offpress", "offtouch", "onmouse", "onpress", "ontouch" ]
+example = """
+$.screen( "300x200" );
+$.print( 
+	"Move mouse or touch to paint screen," +
+	" click/touch up to stop."
+);
+$.onpress( "move", pressMove );
+$.onpress( "up", pressStop );
+
+// Press move function
+function pressMove( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Press stop function
+function pressStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.clearEvents();
+}"""

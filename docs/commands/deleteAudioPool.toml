@@ -1,0 +1,14 @@
+name = "deleteAudioPool"
+description = "Deletes an audio pool."
+isScreen = false
+parameters = [ "audioId" ]
+pdata = [ "The id of the audio pool." ]
+seeAlso = [
+  "createAudioPool",
+  "playAudioPool",
+  "setVolume",
+  "stopAudioPool"
+]
+example = """
+var bombPool = $.createAudioPool("bomb.wav", 1);
+$.deleteAudioPool(bombPool);"""

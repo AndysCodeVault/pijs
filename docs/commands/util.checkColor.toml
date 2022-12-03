@@ -1,0 +1,4 @@
+name = "util.checkColor"
+isScreen = false
+isUtil = true
+parameters = [ ]

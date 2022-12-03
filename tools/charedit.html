@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Char Edit</title>
+        <script src="../../build/pi.js"></script>
+        <style>
+            html, body {
+                background-color: black;
+            }
+			.charTextContainer {				
+				position: absolute;
+				width: 300px;
+				height: 85px;
+				left: calc( 50% - 150px);
+				top: calc( 50% - 25px);
+				z-index: 99;
+				background-color: rgba(255,255,255,0.9);
+				color: rgb(68, 68, 68);
+				padding: 5px;
+				border: 1px solid black;
+			}
+
+			.charTextContainer textarea {
+				display: block;
+				width: calc( 100% - 5px );	
+				margin-bottom: 5px;		
+				resize: none;	
+			}
+
+			.charTextContainer input[type="button"] {
+				float: right;
+			}
+
+        </style>
+    </head>
+<body>
+
+<div class="charTextContainer" style="display: none;">
+	<label for="charText">Char Value</label>
+	<textarea id="charText"></textarea>
+	<input id="closeBtn" type="button" value="Close" />
+	<input id="loadBtn" type="button" value="Load" />
+</div>
+
+<script>
+
+"use strict";
+
+var g = {
+	"menu": {
+		"1": menuCreateNewChar,
+		"2": menuShowCharHtml,
+		"3": menuShowHelp,
+		"4": menuHideMenu,
+	},
+	"char": "1092ba547cc6fe92",
+	"left": 0,
+	"right": 0,
+	"top": 0,
+	"bottom": 0,
+	"width": 8,
+	"height": 8,
+	"charPixelWidth": 0,
+	"charPixelHeight": 0,
+	"drawMode": "toggle",
+	"data": 0,
+	"isViewingChar": false,
+	"page": "display",
+	"factors": {
+		"6": 7,
+		"7": 5,
+		"8": 4,
+		"9": 3,
+		"10": 3,
+		"11": 2,
+		"12": 2,
+		"13": 1,
+		"14": 1,
+		"16": 1
+	}
+};
+
+document.querySelector( "#closeBtn" ).onclick = function () {
+	document.querySelector( ".charTextContainer" ).style.display = "none";
+	g.isViewingChar = false;
+}
+
+document.querySelector( "#loadBtn" ).onclick = function () {
+	g.char = document.querySelector( "#charText" ).value;
+	drawDisplay();
+}
+
+$.screen( "400x296" );
+$.setEnableContextMenu( false );
+$.setFont( 2 );
+drawDisplay();
+
+$.setActionKey( "Control" );
+$.setActionKey( "m" );
+$.onkey( [ "Control", "m" ], "down", showMenu );
+$.onkey( "1", "up", processKey );
+$.onkey( "2", "up", processKey );
+$.onkey( "3", "up", processKey );
+$.onkey( "4", "up", processKey );
+$.onkey( "Escape", "up", processEscape );
+
+$.onmouse( "down", processMouse );
+$.onmouse( "move", processMouse );
+
+function processMouse( mouse ) {
+	var x, y;
+
+	if( g.page !== "display" || g.isViewingChar ) {
+		return;
+	}
+
+	x = Math.floor( mouse.x / g.charPixelWidth );
+	y = Math.floor( ( mouse.y - g.height - 4 ) / g.charPixelHeight );
+	if( mouse.buttons > 0 ) {
+		if( x < g.width && y < g.height && x >= 0 && y >= 0 ) {
+			if( mouse.buttons === 1 ) {
+				g.data[ y ][ x ] = 1;
+			} else {
+				g.data[ y ][ x ] = 0;
+			}
+			g.char = $.util.dataToHex( g.data );
+			drawDisplay();
+		}
+	}
+
+	$.setColor( 0 );
+	$.rect( g.right + 4, g.bottom + g.height - 2, g.width * 10, g.height + 2, 0 );
+	$.setPosPx( g.right + 4, g.bottom + g.height - 2 );
+	$.setColor( 7 );
+	$.print( "(" + x + ", " + y + ")", true );
+}
+
+function displayTitle( title ) {
+	$.cls();
+	$.setColor( 7 );
+	$.line( 0, g.height + 4, $.width(), g.height + 4 );
+	$.setPosPx( 0, 2 );
+	$.print( title );	
+}
+
+function drawDisplay() {
+	displayTitle( "(Ctrl+M) For Menu" );
+	drawChar();
+	g.page = "display";
+}
+
+function drawChar() {
+	var data, x, y;
+
+	document.querySelector( "#charText" ).value = g.char;
+	
+	g.left = 0;
+	g.top = g.height + 6;
+	g.charPixelWidth = g.factors[ g.height ] * g.width;
+	g.charPixelHeight = g.factors[ g.height ] * g.height;
+	g.bottom = g.charPixelHeight * g.height;
+	g.right = g.charPixelWidth * g.width;
+
+	$.rect( g.left, g.top, g.right, g.bottom );
+	$.setColor( 7 );
+	g.data = $.util.hexToData( g.char, g.width, g.height );
+	for( y = 0; y < g.height; y++ ) {
+		for( x = 0; x < g.width; x++ ) {
+			if( g.data[ y ][ x ] === 1 ) {
+				$.rect( x * g.charPixelWidth, y * g.charPixelHeight + g.top, g.charPixelWidth, g.charPixelHeight, 7 );
+			}
+		}
+	}
+	$.setPosPx( g.charPixelWidth * g.width + 2, g.top );
+	$.print( g.char );
+	$.setChar( "~", g.char );
+	$.setPosPx( g.charPixelWidth * g.width + 2, g.top + g.height + 2 );
+	$.print( "~" );
+}
+
+function showMenu() {
+	displayTitle( "Menu" );
+	$.print();	
+	$.print( "1. Create New Char" );
+	$.print( "2. Load/View/Copy Char" );
+	$.print( "3. Help" );
+	$.print( "4. Close Menu/Help" );
+
+	g.page = "menu";
+}
+
+function processKey( key ) {
+	if( ! g.isViewingChar && g.page !== "create" ) {
+		g.menu[ key.key ]();
+	}
+}
+
+function processEscape() {
+	if( g.page === "create" ) {
+		$.cancelInput();
+		drawDisplay();
+	}
+}
+
+async function menuCreateNewChar() {
+	var fonts, i, font;
+
+	g.page = "create";
+	displayTitle( "Create New Char" );
+	$.print();
+	getNewFont();
+}
+
+async function getNewFont() {
+	var fonts, i, font, confirm;
+
+	fonts = $.getAvailableFonts();
+	$.print( "Available Fonts" );
+	for( i = 0; i < fonts.length; i++ ) {
+		$.print( "  " + fonts[ i ].id + ": " + fonts[ i ].width + "x" + fonts[ i ].height );
+	}
+
+	$.print();
+	$.setPos( $.getPos() );
+
+	font = await $.input( "Select Font: ", null, true, true, false );
+	font = fonts.find( f => f.id === font );
+	if( font === undefined ) {
+		$.print( "Invalid selection!\n" );
+		getNewFont();
+		return;
+	}
+
+	$.print( "You have selected " + font.id + " " + font.width + "x" + font.height );
+	confirm = await $.input( "Do you wish to proceed? (y/n): " );
+	if( confirm.charAt( 0 ).toLowerCase() === "y" ) {
+		g.width = font.width;
+		g.height = font.height;
+		g.char = "0";
+		$.setFont( font.id );
+		drawDisplay();
+	} else {
+		drawDisplay();
+	}
+}
+
+function menuShowCharHtml() {
+	document.querySelector( ".charTextContainer" ).style.display = "block";
+	g.isViewingChar = true;
+}
+
+function menuHideMenu() {
+	drawDisplay();
+}
+
+function menuShowHelp() {
+	g.page = "help";
+	displayTitle( "Help" );
+	$.print();
+	$.print(
+		"Use the mouse to draw a char to be used by the setChar method."  +
+		" Left click to draw a pixel and right click to erase a pixel.\n\n"  +
+		"Press Control+M to view the menu. Then enter the key for the " + 
+		"items to run the menu items. Menu items can be run at any time " +
+		" not just when the menu is showing.\n\nPress 4 to close help."
+	);
+}
+
+</script>
+</body>
+</html>

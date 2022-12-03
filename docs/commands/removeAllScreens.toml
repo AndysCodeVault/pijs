@@ -1,0 +1,10 @@
+name = "removeAllScreens"
+description = "Removes all screens from memory and the DOM."
+isScreen = false
+parameters = [ ]
+example = """
+$.screen( "300x200" );
+$.setColor( 5 );
+$.rect( 25, 25, 150, 100, 2 );
+$.removeAllScreens();
+"""

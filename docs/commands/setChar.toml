@@ -1,0 +1,20 @@
+name = "setChar"
+description = "Overwrites a character in the current font set ."
+isScreen = true
+parameters = [ "code", "data" ]
+pdata = [
+	"The ascii character code you want to replace.",
+	"Either a 2d array containing numbers or a hex string that when converted to binary represents the character data."
+]
+seeAlso = [ "loadFont", "setFont" ]
+example = """
+$.screen( "300x200" );
+$.setFont( 2 );
+$.setChar( 97, "1092ba547cc6fe92" );
+$.setChar( 98, "423c2418187e1818" );
+$.setChar( 99, "7cd67cfec6aafe00" );
+$.setChar( 100, "00183c667e5a42c3" );
+$.setChar( 101, "008199FFDBFFBD18" );
+
+$.print( " abcde f" );
+"""

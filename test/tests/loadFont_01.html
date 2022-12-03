@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Load Font 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "loadFont_01"
+			name = "Load Font 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<script src="../../build/pi.min.js"></script>
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+var font = $.loadFont( "images/font-goofy.png", 8, 14 );
+$.ready( function () {
+	$.screen( "200x200" );
+	$.setFont( font );
+	$.print( "The quick brown fox jumped over the lazy dog. 0123456789" );
+	$.render();
+} );
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+name = "util.hexToColor"
+isScreen = false
+isUtil = true
+parameters = [ ]

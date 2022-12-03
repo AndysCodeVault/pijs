@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Colors Generator</title>
+	<script src="pi.js"></script>
+	<script src="pi-util.js"></script>
+	<script src="pi-keyboard.js"></script>
+	<script src="pi-screen.js"></script>
+	<script src="pi-screen-mouse.js"></script>
+	<script src="pi-screen-touch.js"></script>
+	<script src="pi-screen-commands.js"></script>
+	<script src="pi-screen-helper.js"></script>
+	<script src="pi-screen-graphics.js"></script>
+	<script src="pi-screen-paint.js"></script>
+	<script src="pi-screen-images.js"></script>
+	<script src="pi-screen-draw.js"></script>
+	<script src="pi-screen-print.js"></script>
+	<script src="pi-sound.js"></script>
+	<script src="fonts/font-6x8.js"></script>
+	<script src="fonts/font-6x6.js"></script>
+	<script src="fonts/font-8x8.js"></script>
+	<script src="fonts/font-8x14.js"></script>
+	<script src="fonts/font-8x16.js"></script>
+	<script src="pi-init.js"></script>
+	<style>
+		html, body {
+			background-color: grey;
+		}
+		#screen {
+			width: 500px;
+			height: 500px;
+		}
+		textarea {
+			width: 1200px;
+			height: 200px;
+		}
+	</style>
+</head>
+<body>
+<div>
+	<textarea id="colors"></textarea>
+</div>
+<div id="screen"></div>
+<script>
+$.ready( function () {
+	var width = 6;
+	var height = 16;
+	var x = 0;
+	var y = 0;
+	var msg = "";
+	var r, g, b;
+	var r2, g2, b2;
+	$.screen( width + "x" + height, document.getElementById("screen") );
+	var pal = $.getPal();
+	var i = 0;
+	var size = 6;
+
+	// Whites
+	r = 0;
+	g = 0;
+	b = 0;
+	r2 = 255;
+	g2 = 255;
+	b2 = 255;
+	update( size );
+
+	// Reds
+	msg += "\n";
+	r = 255;
+	g = 0;
+	b = 0;
+	r2 = 24;
+	g2 = 0;
+	b2 = 0
+	update( size );
+
+	// Red Purple
+	msg += "\n";
+	r = 255;
+	g = 0;
+	b = 128;
+	r2 = 48;
+	g2 = 0;
+	b2 = 24;
+	update( size );
+
+	// Purple
+	msg += "\n";
+	r = 128;
+	g = 0;
+	b = 128;
+	r2 = 24;
+	g2 = 0;
+	b2 = 24;
+	update( size );
+
+	// Blue Purple
+	msg += "\n";
+	r = 128;
+	g = 0;
+	b = 255;
+	r2 = 24;
+	g2 = 0;
+	b2 = 48;
+	update( size );
+
+	// Blue
+	msg += "\n";
+	r = 0;
+	g = 0;
+	b = 255;
+	r2 = 0;
+	g2 = 0;
+	b2 = 24;
+	update( size );
+
+	// Blue green
+	msg += "\n";
+	r = 0;
+	g = 255;
+	b = 255;
+	r2 = 0;
+	g2 = 24;
+	b2 = 24;
+	update( size );
+
+	// Green
+	msg += "\n";
+	r = 0;
+	g = 255;
+	b = 0;
+	r2 = 0;
+	g2 = 24;
+	b2 = 0;
+	update( size );
+
+	// Blue green
+	msg += "\n";
+	r = 128;
+	g = 255;
+	b = 0;
+	r2 = 24;
+	g2 = 48;
+	b2 = 0;
+	update( size );
+
+	// Yellows
+	msg += "\n";
+	r = 255;
+	g = 255;
+	b = 0;
+	r2 = 24;
+	g2 = 24;
+	b2 = 0;
+	update( size );
+
+	// Orange Yellow
+	msg += "\n";
+	r = 255;
+	g = 174;
+	b = 66;
+	r2 = 32;
+	g2 = 24;
+	b2 = 12;
+	update( size );
+
+	// Orange
+	msg += "\n";
+	r = 255;
+	g = 128;
+	b = 0;
+	r2 = 24;
+	g2 = 15;
+	b2 = 0;
+	update( size );
+
+	// Orange red
+	msg += "\n";
+	r = 255;
+	g = 64;
+	b = 0;
+	r2 = 24;
+	g2 = 8;
+	b2 = 0;
+	update( size );
+
+	document.getElementById( "colors" ).innerHTML = msg;
+	$.render();
+
+	function update2( colors ) {
+		for( var j = 0; j < colors.length; j++ ) {
+			move( colors[ j ] );
+		}
+	}
+	function update( num ) {
+		var rx, gx, bx;
+		rx = ( r - r2 ) / ( num - 1);
+		gx = ( g - g2 ) / ( num - 1);
+		bx = ( b - b2 ) / ( num - 1);
+		for( var j = 0; j < num; j++ ) {
+			var c = pi.util.rgbToHex( Math.round( r ), Math.round( g ),
+				Math.round( b ), 255 ).slice( 0, 7 );
+			move( c );
+			r -= rx;
+			g -= gx;
+			b -= bx;
+			r = pi.util.clamp( r, 0, 255 );
+			g = pi.util.clamp( g, 0, 255 );
+			b = pi.util.clamp( b, 0, 255 );
+			i += 1;
+		}
+	}
+
+	function move( c ) {
+		msg += "\"" + c + "\", ";
+		$.color( c );
+		$.pset( x, y );
+		x += 1;
+		if( x >= width ) {
+			x = 0;
+			y += 1;
+		}
+	}
+} );
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+name = "util.cToHex"
+isScreen = false
+isUtil = true
+parameters = [ ]

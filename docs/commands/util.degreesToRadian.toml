@@ -1,0 +1,4 @@
+name = "util.degreesToRadian"
+isScreen = false
+isUtil = true
+parameters = [ ]

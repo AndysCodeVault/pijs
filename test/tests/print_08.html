@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Print 08</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "print_08"
+			name = "Print 08"
+			width = 620
+			height = 400
+			delay = 0
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<script src="../../build/pi.min.js"></script>
+		<style>
+			html, body {
+				background-color: gray;
+			}
+			div {
+				background-color: blue;
+				width: 600px;
+				height: 140px;
+			}
+		</style>
+	</head>
+<body>
+<div>
+	<img src="images/font-goofy-2.png" id="goofy"></img>
+</div>
+<div id="div"></div>
+<script>
+
+var font = $.loadFont( document.getElementById( "goofy" ), 8, 14 );
+$.ready( function () {
+	$.screen( "300x100", "div" );
+	$.setColors( [ 7, 1, 4, 2, 8 ] );
+	$.setFont( font );
+	$.print( "The quick brown fox jumped over the lazy dog. 0123456789", false );
+	$.render();
+} );
+
+</script>
+</body>
+</html>
