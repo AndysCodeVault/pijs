@@ -18,10 +18,6 @@ if( window.$ === undefined ) {
 	window.$ = window.pi;
 }
 
-if( window.π === undefined ) {
-	window.π = window.pi;
-}
-
 // Delete reference to internal functions
 delete pi._;
 

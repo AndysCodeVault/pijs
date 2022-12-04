@@ -11,7 +11,8 @@
     "server": "start node server.js",
     "server2": "node server.js",
     "build": "node build.js",
-    "build-docs": "node build-docs.js"
+    "build-docs": "node build-docs.js",
+    "build-map": "node build-command-map.js"
   },
   "repository": {
     "type": "git",

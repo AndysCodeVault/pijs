@@ -464,7 +464,27 @@ window.pi = ( function () {
 
 	function noError() {}
 
-	//[EXTRA_BUILD_COMMAND]
+	setTimeout( function () {
+		var str = JSON.stringify( m_commandList );
+		var blob = new Blob(
+			[ str ],
+			{ "type": "application/json" }
+		);
+		saveData( blob, "Commands" );
+	}, 1000 );
+
+	function saveData( blob, filename ) {
+		var a;
+
+		a = document.createElement( "a" );
+		a.href = URL.createObjectURL( blob );
+		a.download = filename;
+		document.body.appendChild( a );
+		a.click();
+		a.parentElement.removeChild( a );
+		URL.revokeObjectURL( a.href );
+	}
+
 
 	return m_api;
 

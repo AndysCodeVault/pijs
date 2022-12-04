@@ -1,8 +1,15 @@
-const fs = require('fs');
-const ug = require("uglify-js");
-const toml = require("@iarna/toml");
+const fs = require( "fs" );
+const ug = require( "uglify-js" );
+const toml = require( "@iarna/toml" );
 const buildFile = "build.toml";
 
+let addExtraCommand = false;
+
+if( process.argv.length > 2 ) {
+	if( process.argv[ 2 ] === "extra" ) {
+		addExtraCommand = true;
+	}
+}
 // Start the process
 readBuilds();
 
@@ -31,21 +38,15 @@ function processFiles( build ) {
 	// Minify the code
 	let result = "";
 
-	// Remove NO Build Content
+	// Combine all files
 	for( let i = 0; i < build.files.length; i++ ) {
-		let start = 0;
-		let cnt = 100;
-		do {
-			let start = result.indexOf( "//[NO_BUILD]" );
-			let end = result.indexOf( "//[/NO_BUILD]" );
-			if( start !== -1 && end !== -1 ) {
-				let result1 = result.substring( 0, start );
-				let result2 = result.substring( end + "//[/NO_BUILD]".length );
-				result = result1 + result2;
-			}
-		} while ( start != -1 && cnt-- > 0 );
-
 		result += build.fileData[ build.files[ i ] ];
+	}
+
+	if( addExtraCommand ) {
+		console.log( "* Adding extra command *" );
+		let resultTemp = result.replace( "\t//[EXTRA_BUILD_COMMAND]", build.extraCommand );
+		writeFile( "pi-extra.js", resultTemp );
 	}
 
 	// Write output to file
@@ -82,10 +83,10 @@ function processFiles( build ) {
 	function writeFile( fileName, data ) {
 
 		// Write output to file
-		fs.writeFile( fileName, data, function (err) {
+		fs.writeFile( fileName, data, function ( err ) {
 
 			// If unable to write to file throw error
-			if(err) {
+			if( err ) {
 				throw err;
 			}
 
