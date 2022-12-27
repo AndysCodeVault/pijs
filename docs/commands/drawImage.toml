@@ -1,5 +1,5 @@
 name = "drawImage"
-description = "Draws an image on to the screen."
+description = "Draws an image on to the screen.  Note: this method will fail if it gets called before the image is loaded."
 isScreen = true
 parameters = [ "name", "x", "y", "angle", "anchorX", "anchorY", "alpha", "scaleX", "scaleY" ]
 pdata = [

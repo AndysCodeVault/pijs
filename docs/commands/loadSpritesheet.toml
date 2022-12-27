@@ -1,27 +1,29 @@
 name = "loadSpritesheet"
 isScreen = false
-parameters = [ "src", "width", "height", "margin", "name" ]
+parameters = [ "src", "name", "width", "height", "margin" ]
 description = """
 Loads an image for later use in the drawSprite command. It is recommended to use the ready \
-command after loadSpritesheet and before calling the drawSprite command.
+command after loadSpritesheet and before calling the drawSprite command. If you do not provide a
+width and height the frames will be auto generated. Use getSpritesheetData to get info on the
+frame count and frame dimensions.
 """
 pdata = [
 	"The source location of an image file or an image element.",
-	"The width of each sprite in the spritesheet.",
-	"The height of each sprite in the spritesheet.",
-	"[OPTIONAL] A margin in pixels around each sprite.",
-	"[OPTIONAL] The name of the sprite for use in the drawSprite command."
+	"[OPTIONAL]. The name of the sprite for use in the drawSprite command.",
+	"[OPTIONAL]. The width of each sprite in the spritesheet.",
+	"[OPTIONAL]. The height of each sprite in the spritesheet.",
+	"[OPTIONAL]. A margin in pixels around each sprite.",
 ]
-returns = "The name of the spritesheet."
+returns = "The name of the spritesheet. The name auto generated if it is left blank."
 seeAlso = [
 	"drawSprite",
-	"loadSpritesheet",
+	"getSpritesheetData",
 	"ready"
 ]
 example = """
 var frame, interval;
 $.screen( "300x200" );
-$.loadSpritesheet( "monkey.png", 32, 32, 1, "monkey" );
+$.loadSpritesheet( "monkey.png", "monkey" );
 $.ready( function () {
 	frame = 0;
 	interval = setInterval( run, 500 );

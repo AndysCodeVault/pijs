@@ -221,6 +221,23 @@ var $screen = $.getScreen( 0 );
 $screen.print( "This is screen 0." );
 onExampleClose = function () {};
 }
+examples['getSpritesheetData'] = function() {
+var frame, interval, frameData, monkeySpritesheet;
+$.screen( "300x200" , 'canvasContainer');
+monkeySpritesheet = $.loadSpritesheet( "monkey.png" );
+$.ready( function () {
+	frameData = $.getSpritesheetData( monkeySpritesheet );
+	frame = 0;
+	interval = setInterval( run, 500 );
+	function run() {
+		frame += 1;
+		$.cls();
+		$.drawSprite( monkeySpritesheet, frame % frameData.frameCount, 150, 100, 0, 0.5, 0.5 );
+	}
+	run();
+} );onExampleClose = function () {clearInterval( interval );
+}
+}
 examples['height'] = function() {
 $.screen( "300x200" , 'canvasContainer');
 $.print( "Height: " + $.height() );
@@ -352,7 +369,7 @@ onExampleClose = function () {};
 examples['loadSpritesheet'] = function() {
 var frame, interval;
 $.screen( "300x200" , 'canvasContainer');
-$.loadSpritesheet( "monkey.png", 32, 32, 1, "monkey" );
+$.loadSpritesheet( "monkey.png", "monkey" );
 $.ready( function () {
 	frame = 0;
 	interval = setInterval( run, 500 );

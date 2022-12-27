@@ -1,6 +1,6 @@
 name = "drawSprite"
 isScreen = true
-description = "Draws a sprite from a spritesheet on to the screen."
+description = "Draws a sprite from a spritesheet on to the screen. Note: this method will fail if it gets called before the sprite image is loaded."
 parameters = [
 	"name",
 	"frame",
@@ -27,6 +27,7 @@ pdata = [
 ]
 seeAlso = [
 	"drawImage",
+	"getSpritesheetData",
 	"loadSpritesheet",
 	"ready"
 ]

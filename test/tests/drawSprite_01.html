@@ -21,9 +21,9 @@
 	<img id="thief" src="images/thief.png" style="display:none"/>
 	<img id="ship" src="images/spaceship_0.png" style="display:none"/>
 	<script>
-		$.loadSpritesheet( "images/squares.png", 32, 32, 0, "squares" );
+		$.loadSpritesheet( "images/squares.png", "squares", 32, 32, 0 );
 		$.loadSpritesheet(
-			document.getElementById( "thief" ), 32, 32, 1, "thief"
+			document.getElementById( "thief" ), "thief", 32, 32, 1
 		);
 		$.loadImage(
 			document.getElementById( "ship" ), "ship"
