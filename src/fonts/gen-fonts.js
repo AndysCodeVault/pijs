@@ -39,7 +39,7 @@ function getFontData( font ) {
 
 	// Create a new canvas to read the pixel data
 	canvas = document.createElement( "canvas" );
-	context = canvas.getContext( "2d" );
+	context = canvas.getContext( "2d", { "willReadFrequently": true } );
 	canvas.width = font.img.width;
 	canvas.height = font.img.height;
 

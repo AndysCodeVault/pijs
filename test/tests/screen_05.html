@@ -30,7 +30,7 @@
 <script>
 		$.ready(function () {
 
-			$.screen( false, false, false, true );
+			$.screen( false, false, false, false, true );
 			$.setColor( 15 );
 			$.setFont( 4 );
 			$.print( "No aspect, no container, no styles." );
@@ -38,7 +38,7 @@
 			$.print( "" );
 			$.render();
 
-			$.screen( "400x250", false, false, true );
+			$.screen( "400x250", false, false, false, true );
 			$.setColor( 15 );
 			$.setFont( 4 );
 			$.print( "400x250, no container, no styles.");
@@ -46,7 +46,7 @@
 			$.print( "" );
 			$.render();
 
-			$.screen( "400x250", document.getElementById( "container1" ), false, true );
+			$.screen( "400x250", document.getElementById( "container1" ), false, false, true );
 			$.setColor( 15 );
 			$.setFont( 4 );
 			$.print( "400x250, container1, no styles" );
@@ -54,7 +54,7 @@
 			$.print( "" );
 			$.render();
 
-			$.screen( "3:2", document.getElementById( "container2" ), false, true );
+			$.screen( "3:2", document.getElementById( "container2" ), false, false, true );
 			$.setColor( 15 );
 			$.setFont( 4 );
 			$.print( "3:2, container2, no styles" );

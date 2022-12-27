@@ -118,7 +118,7 @@
 		function showImage(imgFile, $imgBox, isSrc) {
 			let img = new Image();
 			let canvas = document.createElement("canvas");
-			let context = canvas.getContext("2d");
+			let context = canvas.getContext("2d", { "willReadFrequently": true } );
 			if( isSrc ) {
 				img.src = imgFile;
 			} else {
@@ -173,8 +173,8 @@
 				canvas1 = canvas2;
 				canvas2 = temp;
 			}
-			context1 = canvas1.getContext("2d");
-			context2 = canvas2.getContext("2d");
+			context1 = canvas1.getContext( "2d", { "willReadFrequently": true } );
+			context2 = canvas2.getContext( "2d", { "willReadFrequently": true } );
 			if(screen) {
 				screen.removeScreen();
 			}
@@ -186,14 +186,14 @@
 				"isMultiple": true
 			} );
 			canvas3 = screen.canvas();
-			context3 = canvas3.getContext( "2d" );
+			context3 = canvas3.getContext( "2d", { "willReadFrequently": true } );
 			canvas3.style.border = "1px solid black";
 			// screen2 = pi.screen( {
 			// 	"aspect": canvas1.width + "x" + canvas1.height,
 			// 	"isMultiple": true
 			// } );
 			// canvas4 = screen2.canvas();
-			// context4 = canvas4.getContext( "2d" );
+			// context4 = canvas4.getContext( "2d", { "willReadFrequently": true } );
 
 			let data1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
 			let data2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);

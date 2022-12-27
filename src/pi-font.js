@@ -218,14 +218,14 @@ function readImageData( img, width, height, font ) {
 
 	// Create a new canvas to read the pixel data
 	canvas = document.createElement( "canvas" );
-	context = canvas.getContext( "2d" );
+	context = canvas.getContext( "2d", { "willReadFrequently": true } );
 	canvas.width = img.width;
 	canvas.height = img.height;
 
 	// Colors lookup
 	colors = [];
 
-	// Draw the image onto the canva
+	// Draw the image onto the canvas
 	context.drawImage( img, 0, 0 );
 
 	// Get the image data
@@ -371,7 +371,7 @@ function calcFontSize( context ) {
 	tCanvas.height = px;
 
 	// Create a temporary canvas
-	tContext = tCanvas.getContext( "2d" );
+	tContext = tCanvas.getContext( "2d", { "willReadFrequently": true } );
 	tContext.font = context.font;
 	tContext.textBaseline = "top";
 	tContext.fillStyle = "#FF0000";

@@ -116,7 +116,7 @@ window.pi.util = ( function () {
 		var canvas, context, data;
 
 		canvas = document.createElement( "canvas" );
-		context = canvas.getContext( "2d" );
+		context = canvas.getContext( "2d", { "willReadFrequently": true } );
 		context.fillStyle = colorStr;
 		context.fillRect( 0, 0, 1 , 1 );
 		data = context.getImageData( 0, 0, 1, 1 ).data;

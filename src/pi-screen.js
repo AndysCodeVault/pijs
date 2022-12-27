@@ -16,21 +16,22 @@ m_piData = pi._.data;
 // State Function
 // Creates a new screen object
 pi._.addCommand( "screen", screen, false, false,
-	[ "aspect", "container", "isOffscreen", "noStyles", "isMultiple",
+	[ "aspect", "container", "isOffscreen", "willReadFrequently", "noStyles", "isMultiple",
 	"resizeCallback" ]
 );
 function screen( args ) {
 
-	var aspect, container, isOffscreen, noStyles, isMultiple, resizeCallback,
+	var aspect, container, isOffscreen, willReadFrequently, noStyles, isMultiple, resizeCallback,
 		aspectData, screenObj, screenData, i, commandData;
 
 	// Input from args
 	aspect = args[ 0 ];
 	container = args[ 1 ];
 	isOffscreen = args[ 2 ];
-	noStyles = args[ 3 ];
-	isMultiple = args[ 4 ];
-	resizeCallback = args[ 5 ];
+	willReadFrequently = !!( args[ 3 ] );
+	noStyles = args[ 4 ];
+	isMultiple = args[ 5 ];
+	resizeCallback = args[ 6 ];
 
 	if( resizeCallback != null && ! pi.util.isFunction( resizeCallback ) ) {
 		m_piData.log(
@@ -66,7 +67,7 @@ function screen( args ) {
 			);
 			return;
 		}
-		screenData = createOffscreenScreen( aspectData );
+		screenData = createOffscreenScreen( aspectData, willReadFrequently );
 	} else {
 		if( typeof container === "string" ) {
 			container = document.getElementById( container );
@@ -78,9 +79,9 @@ function screen( args ) {
 			return;
 		}
 		if( noStyles ) {
-			screenData = createNoStyleScreen( aspectData, container );
+			screenData = createNoStyleScreen( aspectData, container, willReadFrequently );
 		} else {
-			screenData = createScreen( aspectData, container, resizeCallback );
+			screenData = createScreen( aspectData, container, resizeCallback, willReadFrequently );
 		}
 	}
 
@@ -156,7 +157,7 @@ function parseAspect( aspect ) {
 }
 
 // Create's a new offscreen canvas
-function createOffscreenScreen( aspectData ) {
+function createOffscreenScreen( aspectData, willReadFrequently ) {
 	var canvas, bufferCanvas;
 
 	// Create the canvas
@@ -168,12 +169,12 @@ function createOffscreenScreen( aspectData ) {
 	bufferCanvas.height = aspectData.height;
 
 	return createScreenData( canvas, bufferCanvas, null, aspectData, true,
-		false, null
+		false, null, willReadFrequently
 	);
 }
 
 // Create a new canvas
-function createScreen( aspectData, container, resizeCallback ) {
+function createScreen( aspectData, container, resizeCallback, willReadFrequently ) {
 	var canvas, bufferCanvas, size, isContainer;
 
 	// Create the canvas
@@ -237,11 +238,11 @@ function createScreen( aspectData, container, resizeCallback ) {
 		bufferCanvas.height = size.height;
 	}
 	return createScreenData( canvas, bufferCanvas, container, aspectData, false,
-		false, resizeCallback
+		false, resizeCallback, willReadFrequently
 	);
 }
 
-function createNoStyleScreen( aspectData, container ) {
+function createNoStyleScreen( aspectData, container, willReadFrequently ) {
 	var canvas, bufferCanvas, size;
 
 	// Create the canvas
@@ -270,14 +271,14 @@ function createNoStyleScreen( aspectData, container ) {
 		bufferCanvas.height = size.height;
 	}
 	return createScreenData( canvas, bufferCanvas, container, aspectData, false,
-		true, null
+		true, null, willReadFrequently
 	);
 }
 
 // Create the screen data
 function createScreenData(
 	canvas, bufferCanvas, container, aspectData, isOffscreen, isNoStyles,
-	resizeCallback
+	resizeCallback, willReadFrequently
 ) {
 	var screenData = {};
 
@@ -289,6 +290,12 @@ function createScreenData(
 	// Set the screenId on the canvas
 	canvas.dataset.screenId = screenData.id;
 
+	if( willReadFrequently ) {
+		screenData.contextAttributes = { "willReadFrequently": true };
+	} else {
+		screenData.contextAttributes = {};
+	}
+
 	// Set the screen default data
 	screenData.canvas = canvas;
 	screenData.width = canvas.width;
@@ -297,9 +304,10 @@ function createScreenData(
 	screenData.aspectData = aspectData;
 	screenData.isOffscreen = isOffscreen;
 	screenData.isNoStyles = isNoStyles;
-	screenData.context = canvas.getContext( "2d" );
+	screenData.context = canvas.getContext( "2d", screenData.contextAttributes );
 	screenData.bufferCanvas = bufferCanvas;
-	screenData.bufferContext = screenData.bufferCanvas.getContext( "2d" );
+	screenData.bufferContext = screenData.bufferCanvas.getContext(
+		"2d", screenData.contextAttributes );
 	screenData.dirty = false;
 	screenData.isAutoRender = true;
 	screenData.autoRenderMicrotaskScheduled = false;
