@@ -226,7 +226,7 @@ window.pi = ( function () {
 	function startReadyList() {
 		var i, temp;
 
-		if( document.readyState !== "loading" ) {
+		if( document.readyState !== "loading" && m_waitCount === 0 ) {
 			m_waiting = false;
 			temp = m_readyList.slice();
 			m_readyList = [];
