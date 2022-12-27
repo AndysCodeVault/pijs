@@ -21,6 +21,7 @@
 	<img id="thief" src="images/thief.png" style="display:none"/>
 	<img id="ship" src="images/spaceship_0.png" style="display:none"/>
 	<script>
+		$.loadSpritesheet( "images/squares.png", 32, 32, 0, "squares" );
 		$.loadSpritesheet(
 			document.getElementById( "thief" ), 32, 32, 1, "thief"
 		);
@@ -35,6 +36,12 @@
 		);
 		$.ready( function () {
 			$.screen( "320x200" );
+			$.drawSprite( "squares", 0, 0, 0 );
+			$.drawSprite( "squares", 1, 32, 32 );
+			$.drawSprite( "squares", 2, 64, 64 );
+			$.drawSprite( "squares", 3, 96, 96 );
+			$.drawSprite( "squares", 4, 128, 128 );
+
 			$.setColor( 1 );
 			var x = 5;
 			var y = 5;

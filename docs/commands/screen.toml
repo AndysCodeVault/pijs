@@ -26,6 +26,7 @@ parameters = [
   "aspect",
   "container",
   "isOffscreen",
+  "willReadFrequently",
   "noStyles",
   "isMultiple",
   "resizeCallback"
@@ -34,6 +35,7 @@ pdata = [
   "[OPTIONAL] Specify the dimensions of the screen using string in the format of: (width)(x/:/e)(height). Ie: 300x200.",
   "[OPTIONAL] A DOM element or a string that contains the id tag of a dom element to use as the container for the canvas.",
   "[OPTIONAL] Is the canvas an offscreen buffer. If true canvas will not show on screen but can be used as an offscreen buffer.",
+  "[OPTIONAL] This sets the image data to not use hardware acceleration. This will help speed things up if you are using a lot of pixel mode primative graphics commands. It won't help with drawImage or drawSprite commands.",
   "[OPTIONAL] Create a canvas that has no css applied to it. Just use a default canvas element.",
   "[OPTIONAL] Set the auto size of the canvas to only expand to exact multiples of the target resolution.",
   "[OPTIONAL] A function that will get called after any time the canvas gets resized."

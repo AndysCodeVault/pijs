@@ -9,8 +9,8 @@ pdata = [
 	"The source location of an image file or an image element.",
 	"The width of each sprite in the spritesheet.",
 	"The height of each sprite in the spritesheet.",
-	"A margin in pixels around each sprite.",
-	"[OPTIONAL]. The name of the sprite for use in the drawSprite command."
+	"[OPTIONAL] A margin in pixels around each sprite.",
+	"[OPTIONAL] The name of the sprite for use in the drawSprite command."
 ]
 returns = "The name of the spritesheet."
 seeAlso = [
