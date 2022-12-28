@@ -226,7 +226,7 @@ window.pi = ( function () {
 	function startReadyList() {
 		var i, temp;
 
-		if( document.readyState !== "loading" ) {
+		if( document.readyState !== "loading" && m_waitCount === 0 ) {
 			m_waiting = false;
 			temp = m_readyList.slice();
 			m_readyList = [];
@@ -607,7 +607,7 @@ window.pi.util = ( function () {
 		var canvas, context, data;
 
 		canvas = document.createElement( "canvas" );
-		context = canvas.getContext( "2d" );
+		context = canvas.getContext( "2d", { "willReadFrequently": true } );
 		context.fillStyle = colorStr;
 		context.fillRect( 0, 0, 1 , 1 );
 		data = context.getImageData( 0, 0, 1, 1 ).data;
@@ -2829,14 +2829,14 @@ function readImageData( img, width, height, font ) {
 
 	// Create a new canvas to read the pixel data
 	canvas = document.createElement( "canvas" );
-	context = canvas.getContext( "2d" );
+	context = canvas.getContext( "2d", { "willReadFrequently": true } );
 	canvas.width = img.width;
 	canvas.height = img.height;
 
 	// Colors lookup
 	colors = [];
 
-	// Draw the image onto the canva
+	// Draw the image onto the canvas
 	context.drawImage( img, 0, 0 );
 
 	// Get the image data
@@ -2982,7 +2982,7 @@ function calcFontSize( context ) {
 	tCanvas.height = px;
 
 	// Create a temporary canvas
-	tContext = tCanvas.getContext( "2d" );
+	tContext = tCanvas.getContext( "2d", { "willReadFrequently": true } );
 	tContext.font = context.font;
 	tContext.textBaseline = "top";
 	tContext.fillStyle = "#FF0000";
@@ -3143,21 +3143,22 @@ m_piData = pi._.data;
 // State Function
 // Creates a new screen object
 pi._.addCommand( "screen", screen, false, false,
-	[ "aspect", "container", "isOffscreen", "noStyles", "isMultiple",
+	[ "aspect", "container", "isOffscreen", "willReadFrequently", "noStyles", "isMultiple",
 	"resizeCallback" ]
 );
 function screen( args ) {
 
-	var aspect, container, isOffscreen, noStyles, isMultiple, resizeCallback,
+	var aspect, container, isOffscreen, willReadFrequently, noStyles, isMultiple, resizeCallback,
 		aspectData, screenObj, screenData, i, commandData;
 
 	// Input from args
 	aspect = args[ 0 ];
 	container = args[ 1 ];
 	isOffscreen = args[ 2 ];
-	noStyles = args[ 3 ];
-	isMultiple = args[ 4 ];
-	resizeCallback = args[ 5 ];
+	willReadFrequently = !!( args[ 3 ] );
+	noStyles = args[ 4 ];
+	isMultiple = args[ 5 ];
+	resizeCallback = args[ 6 ];
 
 	if( resizeCallback != null && ! pi.util.isFunction( resizeCallback ) ) {
 		m_piData.log(
@@ -3193,7 +3194,7 @@ function screen( args ) {
 			);
 			return;
 		}
-		screenData = createOffscreenScreen( aspectData );
+		screenData = createOffscreenScreen( aspectData, willReadFrequently );
 	} else {
 		if( typeof container === "string" ) {
 			container = document.getElementById( container );
@@ -3205,9 +3206,9 @@ function screen( args ) {
 			return;
 		}
 		if( noStyles ) {
-			screenData = createNoStyleScreen( aspectData, container );
+			screenData = createNoStyleScreen( aspectData, container, willReadFrequently );
 		} else {
-			screenData = createScreen( aspectData, container, resizeCallback );
+			screenData = createScreen( aspectData, container, resizeCallback, willReadFrequently );
 		}
 	}
 
@@ -3283,7 +3284,7 @@ function parseAspect( aspect ) {
 }
 
 // Create's a new offscreen canvas
-function createOffscreenScreen( aspectData ) {
+function createOffscreenScreen( aspectData, willReadFrequently ) {
 	var canvas, bufferCanvas;
 
 	// Create the canvas
@@ -3295,12 +3296,12 @@ function createOffscreenScreen( aspectData ) {
 	bufferCanvas.height = aspectData.height;
 
 	return createScreenData( canvas, bufferCanvas, null, aspectData, true,
-		false, null
+		false, null, willReadFrequently
 	);
 }
 
 // Create a new canvas
-function createScreen( aspectData, container, resizeCallback ) {
+function createScreen( aspectData, container, resizeCallback, willReadFrequently ) {
 	var canvas, bufferCanvas, size, isContainer;
 
 	// Create the canvas
@@ -3364,11 +3365,11 @@ function createScreen( aspectData, container, resizeCallback ) {
 		bufferCanvas.height = size.height;
 	}
 	return createScreenData( canvas, bufferCanvas, container, aspectData, false,
-		false, resizeCallback
+		false, resizeCallback, willReadFrequently
 	);
 }
 
-function createNoStyleScreen( aspectData, container ) {
+function createNoStyleScreen( aspectData, container, willReadFrequently ) {
 	var canvas, bufferCanvas, size;
 
 	// Create the canvas
@@ -3397,14 +3398,14 @@ function createNoStyleScreen( aspectData, container ) {
 		bufferCanvas.height = size.height;
 	}
 	return createScreenData( canvas, bufferCanvas, container, aspectData, false,
-		true, null
+		true, null, willReadFrequently
 	);
 }
 
 // Create the screen data
 function createScreenData(
 	canvas, bufferCanvas, container, aspectData, isOffscreen, isNoStyles,
-	resizeCallback
+	resizeCallback, willReadFrequently
 ) {
 	var screenData = {};
 
@@ -3416,6 +3417,12 @@ function createScreenData(
 	// Set the screenId on the canvas
 	canvas.dataset.screenId = screenData.id;
 
+	if( willReadFrequently ) {
+		screenData.contextAttributes = { "willReadFrequently": true };
+	} else {
+		screenData.contextAttributes = {};
+	}
+
 	// Set the screen default data
 	screenData.canvas = canvas;
 	screenData.width = canvas.width;
@@ -3424,9 +3431,10 @@ function createScreenData(
 	screenData.aspectData = aspectData;
 	screenData.isOffscreen = isOffscreen;
 	screenData.isNoStyles = isNoStyles;
-	screenData.context = canvas.getContext( "2d" );
+	screenData.context = canvas.getContext( "2d", screenData.contextAttributes );
 	screenData.bufferCanvas = bufferCanvas;
-	screenData.bufferContext = screenData.bufferCanvas.getContext( "2d" );
+	screenData.bufferContext = screenData.bufferCanvas.getContext(
+		"2d", screenData.contextAttributes );
 	screenData.dirty = false;
 	screenData.isAutoRender = true;
 	screenData.autoRenderMicrotaskScheduled = false;
@@ -6783,32 +6791,43 @@ function loadImage( args ) {
 
 pi._.addCommand(
 	"loadSpritesheet", loadSpritesheet, false, false,
-	[ "src", "width", "height", "margin", "name" ]
+	[ "src", "name", "width", "height", "margin" ]
 );
 function loadSpritesheet( args ) {
-	var src, spriteWidth, spriteHeight, margin, name;
+	var src, spriteWidth, spriteHeight, margin, name, isAuto;
 
 	src = args[ 0 ];
-	spriteWidth = args[ 1 ];
-	spriteHeight = args[ 2 ];
-	margin = args[ 3 ];
-	name = args[ 4 ];
+	name = args[ 1 ];
+	spriteWidth = args[ 2 ];
+	spriteHeight = args[ 3 ];
+	margin = args[ 4 ];
 
 	if( margin == null ) {
 		margin = 0;
 	}
 
+	if( spriteWidth == null && spriteHeight == null ) {
+		isAuto = true;
+		spriteWidth = 0;
+		spriteHeight = 0;
+		margin = 0;
+	} else {
+		isAuto = false;
+	}
+
 	// Validate spriteWidth and spriteHeight
 	if(
-		! pi.util.isInteger( spriteWidth ) ||
-		! pi.util.isInteger( spriteHeight )
+		! isAuto && (
+			! pi.util.isInteger( spriteWidth ) ||
+			! pi.util.isInteger( spriteHeight )
+		)
 	) {
 		m_piData.log( "loadSpriteSheet: width, and height must be integers." );
 		return;
 	}
 
 	// size cannot be less than 1
-	if( spriteWidth < 1 || spriteHeight < 1 ) {
+	if( ! isAuto && ( spriteWidth < 1 || spriteHeight < 1 ) ) {
 		m_piData.log(
 			"loadSpriteSheet: width, and height must be greater " +
 			"than 0."
@@ -6830,7 +6849,33 @@ function loadSpritesheet( args ) {
 
 	// Load the frames when the image gets loaded
 	m_callback = function () {
-		var imageData, width, height, x1, y1, x2, y2;
+
+		function getCluster( x, y, frameData ) {
+			var name, i, index;
+
+			name = x + "_" + y;
+			if( searched[ name ] || x < 0 || x >= width || y < 0 || y >= height ) {
+				return false;
+			}
+			searched[ name ] = true;
+
+			index = ( x + y * width ) * 4;
+			if( data[ index + 3 ] > 0 ) {
+				frameData.x = Math.min( frameData.x, x );
+				frameData.y = Math.min( frameData.y, y );
+				frameData.right = Math.max( frameData.right, x );
+				frameData.bottom = Math.max( frameData.bottom, y );
+				frameData.width = frameData.right - frameData.x + 1;
+				frameData.height = frameData.bottom - frameData.y + 1;
+				for( i = 0; i < dirs.length; i++ ) {
+					getCluster( x + dirs[ i ][ 0 ], y + dirs[ i ][ 1 ], frameData );
+				}
+			}
+			return true;
+		}
+
+		var imageData, width, height, x1, y1, x2, y2, searched, canvas, context, data, i, index, dirs,
+			frameData;
 
 		// Update the image data
 		imageData = m_piData.images[ name ];
@@ -6839,37 +6884,110 @@ function loadSpritesheet( args ) {
 		imageData.spriteHeight = spriteHeight;
 		imageData.margin = margin;
 		imageData.frames = [];
+		imageData.isAuto = isAuto;
 
 		// Prepare for loops
 		width = imageData.image.width;
 		height = imageData.image.height;
-		x1 = imageData.margin;
-		y1 = imageData.margin;
-		x2 = x1 + imageData.spriteWidth;
-		y2 = y1 + imageData.spriteHeight;
 
-		// Loop through all the frames
-		while( y2 <= height - imageData.margin ) {
-			while( x2 <= width - imageData.margin ) {
-				imageData.frames.push( {
-					"x": x1,
-					"y": y1,
-					"width": imageData.spriteWidth,
-					"height": imageData.spriteHeight
-				} );
-				x1 += imageData.spriteWidth + imageData.margin;
-				x2 = x1 + imageData.spriteWidth;
+		if( imageData.isAuto ) {
+
+			// Find all clusters of pixels
+			searched = {};
+			canvas = document.createElement( "canvas" );
+			canvas.width = width;
+			canvas.height = height;
+			context = canvas.getContext( "2d", { "willReadFrequently": true } );
+			context.drawImage( imageData.image, 0, 0 );
+			dirs = [
+				[ -1, -1 ], [ 0, -1 ], [ 1, -1 ],
+				[ -1,  0 ], 		   [ 1,  0 ],
+				[ -1,  1 ], [ 0,  1 ], [ 1,  1 ],
+			];
+			data = context.getImageData( 0, 0, width, height ).data;
+
+			// Read the alpha component of each pixel
+			for( i = 3; i < data.length; i += 4 ) {
+				if( data[ i ] > 0 ) {
+					index = ( i - 3 ) / 4;
+					x1 = index % width;
+					y1 = Math.floor( index / width );
+					frameData = {
+						"x": width, "y": height, "width": 0, "height": 0, "right": 0, "bottom": 0
+					};
+					if( getCluster( x1, y1, frameData ) ) {
+						imageData.frames.push( frameData );
+					}
+				}
 			}
+
+		} else {
 			x1 = imageData.margin;
+			y1 = imageData.margin;
 			x2 = x1 + imageData.spriteWidth;
-			y1 += imageData.spriteHeight + imageData.margin;
 			y2 = y1 + imageData.spriteHeight;
+
+			// Loop through all the frames
+			while( y2 <= height - imageData.margin ) {
+				while( x2 <= width - imageData.margin ) {
+					imageData.frames.push( {
+						"x": x1,
+						"y": y1,
+						"width": imageData.spriteWidth,
+						"height": imageData.spriteHeight,
+						"right": x1 + imageData.spriteWidth - 1,
+						"bottom": y2 + imageData.spriteHeight - 1
+					} );
+					x1 += imageData.spriteWidth + imageData.margin;
+					x2 = x1 + imageData.spriteWidth;
+				}
+				x1 = imageData.margin;
+				x2 = x1 + imageData.spriteWidth;
+				y1 += imageData.spriteHeight + imageData.margin;
+				y2 = y1 + imageData.spriteHeight;
+			}
 		}
 	};
 
 	loadImage( [ src, name ] );
 
 	return name;
+}
+
+pi._.addCommand( "getSpritesheetData", getSpritesheetData, false, true,
+	[ "name" ]
+);
+function getSpritesheetData( screenData, args ) {
+	var name, sprite, i, spriteData;
+
+	name = args[ 0 ];
+
+	// Validate name
+	if( ! m_piData.images[ name ] ) {
+		m_piData.log( "getSpritesheetData: invalid sprite name" );
+		return;
+	}
+
+	sprite = m_piData.images[ name ];
+
+	if( sprite.type !== "spritesheet" ) {
+		m_piData.log( "getSpritesheetData: image is not a sprite" );
+		return;
+	}
+
+	spriteData = {
+		"frameCount": sprite.frames.length,
+		"frames": []
+	};
+
+	for( i = 0; i < sprite.frames.length; i++ ) {
+		spriteData.frames.push( {
+			"index": i,
+			"width": sprite.frames[ i ].width,
+			"height": sprite.frames[ i ].height
+		} );
+	}
+	return spriteData;
 }
 
 pi._.addCommand( "drawImage", drawImage, false, true,
