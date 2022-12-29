@@ -31,9 +31,9 @@ function processFiles( build ) {
 	console.log( "" );
 	console.log( "* Minifying Code *" );
 
-	let fileFull = build.name + ".js";
-	let fileOut = build.name + ".min.js";
-	let fileMap = build.name + ".min.js.map";
+	let fileFull = build.name + "-" + build.version + ".js";
+	let fileOut = build.name + "-" + build.version + ".min.js";
+	let fileMap = build.name + "-" + build.version + ".min.js.map";
 
 	// Minify the code
 	let result = "";
