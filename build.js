@@ -38,6 +38,11 @@ function processFiles( build ) {
 	// Minify the code
 	let result = "";
 
+	// Update version number and build date in first file
+	build.fileData[ build.files[ 0 ] ] = build.fileData[ build.files[ 0 ] ]
+		.replace( "[VERSION_NUMBER]", build.version )
+		.replace( "[BUILD_DATE]", ( new Date() ).toISOString().split( "T" )[ 0 ] );
+
 	// Combine all files
 	for( let i = 0; i < build.files.length; i++ ) {
 		result += build.fileData[ build.files[ i ] ];
@@ -51,13 +56,11 @@ function processFiles( build ) {
 
 	// Write output to file
 	writeFile( "build/" + fileFull, result );
-	//writeFile( "../pi-pixel/pijs/" + fileFull, result );
-	//writeFile( "../thief/pijs/" + fileFull, result );
-	//writeFile( "../web-os/site/system/libs/" + fileFull, result );
 
 	// Minify the code
 	result = ug.minify( build.fileData, {
-		"warnings": true, "sourceMap": { "filename": fileOut, "url": fileMap, "root": "../" }
+		"output": { "comments": "some" }, "warnings": true,
+		"sourceMap": { "filename": fileOut, "url": fileMap, "root": "../" }
 	} );
 
 	// Throw an error if not successful

@@ -6,6 +6,8 @@
 
 name = "pi"
 
+version = "1.0"
+
 files = [
 	"src/pi.js",
 	"src/pi-util.js",

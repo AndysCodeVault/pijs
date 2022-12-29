@@ -1,5 +1,12 @@
 /*
+* https://www.pijs.org/
 * File: pi.js
+* Version: 1.0
+ * Copyright Andy Stubbs
+ * Released under the Apache License 2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * Date: 2022-12-29
+ * @preserve
 */
 
 window.pi = ( function () {
