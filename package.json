@@ -11,6 +11,7 @@
     "server": "start node server.js",
     "server2": "node server.js",
     "build": "node build.js",
+    "build-tests": "node build-tests.js",
     "build-docs": "node build-docs.js",
     "build-map": "node build-command-map.js"
   },

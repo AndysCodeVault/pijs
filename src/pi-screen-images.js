@@ -275,8 +275,14 @@ function getSpritesheetData( screenData, args ) {
 	for( i = 0; i < sprite.frames.length; i++ ) {
 		spriteData.frames.push( {
 			"index": i,
+			"x": sprite.frames[ i ].x,
+			"y": sprite.frames[ i ].y,
 			"width": sprite.frames[ i ].width,
-			"height": sprite.frames[ i ].height
+			"height": sprite.frames[ i ].height,
+			"left": sprite.frames[ i ].x,
+			"top": sprite.frames[ i ].y,
+			"right": sprite.frames[ i ].right,
+			"bottom": sprite.frames[ i ].bottom
 		} );
 	}
 	return spriteData;
