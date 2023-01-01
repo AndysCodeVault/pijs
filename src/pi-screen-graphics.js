@@ -1143,9 +1143,16 @@ function point( screenData, args ) {
 }
 
 // CLS command
-pi._.addCommand( "cls", cls, false, true, [] );
-function cls( screenData ) {
-	screenData.context.clearRect( 0, 0, screenData.width, screenData.height );
+pi._.addCommand( "cls", cls, false, true, [ "x", "y", "width", "height" ] );
+function cls( screenData, args ) {
+	var x, y, width, height;
+
+	x = pi.util.getInt( args[ 0 ], 0 );
+	y = pi.util.getInt( args[ 1 ], 0 );
+	width = pi.util.getInt( args[ 2 ], screenData.width );
+	height = pi.util.getInt( args[ 3 ], screenData.height );
+
+	screenData.context.clearRect( x, y, width, height );
 	screenData.imageData = null;
 	screenData.printCursor.x = 0;
 	screenData.printCursor.y = 0;

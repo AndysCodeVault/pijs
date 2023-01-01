@@ -317,6 +317,14 @@ window.pi.util = ( function () {
 		return -m - 1;
 	}
 
+	function getInt( val, def ) {
+		val = parseInt( val );
+		if( isNaN( val ) ) {
+			val = def;
+		}
+		return val;
+	}
+
 	// Setup commands that will run only in the pi api
 	var api = {
 		"binarySearch": binarySearch,
@@ -328,12 +336,13 @@ window.pi.util = ( function () {
 		"convertToColor": convertToColor,
 		"copyProperties": copyProperties,
 		"cToHex": cToHex,
+		"dataToHex": dataToHex,
 		"degreesToRadian": degreesToRadian,
 		"deleteProperties": deleteProperties,
+		"getInt": getInt,
 		"getWindowSize": getWindowSize,
 		"hexToColor": hexToColor,
 		"hexToData": hexToData,
-		"dataToHex": dataToHex,
 		"inRange": inRange,
 		"inRange2": inRange2,
 		"isArray": Array.isArray,

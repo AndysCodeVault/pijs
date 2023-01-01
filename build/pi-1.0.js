@@ -5,7 +5,7 @@
 * Copyright Andy Stubbs
 * Released under the Apache License 2.0
 * https://www.apache.org/licenses/LICENSE-2.0
-* Date: 2022-12-29
+* Date: 2023-01-01
 * @preserve
 */
 
@@ -795,6 +795,14 @@ window.pi.util = ( function () {
 		return -m - 1;
 	}
 
+	function getInt( val, def ) {
+		val = parseInt( val );
+		if( isNaN( val ) ) {
+			val = def;
+		}
+		return val;
+	}
+
 	// Setup commands that will run only in the pi api
 	var api = {
 		"binarySearch": binarySearch,
@@ -806,12 +814,13 @@ window.pi.util = ( function () {
 		"convertToColor": convertToColor,
 		"copyProperties": copyProperties,
 		"cToHex": cToHex,
+		"dataToHex": dataToHex,
 		"degreesToRadian": degreesToRadian,
 		"deleteProperties": deleteProperties,
+		"getInt": getInt,
 		"getWindowSize": getWindowSize,
 		"hexToColor": hexToColor,
 		"hexToData": hexToData,
-		"dataToHex": dataToHex,
 		"inRange": inRange,
 		"inRange2": inRange2,
 		"isArray": Array.isArray,
@@ -6315,9 +6324,16 @@ function point( screenData, args ) {
 }
 
 // CLS command
-pi._.addCommand( "cls", cls, false, true, [] );
-function cls( screenData ) {
-	screenData.context.clearRect( 0, 0, screenData.width, screenData.height );
+pi._.addCommand( "cls", cls, false, true, [ "x", "y", "width", "height" ] );
+function cls( screenData, args ) {
+	var x, y, width, height;
+
+	x = pi.util.getInt( args[ 0 ], 0 );
+	y = pi.util.getInt( args[ 1 ], 0 );
+	width = pi.util.getInt( args[ 2 ], screenData.width );
+	height = pi.util.getInt( args[ 3 ], screenData.height );
+
+	screenData.context.clearRect( x, y, width, height );
 	screenData.imageData = null;
 	screenData.printCursor.x = 0;
 	screenData.printCursor.y = 0;
