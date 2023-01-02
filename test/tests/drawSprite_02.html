@@ -24,11 +24,14 @@
 		var spriteData, smallestFrame, largestFrame, i, size;
 
 		$.loadSpritesheet( "images/Fruits.png", "fruits" );
+		$.loadSpritesheet( "images/8x8 fantasytiles.png", "fantasy" );
 		
 		$.ready( function () {
 			$.screen( "320x200" );
 			$.setBgColor( 15 );
 			$.setColor( 16 );
+
+			$.drawSprite( "fantasy", 0, 112, 112 );
 
 			$.drawSprite( "fruits", 0, 5, 4 );
 			$.drawSprite( "fruits", 1, 5, 36 );

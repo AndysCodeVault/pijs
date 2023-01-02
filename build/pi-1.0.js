@@ -5,7 +5,7 @@
 * Copyright Andy Stubbs
 * Released under the Apache License 2.0
 * https://www.apache.org/licenses/LICENSE-2.0
-* Date: 2023-01-01
+* Date: 2023-01-02
 * @preserve
 */
 
@@ -6854,27 +6854,38 @@ function loadSpritesheet( args ) {
 	m_callback = function () {
 
 		function getCluster( x, y, frameData ) {
-			var name, i, index;
+			var name, i, index, clusters, cluster, x2, y2, name2;
 
 			name = x + "_" + y;
 			if( searched[ name ] || x < 0 || x >= width || y < 0 || y >= height ) {
-				return false;
+				return;
 			}
-			searched[ name ] = true;
-
-			index = ( x + y * width ) * 4;
-			if( data[ index + 3 ] > 0 ) {
-				frameData.x = Math.min( frameData.x, x );
-				frameData.y = Math.min( frameData.y, y );
-				frameData.right = Math.max( frameData.right, x );
-				frameData.bottom = Math.max( frameData.bottom, y );
-				frameData.width = frameData.right - frameData.x + 1;
-				frameData.height = frameData.bottom - frameData.y + 1;
-				for( i = 0; i < dirs.length; i++ ) {
-					getCluster( x + dirs[ i ][ 0 ], y + dirs[ i ][ 1 ], frameData );
+			clusters = [];
+			clusters.push( [ x, y, name ] );
+			while( clusters.length > 0 ) {
+				cluster = clusters.pop();
+				x = cluster[ 0 ];
+				y = cluster[ 1 ];
+				name = cluster[ 2 ];
+				searched[ name ] = true;
+				index = ( x + y * width ) * 4;
+				if( data[ index + 3 ] > 0 ) {
+					frameData.x = Math.min( frameData.x, x );
+					frameData.y = Math.min( frameData.y, y );
+					frameData.right = Math.max( frameData.right, x );
+					frameData.bottom = Math.max( frameData.bottom, y );
+					frameData.width = frameData.right - frameData.x + 1;
+					frameData.height = frameData.bottom - frameData.y + 1;
+					for( i = 0; i < dirs.length; i++ ) {
+						x2 = x + dirs[ i ][ 0 ];
+						y2 = y + dirs[ i ][ 1 ];
+						name2 = x2 + "_" + y2;
+						if( !( searched[ name2 ] || x2 < 0 || x2 >= width || y2 < 0 || y2 >= height ) ) {
+							clusters.push( [ x2, y2, name2 ] );
+						}
+					}
 				}
 			}
-			return true;
 		}
 
 		var imageData, width, height, x1, y1, x2, y2, searched, canvas, context, data, i, index, dirs,
@@ -6918,7 +6929,8 @@ function loadSpritesheet( args ) {
 					frameData = {
 						"x": width, "y": height, "width": 0, "height": 0, "right": 0, "bottom": 0
 					};
-					if( getCluster( x1, y1, frameData ) ) {
+					getCluster( x1, y1, frameData );
+					if( ( frameData.width + frameData.height ) > 4 ) {
 						imageData.frames.push( frameData );
 					}
 				}
