@@ -5,34 +5,37 @@ const TOML = require( "@iarna/toml" );
 const FS = require( "fs" );
 
 // CONSTANTS
-const TESTS_FOLDER = "test/tests/";
-const TESTS_FOLDER2 = "test/tests_input/";
-const buildFile = "build.toml";
+const BUILD_FILE = "build.toml";
+const VERSION_FILE = "update-version.toml";
 
 // Global Variables
-let g_Files = FS.readdirSync( TESTS_FOLDER )
-let g_Files2 = FS.readdirSync( TESTS_FOLDER2 );
 let g_build = null;
 
-FS.readFile( buildFile, "utf8", function( err, data ) {
+FS.readFile( BUILD_FILE, "utf8", function( err, data ) {
 	let builds = TOML.parse( data ).builds;
 	g_build = builds[ 0 ];
-	processTests( g_Files, TESTS_FOLDER );
-	processTests( g_Files2, TESTS_FOLDER2 );
+	FS.readFile( VERSION_FILE, "utf8", function( err, data ) {
+		let g_versions = TOML.parse( data );
+		g_versions.folders.forEach( function ( folder ) {
+			FS.readdir( folder.src, function ( err, data ) {
+				processTests( data, folder.src, folder.localRef );
+			} );
+		} );
+	} );
 } );
 
-function processTests( files, folder ) {
+function processTests( files, folder, localRef ) {
 	// Remove non-html files
 	for( let i = 0; i < files.length; i++ ) {
 		let file = files[ i ];
 	
 		if( isHtmlFile( file ) ) {
-			updateTestVersion( file, folder );
+			updateTestVersion( file, folder, localRef );
 		}
 	}
 }
 
-function updateTestVersion( file, folder ) {
+function updateTestVersion( file, folder, localRef ) {
 	FS.readFile( folder + file, "utf8", function ( err, data ) {
 		if( err ) {
 			console.log( err );
@@ -43,7 +46,7 @@ function updateTestVersion( file, folder ) {
 		let piVersion = "pi-" + g_build.version + ".js";
 		let finalData = data.substring( 0, startIndex ) +
 			"<!-- [PI-JS Script]-->\n\t\t" +
-			"<script src=\"../../build/" + piVersion + "\"></script>\n\t\t" +
+			"<script src=\"" + localRef + piVersion + "\"></script>\n\t\t" +
 			data.substring( endIndex );
 		FS.writeFile( folder + file, finalData, function () {
 			console.log( "Updated: " + file + " with source: " + piVersion );

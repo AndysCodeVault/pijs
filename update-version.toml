@@ -1,0 +1,27 @@
+[[folders]]
+src = "test/tests_input/"
+localRef = "../../build/"
+
+[[folders]]
+src = "test/tests/"
+localRef = "../../build/"
+
+[[folders]]
+src = "docs/"
+localRef = "../build/"
+
+[[folders]]
+src = "examples/adventure/"
+localRef = "../../build/"
+
+[[folders]]
+src = "examples/dr_ascii/"
+localRef = "../../build/"
+
+[[folders]]
+src = "examples/sample/"
+localRef = "../../build/"
+
+[[folders]]
+src = "examples/typing/"
+localRef = "../../build/"
