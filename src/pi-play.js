@@ -366,21 +366,21 @@
 
 				// Check if note length included
 				if( cmd.length > 1 && cmd[ 1 ].indexOf( "." ) === -1 ) {
-					val = getInt( cmd[ 1 ], 1 );
+					val = pi.util.getInt( cmd[ 1 ], 1 );
 					track.extra = getNoteLength( val );
 				}
 
 				wait = true;
 				break;
 			case "N":
-				val = getInt( cmd[ 1 ], 0 );
+				val = pi.util.getInt( cmd[ 1 ], 0 );
 				if( val >= 0 && val < m_allNotes.length ) {
 					frequency = m_allNotes[ val ];
 				}
 				wait = true;
 				break;
 			case "O":
-				val = getInt( cmd[ 1 ], 4 );
+				val = pi.util.getInt( cmd[ 1 ], 4 );
 				if( val >= 0 && val < m_notesData[ "A" ].length ) {
 					track.octave = val;
 				}
@@ -398,11 +398,11 @@
 				}
 				break;
 			case "L":
-				val = getInt( cmd[ 1 ], 1 );
+				val = pi.util.getInt( cmd[ 1 ], 1 );
 				track.noteLength = getNoteLength( val );
 				break;
 			case "T":
-				val = getInt( cmd[ 1 ], 120 );
+				val = pi.util.getInt( cmd[ 1 ], 120 );
 				if( val >= 32 && val < 256 ) {
 					track.tempo = 60 / val;
 				}
@@ -423,22 +423,22 @@
 						break;
 					case "MU":
 						// Modify Octave
-						val = getInt( cmd[ 1 ], 0 );
+						val = pi.util.getInt( cmd[ 1 ], 0 );
 						track.octaveExtra = val;
 						break;
 					case "MY": 
 						// Modify Attack Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.attackRate = val / 100;
 						break;
 					case "MX": 
 						// Modify Sustain Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.sustainRate = val / 100;
 						break;
 					case "MZ":
 						// Modify Decay Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.decayRate = val / 100;
 						break;
 					case "MW":
@@ -449,11 +449,11 @@
 				break;
 			case "P":
 				wait = true;
-				val = getInt( cmd[ 1 ], 1 );
+				val = pi.util.getInt( cmd[ 1 ], 1 );
 				track.extra = getNoteLength( val );
 				break;
 			case "V":
-				val = getInt( cmd[ 1 ], 50 );
+				val = pi.util.getInt( cmd[ 1 ], 50 );
 				if( val < 0 ) {
 					val = 0;
 				} else if( val > 100 ) {
@@ -473,7 +473,7 @@
 				} else {
 
 					// Custom wavetable
-					val = getInt( cmd[ 1 ], -1 );
+					val = pi.util.getInt( cmd[ 1 ], -1 );
 					if( track.waveTables[ val ] ) {
 						track.type = val;
 					}
@@ -565,14 +565,6 @@
 				sustainTime, decayTime, stopTime, oType, waveTables, track.time 
 			) 
 		);
-	}
-
-	function getInt( val, val_default ) {
-		val = parseInt( val );
-		if( isNaN( val ) ) {
-			val = val_default;
-		}
-		return val;
 	}
 
 // End of File Encapsulation
