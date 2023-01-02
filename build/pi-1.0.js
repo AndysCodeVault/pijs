@@ -5208,9 +5208,9 @@ function pxCircle( screenData, args ) {
 	var x, y, radius, fillColor, i, x2, y2, midPoint, color, isFill,
 		tempData;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radius = args[ 2 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radius = Math.round( args[ 2 ] );
 	fillColor = args[ 3 ];
 
 	isFill = false;
@@ -5220,7 +5220,7 @@ function pxCircle( screenData, args ) {
 		! pi.util.isInteger( y ) ||
 		! pi.util.isInteger( radius )
 	) {
-		m_piData.log( "circle: x, y, r must be integers." );
+		m_piData.log( "circle: x, y, radius must be integers." );
 		return;
 	}
 
@@ -5392,9 +5392,9 @@ function pxArc( screenData, args ) {
 		}
 	}
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radius = args[ 2 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radius = Math.round( args[ 2 ] );
 	angle1 = args[ 3 ];
 	angle2 = args[ 4 ];
 	angle1 = ( angle1 + 360 ) % 360;
@@ -5407,7 +5407,7 @@ function pxArc( screenData, args ) {
 
 	// Make sure x and y are integers
 	if( isNaN( x ) || isNaN( y ) || isNaN( radius ) ) {
-		m_piData.log( "circle: Argument's cx, cy, r must be numbers." );
+		m_piData.log( "arc: Argument's x, y, radius must be integers." );
 		return;
 	}
 
@@ -5518,15 +5518,15 @@ function pxEllipse( screenData, args ) {
 	var x, y, radiusX, radiusY, fillColor, tempData, color, dx, dy, d1, d2, x2,
 		y2, isFill, i;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radiusX = args[ 2 ];
-	radiusY = args[ 3 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radiusX = Math.round( args[ 2 ] );
+	radiusY = Math.round( args[ 3 ] );
 	fillColor = args[ 4 ];
 
 	if( isNaN( x ) || isNaN( y ) || isNaN( radiusX ) || isNaN( radiusY ) ) {
 		m_piData.log(
-			"ellipse: parameters x, y, radiusX, radiusY must be numbers."
+			"ellipse: parameters x, y, radiusX, radiusY must be integers."
 		);
 		return;
 	}
@@ -5725,12 +5725,17 @@ function put( screenData, args ) {
 	var data, x, y, includeZero, dataX, dataY, startX, startY, width, height, i, c;
 
 	data = args[ 0 ];
-	x = args[ 1 ];
-	y = args[ 2 ];
+	x = Math.round( args[ 1 ] );
+	y = Math.round( args[ 2 ] );
 	includeZero = !!( args[ 3 ] );
 
 	// Exit if no data
 	if( ! data || data.length < 1 ) {
+		return;
+	}
+
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "put: parameters x and y must be integers." );
 		return;
 	}
 
@@ -5798,11 +5803,23 @@ function get( screenData, args ) {
 	var x1, y1, x2, y2, tolerance, t, imageData, data, x, y, c, r,
 		g, b, i, row, a;
 
-	x1 = args[ 0 ];
-	y1 = args[ 1 ];
-	x2 = args[ 2 ];
-	y2 = args[ 3 ];
+	x1 = Math.round( args[ 0 ] );
+	y1 = Math.round( args[ 1 ] );
+	x2 = Math.round( args[ 2 ] );
+	y2 = Math.round( args[ 3 ] );
 	tolerance = args[ 4 ];
+
+	if( isNaN( x1 ) || isNaN( y1 ) || isNaN( y2 ) || isNaN( y2 ) ) {
+		m_piData.log( "put: parameters x1, x2, y1, y2 must be integers." );
+		return;
+	}
+
+	if( tolerance == null ) {
+		tolerance = 1;
+	} else if( isNaN( tolerance ) ) {
+		m_piData.log( "put: parameter tolerance must be a number." );
+		return;
+	}
 
 	x1 = pi.util.clamp( x1, 0, screenData.width - 1 );
 	x2 = pi.util.clamp( x2, 0, screenData.width - 1 );
@@ -5851,8 +5868,8 @@ pi._.addCommands( "pset", pset, aaPset, [ "x", "y" ] );
 function pset( screenData, args ) {
 	var x, y, color;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
@@ -5911,10 +5928,10 @@ pi._.addCommands( "line", pxLine, aaLine, [ "x1", "y1", "x2", "y2" ] );
 function pxLine( screenData, args ) {
 	var x1, y1, x2, y2, color, dx, dy, sx, sy, err, e2;
 
-	x1 = args[ 0 ];
-	y1 = args[ 1 ];
-	x2 = args[ 2 ];
-	y2 = args[ 3 ];
+	x1 = Math.round( args[ 0 ] );
+	y1 = Math.round( args[ 1 ] );
+	x2 = Math.round( args[ 2 ] );
+	y2 = Math.round( args[ 3 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x1 ) || ! pi.util.isInteger( y1 ) ||
@@ -6001,10 +6018,10 @@ pi._.addCommands( "rect", pxRect, aaRect,
 function pxRect( screenData, args ) {
 	var x, y, width, height, fillColor, isFill, x2, y2, tempColor, x3;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	width = args[ 2 ];
-	height = args[ 3 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	width = Math.round( args[ 2 ] );
+	height = Math.round( args[ 3 ] );
 	fillColor = args[ 4 ];
 
 	if(
@@ -6307,8 +6324,8 @@ pi._.addCommand( "point", point, false, true, [ "x", "y" ] );
 function point( screenData, args ) {
 	var x, y, i, c, data;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
@@ -6335,10 +6352,10 @@ pi._.addCommand( "cls", cls, false, true, [ "x", "y", "width", "height" ] );
 function cls( screenData, args ) {
 	var x, y, width, height;
 
-	x = pi.util.getInt( args[ 0 ], 0 );
-	y = pi.util.getInt( args[ 1 ], 0 );
-	width = pi.util.getInt( args[ 2 ], screenData.width );
-	height = pi.util.getInt( args[ 3 ], screenData.height );
+	x = pi.util.getInt( Math.round( args[ 0 ] ), 0 );
+	y = pi.util.getInt( Math.round( args[ 1 ] ), 0 );
+	width = pi.util.getInt( Math.round( args[ 2 ] ), screenData.width );
+	height = pi.util.getInt( Math.round( args[ 3 ] ), screenData.height );
 
 	screenData.context.clearRect( x, y, width, height );
 	screenData.imageData = null;

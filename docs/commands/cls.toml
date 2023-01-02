@@ -1,7 +1,13 @@
 name = "cls"
 description = "Clears the screen."
 isScreen = true
-parameters = [ ]
+parameters = [ "x", "y", "width", "height" ]
+pdata = [
+  "[OPTIONAL] The x coordinate of the upper left corner of the area to clear.",
+  "[OPTIONAL] The y coordinate of the upper left corner of the area to clear.",
+  "[OPTIONAL] The width of the area to clear.",
+  "[OPTIONAL] The height of the area to clear."
+]
 example = """
 $.screen("300x200");
 $.line(0, 0, 300, 200);

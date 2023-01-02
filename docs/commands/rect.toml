@@ -7,7 +7,6 @@ pdata = [
   "The y coordinate of the upper left corner of the rectangle.",
   "The width of the rectangle.",
   "The height of the rectangle."
-
 ]
 seeAlso = [
 	"arc", "bezier", "circle", "draw", "ellipse", "line", "paint", "point", "pset", "setColor"
