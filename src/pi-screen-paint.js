@@ -23,13 +23,13 @@ pi._.addCommand( "paint", paint, false, true,
 function paint( screenData, args ) {
 	var x, y, fillColor, tolerance, fills, pixel, backgroundColor;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 	fillColor = args[ 2 ];
 	tolerance = args[ 3 ];
 
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
-		m_piData.log( "paint: Argument's x and y must be integers." );
+		m_piData.log( "paint: parameters x and y must be integers" );
 		return;
 	}
 
@@ -39,7 +39,7 @@ function paint( screenData, args ) {
 	}
 
 	if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
-		m_piData.log( "paint: Argument tolerance must be a number between 0 and 1." );
+		m_piData.log( "paint: parameter tolerance must be a number between 0 and 1." );
 		return;
 	}
 

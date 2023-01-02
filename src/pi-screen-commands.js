@@ -128,8 +128,11 @@ function findColor( screenData, args ) {
 	tolerance = args[ 1 ];
 	isAddToPalette = !!( args[ 2 ] );
 
-	if(tolerance === undefined) {
+	if( tolerance == null ) {
 		tolerance = 1;
+	} else if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
+		m_piData.log( "findColor: parameter tolerance must be a number between 0 and 1" );
+		return;
 	}
 
 	tolerance = tolerance * ( 2 - tolerance ) * m_maxDifference;
@@ -193,22 +196,22 @@ function setPen( screenData, args ) {
 	var pen, size, noise, i;
 
 	pen = args[ 0 ];
-	size = args[ 1 ];
+	size = Math.round( args[ 1 ] );
 	noise = args[ 2 ];
 
 	if( ! m_piData.pens[ pen ] ) {
 		m_piData.log(
-			"setPen: Argument pen is not a valid pen. Valid pens: " +
+			"setPen: parameter pen is not a valid pen. Valid pens: " +
 			m_piData.penList.join(", " )
 		);
 		return;
 	}
 	if( ! pi.util.isInteger( size ) ) {
-		m_piData.log( "setPen: Argument size is not a valid number." );
+		m_piData.log( "setPen: parameter size must be an integer." );
 		return;
 	}
 	if( noise && ( ! pi.util.isArray( noise ) && Number.isNaN( noise ) ) ) {
-		m_piData.log( "setPen: Argument noise is not an array or number." );
+		m_piData.log( "setPen: parameter noise is not an array or number." );
 		return;
 	}
 	if( pi.util.isArray( noise ) ) {
@@ -216,7 +219,7 @@ function setPen( screenData, args ) {
 		for( i = 0; i < noise.length; i++ ) {
 			if( Number.isNaN( noise[ i ] ) ) {
 				m_piData.log(
-					"setPen: Argument noise array contains an invalid value."
+					"setPen: parameter noise array contains an invalid value."
 				);
 				return;
 			}

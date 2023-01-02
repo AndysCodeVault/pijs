@@ -81,7 +81,7 @@ function draw( screenData, args ) {
 
 			//D - Down
 			case "D":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 90 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -89,7 +89,7 @@ function draw( screenData, args ) {
 
 			//E - Up and Right
 			case "E":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 315 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -98,7 +98,7 @@ function draw( screenData, args ) {
 
 			//F - Down and Right
 			case "F":
-				len = getInt(  drawArgs[ 1 ], 1 );
+				len = pi.util.getInt(  drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 45 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -107,7 +107,7 @@ function draw( screenData, args ) {
 
 			//G - Down and Left
 			case "G":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 135 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -116,7 +116,7 @@ function draw( screenData, args ) {
 
 			//H - Up and Left
 			case "H":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 225 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -125,7 +125,7 @@ function draw( screenData, args ) {
 
 			//L - Left
 			case "L":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 180 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -133,7 +133,7 @@ function draw( screenData, args ) {
 
 			//R - Right
 			case "R":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 0 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -141,7 +141,7 @@ function draw( screenData, args ) {
 
 			//U - Up
 			case "U":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 270 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -150,7 +150,7 @@ function draw( screenData, args ) {
 			//P - Paint
 			case "P":
 			case "S":
-				color1 = getInt( drawArgs[ 1 ], 0 );
+				color1 = pi.util.getInt( drawArgs[ 1 ], 0 );
 
 				screenData.screenObj.paint( screenData.x, screenData.y, color1,
 					drawArgs[ 0 ] === "S" );
@@ -159,24 +159,24 @@ function draw( screenData, args ) {
 
 			//A - Arc Line
 			case "A":
-				radius = getInt( drawArgs[ 1 ], 1 );
-				angle1 = getInt( drawArgs[ 3 ], 1 );
-				angle2 = getInt( drawArgs[ 5 ], 1 );
+				radius = pi.util.getInt( drawArgs[ 1 ], 1 );
+				angle1 = pi.util.getInt( drawArgs[ 3 ], 1 );
+				angle2 = pi.util.getInt( drawArgs[ 5 ], 1 );
 				isArc = true;
 				break;
 
 			//TA - T - Turn Angle
 			case "T":
 				screenData.angle = pi.util.degreesToRadian(
-					getInt( drawArgs[ 1 ], 1 )
+					pi.util.getInt( drawArgs[ 1 ], 1 )
 				);
 				isBlind = true;
 				break;
 
 			//M - Move
 			case "M":
-				screenData.x = getInt( drawArgs[ 1 ], 1 );
-				screenData.y = getInt( drawArgs[ 3 ], 1 );
+				screenData.x = pi.util.getInt( drawArgs[ 1 ], 1 );
+				screenData.y = pi.util.getInt( drawArgs[ 3 ], 1 );
 				isBlind = true;
 				break;
 
@@ -214,14 +214,6 @@ function draw( screenData, args ) {
 			isBlind = true;
 		}
 	}
-}
-
-function getInt( val, val_default ) {
-	val = parseInt( val );
-	if( isNaN( val ) ) {
-		val = val_default;
-	}
-	return val;
 }
 
 // End of File Encapsulation

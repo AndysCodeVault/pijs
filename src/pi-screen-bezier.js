@@ -22,14 +22,14 @@ function pxBezier( screenData, args ) {
 		y2, xEnd, yEnd, color, points, t, dt, point, lastPoint,
 		distance, minDistance;
 
-	xStart = parseInt( args[ 0 ] );
-	yStart = parseInt( args[ 1 ] );
-	x1 = parseInt( args[ 2 ] );
-	y1 = parseInt( args[ 3 ] );
-	x2 = parseInt( args[ 4 ] );
-	y2 = parseInt( args[ 5 ] );
-	xEnd = parseInt( args[ 6 ] );
-	yEnd = parseInt( args[ 7 ] );
+	xStart = Math.round( args[ 0 ] );
+	yStart = Math.round( args[ 1 ] );
+	x1 = Math.round( args[ 2 ] );
+	y1 = Math.round( args[ 3 ] );
+	x2 = Math.round( args[ 4 ] );
+	y2 = Math.round( args[ 5 ] );
+	xEnd = Math.round( args[ 6 ] );
+	yEnd = Math.round( args[ 7 ] );
 
 	// Make sure x and y are integers
 	if( isNaN( xStart ) || isNaN( yStart ) ||

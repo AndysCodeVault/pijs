@@ -35,8 +35,14 @@ function createAudioPool( args ) {
 		m_piData.log( "createAudioPool: No sound source provided." );
 		return;
 	}
-	if( poolSize === undefined || isNaN( poolSize ) ) {
+	if( poolSize == null ) {
 		poolSize = 1;
+	}
+
+	poolSize = Math.round( poolSize );
+	if( isNaN( poolSize ) || poolSize < 1 ) {
+		m_piData.log( "createAudioPool: parameter poolSize must be an integer greater than 0" );
+		return;
 	}
 
 	// Create the audio item
@@ -261,7 +267,7 @@ function sound( args ) {
 	var frequency, duration, volume, oType, delay, attack, decay, stopTime,
 		types, waveTables, i, j, context;
 
-	frequency = args[ 0 ];
+	frequency = Math.round( args[ 0 ] );
 	duration = args[ 1 ];
 	volume = args[ 2 ];
 	oType = args[ 3 ];
@@ -270,7 +276,7 @@ function sound( args ) {
 	decay = args[ 6 ];
 
 	// Validate frequency
-	if( ! pi.util.isInteger( frequency ) ) {
+	if( isNaN( frequency ) ) {
 		m_piData.log( "sound: frequency needs to be an integer." );
 		return;
 	}

@@ -107,6 +107,10 @@ function loadSpritesheet( args ) {
 		isAuto = false;
 	}
 
+	spriteWidth = Math.round( spriteWidth );
+	spriteHeight = Math.round( spriteHeight );
+	margin = Math.round( margin );
+
 	// Validate spriteWidth and spriteHeight
 	if(
 		! isAuto && (
@@ -337,6 +341,11 @@ function drawImage( screenData, args ) {
 		}
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawImage: parameters x and y must be numbers" );
+		return;
+	}
+
 	drawItem( screenData, img, x, y, angle, anchorX, anchorY, alpha, null, scaleX, scaleY );
 }
 
@@ -376,6 +385,12 @@ function drawSprite( screenData, args ) {
 		return;
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawSprite: parameters x and y must be numbers" );
+		return;
+	}
+
+
 	img = m_piData.images[ name ].image;
 
 	drawItem(
@@ -389,15 +404,15 @@ function drawItem(
 ) {
 	var context, oldAlpha;
 
-	if( scaleX === undefined || isNaN( Number( scaleX ) ) ) {
+	if( scaleX == null || isNaN( Number( scaleX ) ) ) {
 		scaleX = 1;
 	}
 
-	if( scaleY === undefined || isNaN( Number( scaleY ) ) ) {
+	if( scaleY == null || isNaN( Number( scaleY ) ) ) {
 		scaleY = 1;
 	}
 
-	if( ! angle ) {
+	if( angle == null ) {
 		angle = 0;
 	}
 

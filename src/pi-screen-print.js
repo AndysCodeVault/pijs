@@ -272,7 +272,11 @@ function setPos( screenData, args ) {
 	row = args[ 1 ];
 
 	// Set the x value
-	if( col !== null ) {
+	if( col != null ) {
+		if( isNaN( col ) ) {
+			m_piData.log( "setPos: parameter col must be a number" );
+			return;
+		}
 		x = Math.floor( col * screenData.printCursor.font.width );
 		if( x > screenData.width ) {
 			x = screenData.width - screenData.printCursor.font.width;
@@ -281,7 +285,11 @@ function setPos( screenData, args ) {
 	}
 
 	// Set the y value
-	if( row !== null ) {
+	if( row != null ) {
+		if( isNaN( row ) ) {
+			m_piData.log( "setPos: parameter row must be a number" );
+			return;
+		}
 		y = Math.floor( row * screenData.printCursor.font.height );
 		if( y > screenData.height ) {
 			y = screenData.height - screenData.printCursor.font.height;
@@ -299,11 +307,20 @@ function setPosPx( screenData, args ) {
 	x = args[ 0 ];
 	y = args[ 1 ];
 
-	if( ! isNaN( x ) ) {
-		screenData.printCursor.x = parseInt( x );
+	if( x != null ) {
+		if( isNaN( x ) ) {
+			m_piData.log( "setPos: parameter x must be an integer" );
+			return;
+		}
+		screenData.printCursor.x = Math.round( x );
 	}
-	if( ! isNaN( y ) ) {
-		screenData.printCursor.y = parseInt( y );
+
+	if( y != null ) {
+		if( isNaN( y ) ) {
+			m_piData.log( "setPos: parameter y must be an integer" );
+			return;
+		}
+		screenData.printCursor.y = Math.round( y );
 	}
 }
 

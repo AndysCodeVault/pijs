@@ -4519,8 +4519,11 @@ function findColor( screenData, args ) {
 	tolerance = args[ 1 ];
 	isAddToPalette = !!( args[ 2 ] );
 
-	if(tolerance === undefined) {
+	if( tolerance == null ) {
 		tolerance = 1;
+	} else if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
+		m_piData.log( "findColor: parameter tolerance must be a number between 0 and 1" );
+		return;
 	}
 
 	tolerance = tolerance * ( 2 - tolerance ) * m_maxDifference;
@@ -4584,22 +4587,22 @@ function setPen( screenData, args ) {
 	var pen, size, noise, i;
 
 	pen = args[ 0 ];
-	size = args[ 1 ];
+	size = Math.round( args[ 1 ] );
 	noise = args[ 2 ];
 
 	if( ! m_piData.pens[ pen ] ) {
 		m_piData.log(
-			"setPen: Argument pen is not a valid pen. Valid pens: " +
+			"setPen: parameter pen is not a valid pen. Valid pens: " +
 			m_piData.penList.join(", " )
 		);
 		return;
 	}
 	if( ! pi.util.isInteger( size ) ) {
-		m_piData.log( "setPen: Argument size is not a valid number." );
+		m_piData.log( "setPen: parameter size must be an integer." );
 		return;
 	}
 	if( noise && ( ! pi.util.isArray( noise ) && Number.isNaN( noise ) ) ) {
-		m_piData.log( "setPen: Argument noise is not an array or number." );
+		m_piData.log( "setPen: parameter noise is not an array or number." );
 		return;
 	}
 	if( pi.util.isArray( noise ) ) {
@@ -4607,7 +4610,7 @@ function setPen( screenData, args ) {
 		for( i = 0; i < noise.length; i++ ) {
 			if( Number.isNaN( noise[ i ] ) ) {
 				m_piData.log(
-					"setPen: Argument noise array contains an invalid value."
+					"setPen: parameter noise array contains an invalid value."
 				);
 				return;
 			}
@@ -6446,13 +6449,13 @@ pi._.addCommand( "paint", paint, false, true,
 function paint( screenData, args ) {
 	var x, y, fillColor, tolerance, fills, pixel, backgroundColor;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 	fillColor = args[ 2 ];
 	tolerance = args[ 3 ];
 
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
-		m_piData.log( "paint: Argument's x and y must be integers." );
+		m_piData.log( "paint: parameters x and y must be integers" );
 		return;
 	}
 
@@ -6462,7 +6465,7 @@ function paint( screenData, args ) {
 	}
 
 	if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
-		m_piData.log( "paint: Argument tolerance must be a number between 0 and 1." );
+		m_piData.log( "paint: parameter tolerance must be a number between 0 and 1." );
 		return;
 	}
 
@@ -6608,14 +6611,14 @@ function pxBezier( screenData, args ) {
 		y2, xEnd, yEnd, color, points, t, dt, point, lastPoint,
 		distance, minDistance;
 
-	xStart = parseInt( args[ 0 ] );
-	yStart = parseInt( args[ 1 ] );
-	x1 = parseInt( args[ 2 ] );
-	y1 = parseInt( args[ 3 ] );
-	x2 = parseInt( args[ 4 ] );
-	y2 = parseInt( args[ 5 ] );
-	xEnd = parseInt( args[ 6 ] );
-	yEnd = parseInt( args[ 7 ] );
+	xStart = Math.round( args[ 0 ] );
+	yStart = Math.round( args[ 1 ] );
+	x1 = Math.round( args[ 2 ] );
+	y1 = Math.round( args[ 3 ] );
+	x2 = Math.round( args[ 4 ] );
+	y2 = Math.round( args[ 5 ] );
+	xEnd = Math.round( args[ 6 ] );
+	yEnd = Math.round( args[ 7 ] );
 
 	// Make sure x and y are integers
 	if( isNaN( xStart ) || isNaN( yStart ) ||
@@ -6841,6 +6844,10 @@ function loadSpritesheet( args ) {
 	} else {
 		isAuto = false;
 	}
+
+	spriteWidth = Math.round( spriteWidth );
+	spriteHeight = Math.round( spriteHeight );
+	margin = Math.round( margin );
 
 	// Validate spriteWidth and spriteHeight
 	if(
@@ -7072,6 +7079,11 @@ function drawImage( screenData, args ) {
 		}
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawImage: parameters x and y must be numbers" );
+		return;
+	}
+
 	drawItem( screenData, img, x, y, angle, anchorX, anchorY, alpha, null, scaleX, scaleY );
 }
 
@@ -7111,6 +7123,12 @@ function drawSprite( screenData, args ) {
 		return;
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawSprite: parameters x and y must be numbers" );
+		return;
+	}
+
+
 	img = m_piData.images[ name ].image;
 
 	drawItem(
@@ -7124,15 +7142,15 @@ function drawItem(
 ) {
 	var context, oldAlpha;
 
-	if( scaleX === undefined || isNaN( Number( scaleX ) ) ) {
+	if( scaleX == null || isNaN( Number( scaleX ) ) ) {
 		scaleX = 1;
 	}
 
-	if( scaleY === undefined || isNaN( Number( scaleY ) ) ) {
+	if( scaleY == null || isNaN( Number( scaleY ) ) ) {
 		scaleY = 1;
 	}
 
-	if( ! angle ) {
+	if( angle == null ) {
 		angle = 0;
 	}
 
@@ -7459,7 +7477,11 @@ function setPos( screenData, args ) {
 	row = args[ 1 ];
 
 	// Set the x value
-	if( col !== null ) {
+	if( col != null ) {
+		if( isNaN( col ) ) {
+			m_piData.log( "setPos: parameter col must be a number" );
+			return;
+		}
 		x = Math.floor( col * screenData.printCursor.font.width );
 		if( x > screenData.width ) {
 			x = screenData.width - screenData.printCursor.font.width;
@@ -7468,7 +7490,11 @@ function setPos( screenData, args ) {
 	}
 
 	// Set the y value
-	if( row !== null ) {
+	if( row != null ) {
+		if( isNaN( row ) ) {
+			m_piData.log( "setPos: parameter row must be a number" );
+			return;
+		}
 		y = Math.floor( row * screenData.printCursor.font.height );
 		if( y > screenData.height ) {
 			y = screenData.height - screenData.printCursor.font.height;
@@ -7486,11 +7512,20 @@ function setPosPx( screenData, args ) {
 	x = args[ 0 ];
 	y = args[ 1 ];
 
-	if( ! isNaN( x ) ) {
-		screenData.printCursor.x = parseInt( x );
+	if( x != null ) {
+		if( isNaN( x ) ) {
+			m_piData.log( "setPos: parameter x must be an integer" );
+			return;
+		}
+		screenData.printCursor.x = Math.round( x );
 	}
-	if( ! isNaN( y ) ) {
-		screenData.printCursor.y = parseInt( y );
+
+	if( y != null ) {
+		if( isNaN( y ) ) {
+			m_piData.log( "setPos: parameter y must be an integer" );
+			return;
+		}
+		screenData.printCursor.y = Math.round( y );
 	}
 }
 
@@ -8137,7 +8172,7 @@ function draw( screenData, args ) {
 
 			//D - Down
 			case "D":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 90 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8145,7 +8180,7 @@ function draw( screenData, args ) {
 
 			//E - Up and Right
 			case "E":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 315 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8154,7 +8189,7 @@ function draw( screenData, args ) {
 
 			//F - Down and Right
 			case "F":
-				len = getInt(  drawArgs[ 1 ], 1 );
+				len = pi.util.getInt(  drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 45 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8163,7 +8198,7 @@ function draw( screenData, args ) {
 
 			//G - Down and Left
 			case "G":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 135 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8172,7 +8207,7 @@ function draw( screenData, args ) {
 
 			//H - Up and Left
 			case "H":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 225 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8181,7 +8216,7 @@ function draw( screenData, args ) {
 
 			//L - Left
 			case "L":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 180 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8189,7 +8224,7 @@ function draw( screenData, args ) {
 
 			//R - Right
 			case "R":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 0 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8197,7 +8232,7 @@ function draw( screenData, args ) {
 
 			//U - Up
 			case "U":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 270 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8206,7 +8241,7 @@ function draw( screenData, args ) {
 			//P - Paint
 			case "P":
 			case "S":
-				color1 = getInt( drawArgs[ 1 ], 0 );
+				color1 = pi.util.getInt( drawArgs[ 1 ], 0 );
 
 				screenData.screenObj.paint( screenData.x, screenData.y, color1,
 					drawArgs[ 0 ] === "S" );
@@ -8215,24 +8250,24 @@ function draw( screenData, args ) {
 
 			//A - Arc Line
 			case "A":
-				radius = getInt( drawArgs[ 1 ], 1 );
-				angle1 = getInt( drawArgs[ 3 ], 1 );
-				angle2 = getInt( drawArgs[ 5 ], 1 );
+				radius = pi.util.getInt( drawArgs[ 1 ], 1 );
+				angle1 = pi.util.getInt( drawArgs[ 3 ], 1 );
+				angle2 = pi.util.getInt( drawArgs[ 5 ], 1 );
 				isArc = true;
 				break;
 
 			//TA - T - Turn Angle
 			case "T":
 				screenData.angle = pi.util.degreesToRadian(
-					getInt( drawArgs[ 1 ], 1 )
+					pi.util.getInt( drawArgs[ 1 ], 1 )
 				);
 				isBlind = true;
 				break;
 
 			//M - Move
 			case "M":
-				screenData.x = getInt( drawArgs[ 1 ], 1 );
-				screenData.y = getInt( drawArgs[ 3 ], 1 );
+				screenData.x = pi.util.getInt( drawArgs[ 1 ], 1 );
+				screenData.y = pi.util.getInt( drawArgs[ 3 ], 1 );
 				isBlind = true;
 				break;
 
@@ -8270,14 +8305,6 @@ function draw( screenData, args ) {
 			isBlind = true;
 		}
 	}
-}
-
-function getInt( val, val_default ) {
-	val = parseInt( val );
-	if( isNaN( val ) ) {
-		val = val_default;
-	}
-	return val;
 }
 
 // End of File Encapsulation
@@ -8319,8 +8346,14 @@ function createAudioPool( args ) {
 		m_piData.log( "createAudioPool: No sound source provided." );
 		return;
 	}
-	if( poolSize === undefined || isNaN( poolSize ) ) {
+	if( poolSize == null ) {
 		poolSize = 1;
+	}
+
+	poolSize = Math.round( poolSize );
+	if( isNaN( poolSize ) || poolSize < 1 ) {
+		m_piData.log( "createAudioPool: parameter poolSize must be an integer greater than 0" );
+		return;
 	}
 
 	// Create the audio item
@@ -8545,7 +8578,7 @@ function sound( args ) {
 	var frequency, duration, volume, oType, delay, attack, decay, stopTime,
 		types, waveTables, i, j, context;
 
-	frequency = args[ 0 ];
+	frequency = Math.round( args[ 0 ] );
 	duration = args[ 1 ];
 	volume = args[ 2 ];
 	oType = args[ 3 ];
@@ -8554,7 +8587,7 @@ function sound( args ) {
 	decay = args[ 6 ];
 
 	// Validate frequency
-	if( ! pi.util.isInteger( frequency ) ) {
+	if( isNaN( frequency ) ) {
 		m_piData.log( "sound: frequency needs to be an integer." );
 		return;
 	}
