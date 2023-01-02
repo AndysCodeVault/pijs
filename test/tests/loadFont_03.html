@@ -29,10 +29,16 @@
 	</head>
 <body>
 <script>
-	var font1 = $.loadFont( "images/font-block.png", 10, 10, "ABCDFGHI", true );
+	var font1 = $.loadFont( "images/font-block.png", 10.1, 10.1, "ABCDFGHI", true );
 	var font2 = $.loadFont( "images/font-block2.png", 10, 10, "ABCDFGHI", false );
+	var font3 = $.loadFont(
+		"images/gnsh-bitmapfont-colour2.png", 5, 12,
+		" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+		true
+	);
 	$.ready( function () {
 		$.screen( "100x100" );
+		$.setBgColor( "navy" );
 		$.setFont( font1 );
 		$.print( "CAB" );
 		$.print( "ABCD" );
@@ -51,6 +57,12 @@
 		$.print( "DACB" );
 		$.setPos( 6, 3 );
 		$.print( "BAD" );
+
+		$.setFont( font3 );
+		$.setPos( 4.5, 6 );
+		$.print( "The quick brown" );
+		$.setPos( 4.5, 7 );
+		$.print( "fox jumped over" );
 
 	} );
 </script>

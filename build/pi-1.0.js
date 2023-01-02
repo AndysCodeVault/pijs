@@ -2629,11 +2629,16 @@ function loadFont( args ) {
 		temp;
 
 	fontSrc = args[ 0 ];
-	width = args[ 1 ];
-	height = args[ 2 ];
+	width = Math.round( args[ 1 ] );
+	height = Math.round( args[ 2 ] );
 	charSet = args[ 3 ];
 	isBitmap = !!( args[ 4 ] );
 	isEncoded = !!( args[ 5 ] );
+
+	if( isNaN( width ) || isNaN( height ) ) {
+		m_piData.log( "loadFont: width and height must be integers." );
+		return;
+	}
 
 	// Default charset to 0 to 255
 	if( ! charSet ) {
@@ -3015,7 +3020,7 @@ function calcFontSize( context ) {
 }
 
 pi._.addCommand( "getAvailableFonts", getAvailableFonts, false, false, [] );
-function getAvailableFonts( args ) {
+function getAvailableFonts() {
 	var i, data;
 
 	data = [];
@@ -3079,9 +3084,11 @@ function setChar( screenData, args ) {
 
 	if( typeof( code ) === "string" ) {
 		code = code.charCodeAt( code );
+	} else {
+		code = Math.round( code );
 	}
 
-	if( ! pi.util.isInteger( code ) ) {
+	if( isNaN( code ) ) {
 		m_piData.log( "setChar: code must be an integer or a string." );
 		return;
 	}
