@@ -34,7 +34,7 @@ seeAlso = [
 example = """
 var monkey, frame, interval;
 $.screen( "300x200" );
-monkey = $.loadSpritesheet( "monkey.png", 32, 32, 1 );
+monkey = $.loadSpritesheet( "monkey.png", null, 32, 32, 1 );
 $.ready( function () {
 	frame = 0;
 	interval = setInterval( run, 500 );

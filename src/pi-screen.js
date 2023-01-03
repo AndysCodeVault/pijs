@@ -316,7 +316,6 @@ function createScreenData(
 	screenData.angle = 0;
 	screenData.pal = m_piData.defaultPalette.slice();
 	screenData.fColor = screenData.pal[ m_piData.defaultColor ];
-	screenData.colors = [ screenData.fColor ];
 	screenData.context.fillStyle = screenData.fColor.s;
 	screenData.context.strokeStyle = screenData.fColor.s;
 	screenData.mouseStarted = false;

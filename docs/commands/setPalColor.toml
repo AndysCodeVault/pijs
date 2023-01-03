@@ -6,7 +6,7 @@ pdata = [
 	"The index value of the color to change.",
 	"The color value of the new color."
 ]
-seeAlso = [ "findColor", "getDefaultPal", "getPal", "getPixel", "setBgColor", "setColor", "setColors", "swapColor" ]
+seeAlso = [ "findColor", "getDefaultPal", "getPal", "getPixel", "setBgColor", "setColor", "swapColor" ]
 example = """
 $.screen( "300x200" );
 $.setColor( 2 );

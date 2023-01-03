@@ -25,13 +25,13 @@
 <body>
 <script>
 Math.seedrandom('constant');
-var goofy = $.loadFont( "images/font-goofy-2.png", 8, 14 );
+var font = $.loadFont( "images/font-8x14.png", 8, 14 );
 $.set( {
 	"defaultPal": [ 
 		"#000000", "#FFFFFF", "#FF0000", "#00FF00",
 		"#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"
 	],
-	"defaultFont": goofy
+	"defaultFont": font
 } );
 $.ready( function () {
 	var s1 = $.screen( "100x100" );
@@ -51,23 +51,22 @@ $.ready( function () {
 			"index": 3,
 			"color": [ 34, 12, 7 ]
 		},
-		"colors": [ 1, 2, 3, 4 ],
 		"pos": {
 			"col": 1,
 			"row": 2
 		}
 	} );
-	$.print( "Goofy Font" );
+	$.print( "Good Font" );
 	$.pset( 50, 50 );
 	$.setColor( 3 );
 	$.pset( 75, 75 );
-	$.render();
 	$.set( {
 		"screen": s2,
 		"bgColor": 0,
-		"color": 1 
+		"color": 2 
 	} );
 	$.pset( 5, 9 );
+	$.setColor( 1 );
 	$.set( {
 		"font": 1,
 		"wordBreak": false

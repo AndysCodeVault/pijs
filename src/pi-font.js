@@ -16,17 +16,16 @@ m_piResume = pi._.resume;
 
 // Loads a font into memory
 pi._.addCommand( "loadFont", loadFont, false, false,
-	[ "fontSrc", "width", "height", "charSet", "isBitmap", "isEncoded" ] );
+	[ "fontSrc", "width", "height", "charSet", "isEncoded" ] );
 function loadFont( args ) {
-	var fontSrc, width, height, charSet, isBitmap, isEncoded, font, chars, i,
+	var fontSrc, width, height, charSet, isEncoded, font, chars, i,
 		temp;
 
 	fontSrc = args[ 0 ];
 	width = Math.round( args[ 1 ] );
 	height = Math.round( args[ 2 ] );
 	charSet = args[ 3 ];
-	isBitmap = !!( args[ 4 ] );
-	isEncoded = !!( args[ 5 ] );
+	isEncoded = !!( args[ 4 ] );
 
 	if( isNaN( width ) || isNaN( height ) ) {
 		m_piData.log( "loadFont: width and height must be integers." );
@@ -78,7 +77,7 @@ function loadFont( args ) {
 		"sHeight": height
 	};
 
-	if( isBitmap ) {
+	if( !isEncoded ) {
 		font.mode = "bitmap";
 		font.printFunction = m_piData.commands.bitmapPrint;
 	}
@@ -92,7 +91,7 @@ function loadFont( args ) {
 	if( isEncoded ) {
 		loadFontFromBase32Encoded( fontSrc, width, height, font );
 	} else {
-		loadFontFromImg( fontSrc, width, height, font, isBitmap );
+		loadFontFromImg( fontSrc, font );
 	}
 
 	return font.id;
@@ -172,7 +171,7 @@ function decompressFont( numStr, width, height ) {
 	return data;
 }
 
-function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
+function loadFontFromImg( fontSrc, font ) {
 
 	var img;
 
@@ -197,11 +196,7 @@ function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
 
 		// Need to wait until the image is loaded
 		img.onload = function () {
-			if( isBitmap ) {
-				font.image = img;
-			} else {
-				readImageData( img, width, height, font );
-			}
+			font.image = img;
 			m_piResume();
 		};
 		img.onerror = function ( err ) {
@@ -209,87 +204,8 @@ function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
 			m_piResume();
 		};
 	} else {
-		if( isBitmap ) {
-			font.image = img;
-		} else {
-			readImageData( img, width, height, font );
-		}
+		font.image = img;
 	}
-}
-
-function readImageData( img, width, height, font ) {
-	var canvas, context, data, i, x, y, index, xStart, yStart, cols, rows,
-		r, g, b, a, colors, colorIndex;
-
-	// Create a new canvas to read the pixel data
-	canvas = document.createElement( "canvas" );
-	context = canvas.getContext( "2d", { "willReadFrequently": true } );
-	canvas.width = img.width;
-	canvas.height = img.height;
-
-	// Colors lookup
-	colors = [];
-
-	// Draw the image onto the canvas
-	context.drawImage( img, 0, 0 );
-
-	// Get the image data
-	data = context.getImageData( 0, 0, img.width, img.height );
-	xStart = 0;
-	yStart = 0;
-	cols = img.width;
-	rows = img.height;
-
-	// Loop through charset
-	for( i = 0; i < font.charSet.length; i++ ) {
-		font.data.push( [] );
-		for( y = yStart; y < yStart + height; y++ ) {
-			font.data[ i ].push( [] );
-			for( x = xStart; x < xStart + width; x++ ) {
-				index = y * ( cols * 4 ) + x * 4;
-				r = data.data[ index ];
-				g = data.data[ index + 1 ];
-				b = data.data[ index + 2 ];
-				a = data.data[ index + 3 ];
-				colorIndex = findColorIndex( colors, r, g, b, a );
-				font.data[ i ][ y - yStart ].push( colorIndex );
-			}
-		}
-		xStart += width;
-		if( xStart >= cols ) {
-			xStart = 0;
-			yStart += height;
-			if( yStart >= rows ) {
-				break;
-			}
-		}
-	}
-
-	font.colorCount = colors.length;
-}
-
-function findColorIndex( colors, r, g, b, a ) {
-	var i, dr, dg, db, da, d;
-
-	if( a === 0 ) {
-		r = 0;
-		g = 0;
-		b = 0;
-	}
-	for( i = 0; i < colors.length; i++ ) {
-		dr = colors[ i ].r - r;
-		dg = colors[ i ].g - g;
-		db = colors[ i ].b - b;
-		da = colors[ i ].a - a;
-		d = dr * dr + dg * dg + db * db + da * da;
-		if( d < 2 ) {
-			return i;
-		}
-	}
-	colors.push( {
-		"r": r, "g": g, "b": b, "a": a
-	} );
-	return colors.length - 1;
 }
 
 pi._.addCommand( "setDefaultFont", setDefaultFont, false, false,

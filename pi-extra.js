@@ -1,5 +1,12 @@
 /*
-* File: pi.js
+* https://www.pijs.org/
+* PI-JS
+* Version: 1.0
+* Copyright Andy Stubbs
+* Released under the Apache License 2.0
+* https://www.apache.org/licenses/LICENSE-2.0
+* Date: 2023-01-03
+* @preserve
 */
 
 window.pi = ( function () {
@@ -808,6 +815,14 @@ window.pi.util = ( function () {
 		return -m - 1;
 	}
 
+	function getInt( val, def ) {
+		val = parseInt( val );
+		if( isNaN( val ) ) {
+			val = def;
+		}
+		return val;
+	}
+
 	// Setup commands that will run only in the pi api
 	var api = {
 		"binarySearch": binarySearch,
@@ -819,12 +834,13 @@ window.pi.util = ( function () {
 		"convertToColor": convertToColor,
 		"copyProperties": copyProperties,
 		"cToHex": cToHex,
+		"dataToHex": dataToHex,
 		"degreesToRadian": degreesToRadian,
 		"deleteProperties": deleteProperties,
+		"getInt": getInt,
 		"getWindowSize": getWindowSize,
 		"hexToColor": hexToColor,
 		"hexToData": hexToData,
-		"dataToHex": dataToHex,
 		"inRange": inRange,
 		"inRange2": inRange2,
 		"isArray": Array.isArray,
@@ -2627,17 +2643,21 @@ m_piResume = pi._.resume;
 
 // Loads a font into memory
 pi._.addCommand( "loadFont", loadFont, false, false,
-	[ "fontSrc", "width", "height", "charSet", "isBitmap", "isEncoded" ] );
+	[ "fontSrc", "width", "height", "charSet", "isEncoded" ] );
 function loadFont( args ) {
-	var fontSrc, width, height, charSet, isBitmap, isEncoded, font, chars, i,
+	var fontSrc, width, height, charSet, isEncoded, font, chars, i,
 		temp;
 
 	fontSrc = args[ 0 ];
-	width = args[ 1 ];
-	height = args[ 2 ];
+	width = Math.round( args[ 1 ] );
+	height = Math.round( args[ 2 ] );
 	charSet = args[ 3 ];
-	isBitmap = !!( args[ 4 ] );
-	isEncoded = !!( args[ 5 ] );
+	isEncoded = !!( args[ 4 ] );
+
+	if( isNaN( width ) || isNaN( height ) ) {
+		m_piData.log( "loadFont: width and height must be integers." );
+		return;
+	}
 
 	// Default charset to 0 to 255
 	if( ! charSet ) {
@@ -2684,7 +2704,7 @@ function loadFont( args ) {
 		"sHeight": height
 	};
 
-	if( isBitmap ) {
+	if( !isEncoded ) {
 		font.mode = "bitmap";
 		font.printFunction = m_piData.commands.bitmapPrint;
 	}
@@ -2698,7 +2718,7 @@ function loadFont( args ) {
 	if( isEncoded ) {
 		loadFontFromBase32Encoded( fontSrc, width, height, font );
 	} else {
-		loadFontFromImg( fontSrc, width, height, font, isBitmap );
+		loadFontFromImg( fontSrc, font );
 	}
 
 	return font.id;
@@ -2778,7 +2798,7 @@ function decompressFont( numStr, width, height ) {
 	return data;
 }
 
-function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
+function loadFontFromImg( fontSrc, font ) {
 
 	var img;
 
@@ -2803,11 +2823,7 @@ function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
 
 		// Need to wait until the image is loaded
 		img.onload = function () {
-			if( isBitmap ) {
-				font.image = img;
-			} else {
-				readImageData( img, width, height, font );
-			}
+			font.image = img;
 			m_piResume();
 		};
 		img.onerror = function ( err ) {
@@ -2815,87 +2831,8 @@ function loadFontFromImg( fontSrc, width, height, font, isBitmap ) {
 			m_piResume();
 		};
 	} else {
-		if( isBitmap ) {
-			font.image = img;
-		} else {
-			readImageData( img, width, height, font );
-		}
+		font.image = img;
 	}
-}
-
-function readImageData( img, width, height, font ) {
-	var canvas, context, data, i, x, y, index, xStart, yStart, cols, rows,
-		r, g, b, a, colors, colorIndex;
-
-	// Create a new canvas to read the pixel data
-	canvas = document.createElement( "canvas" );
-	context = canvas.getContext( "2d", { "willReadFrequently": true } );
-	canvas.width = img.width;
-	canvas.height = img.height;
-
-	// Colors lookup
-	colors = [];
-
-	// Draw the image onto the canvas
-	context.drawImage( img, 0, 0 );
-
-	// Get the image data
-	data = context.getImageData( 0, 0, img.width, img.height );
-	xStart = 0;
-	yStart = 0;
-	cols = img.width;
-	rows = img.height;
-
-	// Loop through charset
-	for( i = 0; i < font.charSet.length; i++ ) {
-		font.data.push( [] );
-		for( y = yStart; y < yStart + height; y++ ) {
-			font.data[ i ].push( [] );
-			for( x = xStart; x < xStart + width; x++ ) {
-				index = y * ( cols * 4 ) + x * 4;
-				r = data.data[ index ];
-				g = data.data[ index + 1 ];
-				b = data.data[ index + 2 ];
-				a = data.data[ index + 3 ];
-				colorIndex = findColorIndex( colors, r, g, b, a );
-				font.data[ i ][ y - yStart ].push( colorIndex );
-			}
-		}
-		xStart += width;
-		if( xStart >= cols ) {
-			xStart = 0;
-			yStart += height;
-			if( yStart >= rows ) {
-				break;
-			}
-		}
-	}
-
-	font.colorCount = colors.length;
-}
-
-function findColorIndex( colors, r, g, b, a ) {
-	var i, dr, dg, db, da, d;
-
-	if( a === 0 ) {
-		r = 0;
-		g = 0;
-		b = 0;
-	}
-	for( i = 0; i < colors.length; i++ ) {
-		dr = colors[ i ].r - r;
-		dg = colors[ i ].g - g;
-		db = colors[ i ].b - b;
-		da = colors[ i ].a - a;
-		d = dr * dr + dg * dg + db * db + da * da;
-		if( d < 2 ) {
-			return i;
-		}
-	}
-	colors.push( {
-		"r": r, "g": g, "b": b, "a": a
-	} );
-	return colors.length - 1;
 }
 
 pi._.addCommand( "setDefaultFont", setDefaultFont, false, false,
@@ -3019,7 +2956,7 @@ function calcFontSize( context ) {
 }
 
 pi._.addCommand( "getAvailableFonts", getAvailableFonts, false, false, [] );
-function getAvailableFonts( args ) {
+function getAvailableFonts() {
 	var i, data;
 
 	data = [];
@@ -3083,9 +3020,11 @@ function setChar( screenData, args ) {
 
 	if( typeof( code ) === "string" ) {
 		code = code.charCodeAt( code );
+	} else {
+		code = Math.round( code );
 	}
 
-	if( ! pi.util.isInteger( code ) ) {
+	if( isNaN( code ) ) {
 		m_piData.log( "setChar: code must be an integer or a string." );
 		return;
 	}
@@ -3443,7 +3382,6 @@ function createScreenData(
 	screenData.angle = 0;
 	screenData.pal = m_piData.defaultPalette.slice();
 	screenData.fColor = screenData.pal[ m_piData.defaultColor ];
-	screenData.colors = [ screenData.fColor ];
 	screenData.context.fillStyle = screenData.fColor.s;
 	screenData.context.strokeStyle = screenData.fColor.s;
 	screenData.mouseStarted = false;
@@ -4516,8 +4454,11 @@ function findColor( screenData, args ) {
 	tolerance = args[ 1 ];
 	isAddToPalette = !!( args[ 2 ] );
 
-	if(tolerance === undefined) {
+	if( tolerance == null ) {
 		tolerance = 1;
+	} else if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
+		m_piData.log( "findColor: parameter tolerance must be a number between 0 and 1" );
+		return;
 	}
 
 	tolerance = tolerance * ( 2 - tolerance ) * m_maxDifference;
@@ -4581,22 +4522,22 @@ function setPen( screenData, args ) {
 	var pen, size, noise, i;
 
 	pen = args[ 0 ];
-	size = args[ 1 ];
+	size = Math.round( args[ 1 ] );
 	noise = args[ 2 ];
 
 	if( ! m_piData.pens[ pen ] ) {
 		m_piData.log(
-			"setPen: Argument pen is not a valid pen. Valid pens: " +
+			"setPen: parameter pen is not a valid pen. Valid pens: " +
 			m_piData.penList.join(", " )
 		);
 		return;
 	}
 	if( ! pi.util.isInteger( size ) ) {
-		m_piData.log( "setPen: Argument size is not a valid number." );
+		m_piData.log( "setPen: parameter size must be an integer." );
 		return;
 	}
 	if( noise && ( ! pi.util.isArray( noise ) && Number.isNaN( noise ) ) ) {
-		m_piData.log( "setPen: Argument noise is not an array or number." );
+		m_piData.log( "setPen: parameter noise is not an array or number." );
 		return;
 	}
 	if( pi.util.isArray( noise ) ) {
@@ -4604,7 +4545,7 @@ function setPen( screenData, args ) {
 		for( i = 0; i < noise.length; i++ ) {
 			if( Number.isNaN( noise[ i ] ) ) {
 				m_piData.log(
-					"setPen: Argument noise array contains an invalid value."
+					"setPen: parameter noise array contains an invalid value."
 				);
 				return;
 			}
@@ -5205,9 +5146,9 @@ function pxCircle( screenData, args ) {
 	var x, y, radius, fillColor, i, x2, y2, midPoint, color, isFill,
 		tempData;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radius = args[ 2 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radius = Math.round( args[ 2 ] );
 	fillColor = args[ 3 ];
 
 	isFill = false;
@@ -5217,7 +5158,7 @@ function pxCircle( screenData, args ) {
 		! pi.util.isInteger( y ) ||
 		! pi.util.isInteger( radius )
 	) {
-		m_piData.log( "circle: x, y, r must be integers." );
+		m_piData.log( "circle: x, y, radius must be integers." );
 		return;
 	}
 
@@ -5389,9 +5330,9 @@ function pxArc( screenData, args ) {
 		}
 	}
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radius = args[ 2 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radius = Math.round( args[ 2 ] );
 	angle1 = args[ 3 ];
 	angle2 = args[ 4 ];
 	angle1 = ( angle1 + 360 ) % 360;
@@ -5404,7 +5345,7 @@ function pxArc( screenData, args ) {
 
 	// Make sure x and y are integers
 	if( isNaN( x ) || isNaN( y ) || isNaN( radius ) ) {
-		m_piData.log( "circle: Argument's cx, cy, r must be numbers." );
+		m_piData.log( "arc: Argument's x, y, radius must be integers." );
 		return;
 	}
 
@@ -5515,15 +5456,15 @@ function pxEllipse( screenData, args ) {
 	var x, y, radiusX, radiusY, fillColor, tempData, color, dx, dy, d1, d2, x2,
 		y2, isFill, i;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	radiusX = args[ 2 ];
-	radiusY = args[ 3 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	radiusX = Math.round( args[ 2 ] );
+	radiusY = Math.round( args[ 3 ] );
 	fillColor = args[ 4 ];
 
 	if( isNaN( x ) || isNaN( y ) || isNaN( radiusX ) || isNaN( radiusY ) ) {
 		m_piData.log(
-			"ellipse: parameters x, y, radiusX, radiusY must be numbers."
+			"ellipse: parameters x, y, radiusX, radiusY must be integers."
 		);
 		return;
 	}
@@ -5722,12 +5663,17 @@ function put( screenData, args ) {
 	var data, x, y, includeZero, dataX, dataY, startX, startY, width, height, i, c;
 
 	data = args[ 0 ];
-	x = args[ 1 ];
-	y = args[ 2 ];
+	x = Math.round( args[ 1 ] );
+	y = Math.round( args[ 2 ] );
 	includeZero = !!( args[ 3 ] );
 
 	// Exit if no data
 	if( ! data || data.length < 1 ) {
+		return;
+	}
+
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "put: parameters x and y must be integers." );
 		return;
 	}
 
@@ -5795,11 +5741,23 @@ function get( screenData, args ) {
 	var x1, y1, x2, y2, tolerance, t, imageData, data, x, y, c, r,
 		g, b, i, row, a;
 
-	x1 = args[ 0 ];
-	y1 = args[ 1 ];
-	x2 = args[ 2 ];
-	y2 = args[ 3 ];
+	x1 = Math.round( args[ 0 ] );
+	y1 = Math.round( args[ 1 ] );
+	x2 = Math.round( args[ 2 ] );
+	y2 = Math.round( args[ 3 ] );
 	tolerance = args[ 4 ];
+
+	if( isNaN( x1 ) || isNaN( y1 ) || isNaN( y2 ) || isNaN( y2 ) ) {
+		m_piData.log( "put: parameters x1, x2, y1, y2 must be integers." );
+		return;
+	}
+
+	if( tolerance == null ) {
+		tolerance = 1;
+	} else if( isNaN( tolerance ) ) {
+		m_piData.log( "put: parameter tolerance must be a number." );
+		return;
+	}
 
 	x1 = pi.util.clamp( x1, 0, screenData.width - 1 );
 	x2 = pi.util.clamp( x2, 0, screenData.width - 1 );
@@ -5848,8 +5806,8 @@ pi._.addCommands( "pset", pset, aaPset, [ "x", "y" ] );
 function pset( screenData, args ) {
 	var x, y, color;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
@@ -5908,10 +5866,10 @@ pi._.addCommands( "line", pxLine, aaLine, [ "x1", "y1", "x2", "y2" ] );
 function pxLine( screenData, args ) {
 	var x1, y1, x2, y2, color, dx, dy, sx, sy, err, e2;
 
-	x1 = args[ 0 ];
-	y1 = args[ 1 ];
-	x2 = args[ 2 ];
-	y2 = args[ 3 ];
+	x1 = Math.round( args[ 0 ] );
+	y1 = Math.round( args[ 1 ] );
+	x2 = Math.round( args[ 2 ] );
+	y2 = Math.round( args[ 3 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x1 ) || ! pi.util.isInteger( y1 ) ||
@@ -5998,10 +5956,10 @@ pi._.addCommands( "rect", pxRect, aaRect,
 function pxRect( screenData, args ) {
 	var x, y, width, height, fillColor, isFill, x2, y2, tempColor, x3;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
-	width = args[ 2 ];
-	height = args[ 3 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
+	width = Math.round( args[ 2 ] );
+	height = Math.round( args[ 3 ] );
 	fillColor = args[ 4 ];
 
 	if(
@@ -6120,7 +6078,7 @@ pi._.addSetting( "palColor", setPalColor, true,
 	[ "index", "color" ]
 );
 function setPalColor( screenData, args ) {
-	var index, color, colorValue, i;
+	var index, color, colorValue;
 
 	index = args[ 0 ];
 	color = args[ 1 ];
@@ -6144,13 +6102,6 @@ function setPalColor( screenData, args ) {
 	// Check if we are changing the current selected fore color
 	if( screenData.fColor.s === screenData.pal[ index ].s ) {
 		screenData.fColor = colorValue;
-	}
-
-	// Check if we are changing any of the colors
-	for( i = 0; i < screenData.colors.length; i++ ) {
-		if( screenData.colors[ i ].s === screenData.pal[ index ].s ) {
-			screenData.colors[ i ] = colorValue;
-		}
 	}
 
 	screenData.pal[ index ] = colorValue;
@@ -6180,7 +6131,7 @@ pi._.addCommand( "setColor", setColor, false, true,
 );
 pi._.addSetting( "color", setColor, true, [ "color", "isAddToPalette" ] );
 function setColor( screenData, args ) {
-	var colorInput, colorValue, isAddToPalette, colors;
+	var colorInput, colorValue, isAddToPalette;
 
 	colorInput = args[ 0 ];
 	isAddToPalette = !!( args[ 1 ] );
@@ -6191,7 +6142,6 @@ function setColor( screenData, args ) {
 	if( colorValue === undefined ) {
 		return;
 	}
-	colors = [ colorValue ];
 
 	if( isAddToPalette ) {
 		screenData.fColor = screenData.screenObj.findColor(
@@ -6200,44 +6150,6 @@ function setColor( screenData, args ) {
 	} else {
 		screenData.fColor = colorValue;
 	}
-
-	screenData.colors = colors;
-
-	screenData.context.fillStyle = colorValue.s;
-	screenData.context.strokeStyle = colorValue.s;
-}
-
-// Colors command
-pi._.addCommand( "setColors", setColors, false, true, [ "colors" ] );
-pi._.addSetting( "colors", setColors, true, [ "colors" ] );
-function setColors( screenData, args ) {
-	var colorInput, colorValue, i, colors;
-
-	colorInput = args[ 0 ];
-	colors = [];
-	if( pi.util.isArray( colorInput ) ) {
-		if( colorInput.length === 0 ) {
-			m_piData.log( "color: color array cannot be empty." );
-			return;
-		}
-		for( i = 0; i < colorInput.length; i++ ) {
-			colorValue = m_piData.commands.findColorValue(
-				screenData, colorInput[ i ], "color"
-			);
-			if( colorValue === undefined ) {
-				return;
-			}
-			colors.push( colorValue );
-		}
-		colorValue = colors[ 0 ];
-	} else {
-		m_piData.log( "color: colors must be an array." );
-		return;
-	}
-
-	screenData.fColor = colorValue;
-	screenData.colors = colors;
-
 	screenData.context.fillStyle = colorValue.s;
 	screenData.context.strokeStyle = colorValue.s;
 }
@@ -6304,8 +6216,8 @@ pi._.addCommand( "point", point, false, true, [ "x", "y" ] );
 function point( screenData, args ) {
 	var x, y, i, c, data;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 
 	// Make sure x and y are integers
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
@@ -6328,9 +6240,16 @@ function point( screenData, args ) {
 }
 
 // CLS command
-pi._.addCommand( "cls", cls, false, true, [] );
-function cls( screenData ) {
-	screenData.context.clearRect( 0, 0, screenData.width, screenData.height );
+pi._.addCommand( "cls", cls, false, true, [ "x", "y", "width", "height" ] );
+function cls( screenData, args ) {
+	var x, y, width, height;
+
+	x = pi.util.getInt( Math.round( args[ 0 ] ), 0 );
+	y = pi.util.getInt( Math.round( args[ 1 ] ), 0 );
+	width = pi.util.getInt( Math.round( args[ 2 ] ), screenData.width );
+	height = pi.util.getInt( Math.round( args[ 3 ] ), screenData.height );
+
+	screenData.context.clearRect( x, y, width, height );
 	screenData.imageData = null;
 	screenData.printCursor.x = 0;
 	screenData.printCursor.y = 0;
@@ -6419,13 +6338,13 @@ pi._.addCommand( "paint", paint, false, true,
 function paint( screenData, args ) {
 	var x, y, fillColor, tolerance, fills, pixel, backgroundColor;
 
-	x = args[ 0 ];
-	y = args[ 1 ];
+	x = Math.round( args[ 0 ] );
+	y = Math.round( args[ 1 ] );
 	fillColor = args[ 2 ];
 	tolerance = args[ 3 ];
 
 	if( ! pi.util.isInteger( x ) || ! pi.util.isInteger( y ) ) {
-		m_piData.log( "paint: Argument's x and y must be integers." );
+		m_piData.log( "paint: parameters x and y must be integers" );
 		return;
 	}
 
@@ -6435,7 +6354,7 @@ function paint( screenData, args ) {
 	}
 
 	if( isNaN( tolerance ) || tolerance < 0 || tolerance > 1 ) {
-		m_piData.log( "paint: Argument tolerance must be a number between 0 and 1." );
+		m_piData.log( "paint: parameter tolerance must be a number between 0 and 1." );
 		return;
 	}
 
@@ -6581,14 +6500,14 @@ function pxBezier( screenData, args ) {
 		y2, xEnd, yEnd, color, points, t, dt, point, lastPoint,
 		distance, minDistance;
 
-	xStart = parseInt( args[ 0 ] );
-	yStart = parseInt( args[ 1 ] );
-	x1 = parseInt( args[ 2 ] );
-	y1 = parseInt( args[ 3 ] );
-	x2 = parseInt( args[ 4 ] );
-	y2 = parseInt( args[ 5 ] );
-	xEnd = parseInt( args[ 6 ] );
-	yEnd = parseInt( args[ 7 ] );
+	xStart = Math.round( args[ 0 ] );
+	yStart = Math.round( args[ 1 ] );
+	x1 = Math.round( args[ 2 ] );
+	y1 = Math.round( args[ 3 ] );
+	x2 = Math.round( args[ 4 ] );
+	y2 = Math.round( args[ 5 ] );
+	xEnd = Math.round( args[ 6 ] );
+	yEnd = Math.round( args[ 7 ] );
 
 	// Make sure x and y are integers
 	if( isNaN( xStart ) || isNaN( yStart ) ||
@@ -6815,6 +6734,10 @@ function loadSpritesheet( args ) {
 		isAuto = false;
 	}
 
+	spriteWidth = Math.round( spriteWidth );
+	spriteHeight = Math.round( spriteHeight );
+	margin = Math.round( margin );
+
 	// Validate spriteWidth and spriteHeight
 	if(
 		! isAuto && (
@@ -6851,27 +6774,38 @@ function loadSpritesheet( args ) {
 	m_callback = function () {
 
 		function getCluster( x, y, frameData ) {
-			var name, i, index;
+			var name, i, index, clusters, cluster, x2, y2, name2;
 
 			name = x + "_" + y;
 			if( searched[ name ] || x < 0 || x >= width || y < 0 || y >= height ) {
-				return false;
+				return;
 			}
-			searched[ name ] = true;
-
-			index = ( x + y * width ) * 4;
-			if( data[ index + 3 ] > 0 ) {
-				frameData.x = Math.min( frameData.x, x );
-				frameData.y = Math.min( frameData.y, y );
-				frameData.right = Math.max( frameData.right, x );
-				frameData.bottom = Math.max( frameData.bottom, y );
-				frameData.width = frameData.right - frameData.x + 1;
-				frameData.height = frameData.bottom - frameData.y + 1;
-				for( i = 0; i < dirs.length; i++ ) {
-					getCluster( x + dirs[ i ][ 0 ], y + dirs[ i ][ 1 ], frameData );
+			clusters = [];
+			clusters.push( [ x, y, name ] );
+			while( clusters.length > 0 ) {
+				cluster = clusters.pop();
+				x = cluster[ 0 ];
+				y = cluster[ 1 ];
+				name = cluster[ 2 ];
+				searched[ name ] = true;
+				index = ( x + y * width ) * 4;
+				if( data[ index + 3 ] > 0 ) {
+					frameData.x = Math.min( frameData.x, x );
+					frameData.y = Math.min( frameData.y, y );
+					frameData.right = Math.max( frameData.right, x );
+					frameData.bottom = Math.max( frameData.bottom, y );
+					frameData.width = frameData.right - frameData.x + 1;
+					frameData.height = frameData.bottom - frameData.y + 1;
+					for( i = 0; i < dirs.length; i++ ) {
+						x2 = x + dirs[ i ][ 0 ];
+						y2 = y + dirs[ i ][ 1 ];
+						name2 = x2 + "_" + y2;
+						if( !( searched[ name2 ] || x2 < 0 || x2 >= width || y2 < 0 || y2 >= height ) ) {
+							clusters.push( [ x2, y2, name2 ] );
+						}
+					}
 				}
 			}
-			return true;
 		}
 
 		var imageData, width, height, x1, y1, x2, y2, searched, canvas, context, data, i, index, dirs,
@@ -6915,7 +6849,8 @@ function loadSpritesheet( args ) {
 					frameData = {
 						"x": width, "y": height, "width": 0, "height": 0, "right": 0, "bottom": 0
 					};
-					if( getCluster( x1, y1, frameData ) ) {
+					getCluster( x1, y1, frameData );
+					if( ( frameData.width + frameData.height ) > 4 ) {
 						imageData.frames.push( frameData );
 					}
 				}
@@ -6983,8 +6918,14 @@ function getSpritesheetData( screenData, args ) {
 	for( i = 0; i < sprite.frames.length; i++ ) {
 		spriteData.frames.push( {
 			"index": i,
+			"x": sprite.frames[ i ].x,
+			"y": sprite.frames[ i ].y,
 			"width": sprite.frames[ i ].width,
-			"height": sprite.frames[ i ].height
+			"height": sprite.frames[ i ].height,
+			"left": sprite.frames[ i ].x,
+			"top": sprite.frames[ i ].y,
+			"right": sprite.frames[ i ].right,
+			"bottom": sprite.frames[ i ].bottom
 		} );
 	}
 	return spriteData;
@@ -7027,6 +6968,11 @@ function drawImage( screenData, args ) {
 		}
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawImage: parameters x and y must be numbers" );
+		return;
+	}
+
 	drawItem( screenData, img, x, y, angle, anchorX, anchorY, alpha, null, scaleX, scaleY );
 }
 
@@ -7066,6 +7012,12 @@ function drawSprite( screenData, args ) {
 		return;
 	}
 
+	if( isNaN( x ) || isNaN( y ) ) {
+		m_piData.log( "drawSprite: parameters x and y must be numbers" );
+		return;
+	}
+
+
 	img = m_piData.images[ name ].image;
 
 	drawItem(
@@ -7079,15 +7031,15 @@ function drawItem(
 ) {
 	var context, oldAlpha;
 
-	if( scaleX === undefined || isNaN( Number( scaleX ) ) ) {
+	if( scaleX == null || isNaN( Number( scaleX ) ) ) {
 		scaleX = 1;
 	}
 
-	if( scaleY === undefined || isNaN( Number( scaleY ) ) ) {
+	if( scaleY == null || isNaN( Number( scaleY ) ) ) {
 		scaleY = 1;
 	}
 
-	if( ! angle ) {
+	if( angle == null ) {
 		angle = 0;
 	}
 
@@ -7159,7 +7111,7 @@ pi._.addCommand(
 	"print", print, false, true, [ "msg", "inLine", "isCentered" ]
 );
 function print( screenData, args ) {
-	var msg, inLine, isCentered, colors, parts, i, i2, colorCount;
+	var msg, inLine, isCentered, parts, i;
 
 	msg = args[ 0 ];
 	inLine = args[ 1 ];
@@ -7168,26 +7120,6 @@ function print( screenData, args ) {
 	// bail if not possible to print an entire line on a screen
 	if( screenData.printCursor.font.height > screenData.height ) {
 		return;
-	}
-
-	if( screenData.printCursor.font.mode !== "bitmap" ) {
-
-		// Grab the colors from the screenData
-		colors = screenData.colors.slice();
-
-		// Set the first color to the background color
-		colors.unshift( screenData.pal[ 0 ] );
-
-		// Make sure there are enough colors -- if not then rotate colors
-		colorCount = colors.length;
-		for( i = 0; i < screenData.printCursor.font.colorCount; i ++ ) {
-			if( i >= colors.length ) {
-
-				// Rotate colors -- skip 0
-				i2 = ( i % ( colorCount - 1 ) ) + 1;
-				colors.push( colors[ i2 ] );
-			}
-		}
 	}
 
 	if( msg === undefined ) {
@@ -7202,11 +7134,11 @@ function print( screenData, args ) {
 	// Split messages by \n
 	parts = msg.split( /\n/ );
 	for( i = 0; i < parts.length; i++ ) {
-		startPrint( screenData, parts[ i ], inLine, isCentered, colors );
+		startPrint( screenData, parts[ i ], inLine, isCentered );
 	}
 }
 
-function startPrint( screenData, msg, inLine, isCentered, colors ) {
+function startPrint( screenData, msg, inLine, isCentered ) {
 	var width, overlap, onScreen, onScreenPct, msgSplit, index, msg1, msg2,
 		printCursor;
 
@@ -7238,8 +7170,8 @@ function startPrint( screenData, msg, inLine, isCentered, colors ) {
 				msg1 = msg1.substring( 0, index );
 			}
 		}
-		startPrint( screenData, msg1, inLine, isCentered, colors );
-		startPrint( screenData, msg2, inLine, isCentered, colors );
+		startPrint( screenData, msg1, inLine, isCentered );
+		startPrint( screenData, msg2, inLine, isCentered );
 		return;
 	}
 
@@ -7259,7 +7191,7 @@ function startPrint( screenData, msg, inLine, isCentered, colors ) {
 	}
 
 	printCursor.font.printFunction( screenData, msg, printCursor.x,
-		printCursor.y, colors
+		printCursor.y
 	);
 
 	//If it's not in_line print the advance to next line
@@ -7341,7 +7273,7 @@ function setWordBreak( screenData, args ) {
 
 // Print to the screen by using pi_fonts
 pi._.addCommand( "piPrint", piPrint, true, false );
-function piPrint( screenData, msg, x, y, colors ) {
+function piPrint( screenData, msg, x, y ) {
 	var i, printCursor, defaultPal, charIndex;
 
 	// Get reference to printCursor data
@@ -7349,7 +7281,7 @@ function piPrint( screenData, msg, x, y, colors ) {
 
 	// Setup a temporary pallette with the fore color and back color
 	defaultPal = screenData.pal;
-	screenData.pal = colors;
+	screenData.pal = [ screenData.pal[ 0 ], screenData.fColor ];
 
 	//Loop through each character in the message and put it on the screen
 	for( i = 0; i < msg.length; i++ ) {
@@ -7414,7 +7346,11 @@ function setPos( screenData, args ) {
 	row = args[ 1 ];
 
 	// Set the x value
-	if( col !== null ) {
+	if( col != null ) {
+		if( isNaN( col ) ) {
+			m_piData.log( "setPos: parameter col must be a number" );
+			return;
+		}
 		x = Math.floor( col * screenData.printCursor.font.width );
 		if( x > screenData.width ) {
 			x = screenData.width - screenData.printCursor.font.width;
@@ -7423,7 +7359,11 @@ function setPos( screenData, args ) {
 	}
 
 	// Set the y value
-	if( row !== null ) {
+	if( row != null ) {
+		if( isNaN( row ) ) {
+			m_piData.log( "setPos: parameter row must be a number" );
+			return;
+		}
 		y = Math.floor( row * screenData.printCursor.font.height );
 		if( y > screenData.height ) {
 			y = screenData.height - screenData.printCursor.font.height;
@@ -7441,11 +7381,20 @@ function setPosPx( screenData, args ) {
 	x = args[ 0 ];
 	y = args[ 1 ];
 
-	if( ! isNaN( x ) ) {
-		screenData.printCursor.x = parseInt( x );
+	if( x != null ) {
+		if( isNaN( x ) ) {
+			m_piData.log( "setPos: parameter x must be an integer" );
+			return;
+		}
+		screenData.printCursor.x = Math.round( x );
 	}
-	if( ! isNaN( y ) ) {
-		screenData.printCursor.y = parseInt( y );
+
+	if( y != null ) {
+		if( isNaN( y ) ) {
+			m_piData.log( "setPos: parameter y must be an integer" );
+			return;
+		}
+		screenData.printCursor.y = Math.round( y );
 	}
 }
 
@@ -8092,7 +8041,7 @@ function draw( screenData, args ) {
 
 			//D - Down
 			case "D":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 90 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8100,7 +8049,7 @@ function draw( screenData, args ) {
 
 			//E - Up and Right
 			case "E":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 315 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8109,7 +8058,7 @@ function draw( screenData, args ) {
 
 			//F - Down and Right
 			case "F":
-				len = getInt(  drawArgs[ 1 ], 1 );
+				len = pi.util.getInt(  drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 45 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8118,7 +8067,7 @@ function draw( screenData, args ) {
 
 			//G - Down and Left
 			case "G":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 135 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8127,7 +8076,7 @@ function draw( screenData, args ) {
 
 			//H - Up and Left
 			case "H":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				len = Math.sqrt( len * len + len * len );
 				angle = pi.util.degreesToRadian( 225 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
@@ -8136,7 +8085,7 @@ function draw( screenData, args ) {
 
 			//L - Left
 			case "L":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 180 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8144,7 +8093,7 @@ function draw( screenData, args ) {
 
 			//R - Right
 			case "R":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 0 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8152,7 +8101,7 @@ function draw( screenData, args ) {
 
 			//U - Up
 			case "U":
-				len = getInt( drawArgs[ 1 ], 1 );
+				len = pi.util.getInt( drawArgs[ 1 ], 1 );
 				angle = pi.util.degreesToRadian( 270 ) + screenData.angle;
 				screenData.x += Math.round( Math.cos( angle ) * len );
 				screenData.y += Math.round( Math.sin( angle ) * len );
@@ -8161,7 +8110,7 @@ function draw( screenData, args ) {
 			//P - Paint
 			case "P":
 			case "S":
-				color1 = getInt( drawArgs[ 1 ], 0 );
+				color1 = pi.util.getInt( drawArgs[ 1 ], 0 );
 
 				screenData.screenObj.paint( screenData.x, screenData.y, color1,
 					drawArgs[ 0 ] === "S" );
@@ -8170,24 +8119,24 @@ function draw( screenData, args ) {
 
 			//A - Arc Line
 			case "A":
-				radius = getInt( drawArgs[ 1 ], 1 );
-				angle1 = getInt( drawArgs[ 3 ], 1 );
-				angle2 = getInt( drawArgs[ 5 ], 1 );
+				radius = pi.util.getInt( drawArgs[ 1 ], 1 );
+				angle1 = pi.util.getInt( drawArgs[ 3 ], 1 );
+				angle2 = pi.util.getInt( drawArgs[ 5 ], 1 );
 				isArc = true;
 				break;
 
 			//TA - T - Turn Angle
 			case "T":
 				screenData.angle = pi.util.degreesToRadian(
-					getInt( drawArgs[ 1 ], 1 )
+					pi.util.getInt( drawArgs[ 1 ], 1 )
 				);
 				isBlind = true;
 				break;
 
 			//M - Move
 			case "M":
-				screenData.x = getInt( drawArgs[ 1 ], 1 );
-				screenData.y = getInt( drawArgs[ 3 ], 1 );
+				screenData.x = pi.util.getInt( drawArgs[ 1 ], 1 );
+				screenData.y = pi.util.getInt( drawArgs[ 3 ], 1 );
 				isBlind = true;
 				break;
 
@@ -8225,14 +8174,6 @@ function draw( screenData, args ) {
 			isBlind = true;
 		}
 	}
-}
-
-function getInt( val, val_default ) {
-	val = parseInt( val );
-	if( isNaN( val ) ) {
-		val = val_default;
-	}
-	return val;
 }
 
 // End of File Encapsulation
@@ -8274,8 +8215,14 @@ function createAudioPool( args ) {
 		m_piData.log( "createAudioPool: No sound source provided." );
 		return;
 	}
-	if( poolSize === undefined || isNaN( poolSize ) ) {
+	if( poolSize == null ) {
 		poolSize = 1;
+	}
+
+	poolSize = Math.round( poolSize );
+	if( isNaN( poolSize ) || poolSize < 1 ) {
+		m_piData.log( "createAudioPool: parameter poolSize must be an integer greater than 0" );
+		return;
 	}
 
 	// Create the audio item
@@ -8500,7 +8447,7 @@ function sound( args ) {
 	var frequency, duration, volume, oType, delay, attack, decay, stopTime,
 		types, waveTables, i, j, context;
 
-	frequency = args[ 0 ];
+	frequency = Math.round( args[ 0 ] );
 	duration = args[ 1 ];
 	volume = args[ 2 ];
 	oType = args[ 3 ];
@@ -8509,7 +8456,7 @@ function sound( args ) {
 	decay = args[ 6 ];
 
 	// Validate frequency
-	if( ! pi.util.isInteger( frequency ) ) {
+	if( isNaN( frequency ) ) {
 		m_piData.log( "sound: frequency needs to be an integer." );
 		return;
 	}
@@ -9172,21 +9119,21 @@ function setVolume( args ) {
 
 				// Check if note length included
 				if( cmd.length > 1 && cmd[ 1 ].indexOf( "." ) === -1 ) {
-					val = getInt( cmd[ 1 ], 1 );
+					val = pi.util.getInt( cmd[ 1 ], 1 );
 					track.extra = getNoteLength( val );
 				}
 
 				wait = true;
 				break;
 			case "N":
-				val = getInt( cmd[ 1 ], 0 );
+				val = pi.util.getInt( cmd[ 1 ], 0 );
 				if( val >= 0 && val < m_allNotes.length ) {
 					frequency = m_allNotes[ val ];
 				}
 				wait = true;
 				break;
 			case "O":
-				val = getInt( cmd[ 1 ], 4 );
+				val = pi.util.getInt( cmd[ 1 ], 4 );
 				if( val >= 0 && val < m_notesData[ "A" ].length ) {
 					track.octave = val;
 				}
@@ -9204,11 +9151,11 @@ function setVolume( args ) {
 				}
 				break;
 			case "L":
-				val = getInt( cmd[ 1 ], 1 );
+				val = pi.util.getInt( cmd[ 1 ], 1 );
 				track.noteLength = getNoteLength( val );
 				break;
 			case "T":
-				val = getInt( cmd[ 1 ], 120 );
+				val = pi.util.getInt( cmd[ 1 ], 120 );
 				if( val >= 32 && val < 256 ) {
 					track.tempo = 60 / val;
 				}
@@ -9229,22 +9176,22 @@ function setVolume( args ) {
 						break;
 					case "MU":
 						// Modify Octave
-						val = getInt( cmd[ 1 ], 0 );
+						val = pi.util.getInt( cmd[ 1 ], 0 );
 						track.octaveExtra = val;
 						break;
 					case "MY": 
 						// Modify Attack Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.attackRate = val / 100;
 						break;
 					case "MX": 
 						// Modify Sustain Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.sustainRate = val / 100;
 						break;
 					case "MZ":
 						// Modify Decay Rate
-						val = getInt( cmd[ 1 ], 25 );
+						val = pi.util.getInt( cmd[ 1 ], 25 );
 						track.decayRate = val / 100;
 						break;
 					case "MW":
@@ -9255,11 +9202,11 @@ function setVolume( args ) {
 				break;
 			case "P":
 				wait = true;
-				val = getInt( cmd[ 1 ], 1 );
+				val = pi.util.getInt( cmd[ 1 ], 1 );
 				track.extra = getNoteLength( val );
 				break;
 			case "V":
-				val = getInt( cmd[ 1 ], 50 );
+				val = pi.util.getInt( cmd[ 1 ], 50 );
 				if( val < 0 ) {
 					val = 0;
 				} else if( val > 100 ) {
@@ -9279,7 +9226,7 @@ function setVolume( args ) {
 				} else {
 
 					// Custom wavetable
-					val = getInt( cmd[ 1 ], -1 );
+					val = pi.util.getInt( cmd[ 1 ], -1 );
 					if( track.waveTables[ val ] ) {
 						track.type = val;
 					}
@@ -9373,14 +9320,6 @@ function setVolume( args ) {
 		);
 	}
 
-	function getInt( val, val_default ) {
-		val = parseInt( val );
-		if( isNaN( val ) ) {
-			val = val_default;
-		}
-		return val;
-	}
-
 // End of File Encapsulation
 } )();
 ( function () {
@@ -9388,27 +9327,27 @@ function setVolume( args ) {
 
 pi._.data.commands.loadFont( [ 
 "0,14004,2602800,oidnrt,3po8cff,3vnhgs4,1uv77og,3hpuv70,0,3vjgoef,3o00000,0,0,0,0,1s,29si9do,19fvt51,31ovfn3,cevfh,31vrooc,1tv52h8,2g0kula,2d2hcsp,8r2jg0,3vvvj,f33opv,8efh0g,3ho84fj,2200idv,2c40237,3r4g000,0,0,0,0,0,g8420,22h800,57p9,3p80ea7,237000i,889019,111cc02,0,88420g,g4211,28oc,140011o,1000000,11000,1s00000,400,3333100,sjam9o,1g8423,203i889,1u060ho,hg0654,2fgg1sg,1s2f01p,3p4e07,31hhgo0,oi64hg,1h4e13,31g0c,o00100,gg444,41000v,v0010,1088803,2110080,sqb41o,1h4if4,20729oi,1o07421,1o0s94,19701sg,1sgf03p,3p0g03,384p4c0,14if4i8,1o8423,201o84i,s04ihg,2h40842,43o12r,1ul8g25,2blej03,28ka4s0,s97i10,1h4ib3,10729oi,140321g,ho0v21,21014i,14i6025,a4k404,1al9ok0,12a22i4,24k421,7g8og,1s06210,21g1gc3,30g0c2,42300g,2g00000,1v,o40000,1o2f3,10210s9,s003i1,1o0211,251g00c,14s700g,23gg800,6kjo4s,ge4i94,8021,g04,1884218,3180421,21000a,1ul8g01,3294i00,64i8o0,c5310,200ca30,2102ok8,g003j0,3jo0023,221000i,14i6g00,24k400,8lbsk0,a2118,14i70,2e01s44,u02230,20g0630,31g082,622019,1000001,74a5u0,16g9hgd,3ko16jf,3001si8,u0gngf,rs0000,1o,ocv003,30qdv00,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-6, 6, null, false, true 
+6, 6, null, true 
 ] );
 
 pi._.data.commands.loadFont( [ 
 "0,ugs,3gvtm2u,1tvmss7,vtskvf,2v710g0,g8efjg,21008e2,vfl8gs,g8e77p,311o003,f7hg00,3vvpoc7,vvu045,h8igg0,3v1mrdm,3efu71h,1ep4i8o,oi94hg,33oof4j,34233hg,u97i95,cq08mn,2pspiqc,21gsfn3,400233,2v3go40,gsv213,3jggka5,a50180,1val6h8,2h80e9j,94hj4s,3p,3jo08ef,24fjghv,gsvah0,2100842,lfjgg0,82fgg,2000044,v41000,8421,3g00098,1voa800,8477r,3g000vf,2e21000,0,8e7,4200g0,18ka000,kaf,2afih80,gug70b,33000p9,442ac0,gk4aki,1380844,0,ggg841,100g41,211100,k4fh1,1000021,fh0g00,0,2110000,f00000,0,210000g,2222200,1p2jamb,jg08ca,4213s0,1p21332,no0sh0,260k9o0,8ca97o,11o1ug8,u0k9o0,oggf4a,jg1uh1,442100,1p2h74a,jg0sh8,2f0g9o0,84000,2100042,10gg,888820,20g000f,2007o00,10820gg,2200sh0,22200g0,1p2nalq,3g08a8,2hfka40,3oi9729,ng0c98,g828o0,3oi94i9,ng1u94,e42bs0,3si8721,700c98,g9i8s0,252hfka,k80s42,4211o0,s4214i,1301ia5,c52j60,3gg8421,no12ra,2l8ka40,25il9ka,k80sh8,2h8k9o0,3oi9721,700sh8,2h8l9o3,3oi9731,1680sh8,e0k9o0,3ta4210,23g12h8,2h8k9o0,252h8k9,11012h8,2lal980,24ka22h,14812h5,4211o0,3t22222,no1og8,g843g0,210820g,g41o42,4213g0,gkh8g0,0,1v,g82000,7,17k9u0,30g8539,lg0007,h849o0,c216kq,1jc0007,hfk1o0,oi8e21,700006,2h8jo5s,30ga6i9,m80806,4211o0,4030ga,k9pg84,2a62h40,1g84210,23g000d,lalak0,mcka,k80007,h8k9o0,u4i9,323g006,2i93g8e,r6i1,700007,2g70bo0,10gu421,hg0008,2h8kpk0,h8k9,1100008,2lal980,h511,1480008,2h8jo5s,v111,7o0642,o210c0,g84010,2101g42,321300,15c0000,45,h8kbs0,1p2g8jg,309o0i0,i94hs0,o0e8nq,3g0sh6,274hs0,240c13i,13o0o06,274hs0,g0c13i,13o0007,g83gcc,1p2e8nq,3g1207,hfk1o0,1g0e8nq,3g1406,4211o0,1p2c210,23g0o06,4211o0,248a8nq,k80840,e8nq40,c0v43h,7o000c,267khk0,skifki,14o08a0,e8k9o0,12074a,jg0g40,e8k9o0,gk08ka,jg0g40,h8k9o0,1208k9,3g9p245,h8igg0,240h8ka,jg0847,2g83og8,oi8e22,ng12af,24fh0g0,3ome4it,if4c52,e212go,o0c13i,13o0c06,4211o0,88074a,jg0022,h8k9o0,1lc0f4a,k80qj0,pakq40,1p4i7g3,3g00oi9,c07g00,g04442,jg0000,v84000,fg8,g00iq6,r5cecv,15kbdiq,3s84080,842100,aaa2g,2g000k5,555000,1348p26,1268ll5,1l5d9ba,3ctreup,3erm842,4210g8,g84270,210g84e,4e10g8,ka52n8,2h8k000,fh8ka,s270,210ga5e,21eh8ka,ka52h8,2h8k00f,21eh8ka,kat0no,a52,25fg000,g8s270,0,e10g8,g8421s,842,4fo000,7s,210g842,43p0g8,7s,842,4fp0g8,g87i1s,210ga52,252p8ka,ka5i1s,3,342p8ka,katg7s,f,30ep8ka,ka5i1c,2h8k00f,30fo000,katg7c,2h8k84f,30fo000,ka52ns,f,30fp0g8,7s,2h8ka52,253o000,g87i1s,3,343p0g8,1s,2h8ka52,25fp8ka,g8vi7s,210g842,4e0000,1s,210hvvv,3vvvvvv,7v,3vvvose,se73ho,e73hos,1osfvvv,3vg0000,cqki,2i400e8,2u8ni10,1uh842,4000fq,252h8k0,3t28322,no0007,2ka5100,i94jl,2200cp,2210g80,3s8e8k9,313sc98,1voa8o0,oigoa9,mc0e83,f8c5s0,impdd,g00117,2iqbp10,oggf41,1g0sh8,2h8ka40,v07o1,3o0084f,24203s0,g41110,7o0888,8203s0,c94i10,210g842,4252go,oc0fo0,31g00cp,206co00,oi9300,0,630000,1g,721,216h8c,3h4i94g,oi2,8f0000,e73h,3000000",
-6, 8, null, false, true 
+6, 8, null, true 
 ] );
 
 pi._.data.commands.loadFont( [ 
 "0,0,1v839c1,2upj0bu,1vfvmvv,31ufvru,1mftvnu,1u3g400,83gv7u,1u3g400,s7oe7u,3v7oe3s,810e3s,3v7oe3s,61s,u1g000,3vvvpu3,31ufvvv,3opi2,116cf00,3vs76dt,2upjgvv,7ge3rt,36cpj3o,u6cpj6,u1gvgo,vj6fpg,o71s70,1vm6vr3,1hmfpm0,2clkf77,3jjomkp,20e1u7u,3se1000,10sfnu,v0s0g0,c3ovgo,c7sf0o,1j6cpj6,1j00pg0,1vtnmrr,dhm6o0,v66e3c,1m3hj3o,0,1v7svg0,c3ovgo,1v3o67v,c3ovgo,c1g600,c1g60o,1v3o600,1g37u,61g000,30o7u,1g30000,1g60,30fs000,28pnv,1j28000,1gf3u,3vvu000,fvvru,u1g000,0,0,o7gu1g,o00c00,1m6or00,0,1m6pvjc,3v6or00,o7pg3o,6fgc00,cdj0o,o6dhg0,s6oe3m,3ecotg0,1g61g00,0,c30o30,1g30600,1g3060o,c30o00,6cf7v,u6c000,30c7s,o30000,0,30c30,7s,0,0,30c00,30o61g,1gc1000,1ucdjmu,3recv00,o70c1g,o31v00,1sco31o,1gcpv00,1sco31o,6cou00,e3or6c,3v0o7g0,3uc1u0c,6cou00,s61g7o,36cou00,3uco30o,o30c00,1scpj3o,36cou00,1scpj3s,61gs00,30c00,30c00,30c00,30c30,c30o60,1g30600,1v00,fo000,1g3060c,c30o00,1sco30o,o00c00,1ucdnmu,3fc0u00,o7hj6c,3ucpj00,3u6cpjs,1j6dv00,u6dg60,306cf00,3s6opj6,1j6pu00,3v64q3o,1k65vg0,3v64q3o,1k61s00,u6dg60,376cfg0,36cpj7s,36cpj00,1s30c1g,o30u00,f0o30c,36cou00,3j6cr3o,1m6dpg0,3o60o30,1h6dvg0,33etvnu,3bcdhg0,33edtmu,37cdhg0,s6phm6,336oe00,3u6cpjs,1g61s00,1scpj6c,3e7g700,3u6cpjs,1m6dpg0,1scpo3g,ecou00,3ub8c1g,o30u00,36cpj6c,36cpv00,36cpj6c,367gc00,33cdhmm,3vethg0,33ccr1o,s6phg0,36cpj3o,o30u00,3vcd30o,p6dvg0,1s60o30,1g60u00,3060c0o,60c0g0,1s1g60o,c1gu00,83gr66,0,0,7v,o30600,0,u0c,1ucotg0,3g60o3s,1j6dn00,u6c,30cou00,e0o33s,36cotg0,u6c,3uc0u00,s6oo7g,1g61s00,tmc,367o37o,3g60r3m,1j6dpg0,o00s1g,o30u00,60030c,6cpj3o,3g60pjc,1s6ppg0,1o30c1g,o30u00,1j7u,3vddhg0,1u6c,36cpj00,u6c,36cou00,1n36,1j7oo7g,tmc,367o30u,1n3m,1j61s00,v60,1s0pu00,830v1g,o38600,1j6c,36cotg0,1j6c,367gc00,1hmm,3vfsr00,1hjc,s6phg0,1j6c,367o37o,1v4o,o69v00,e30c70,o30700,c1g600,c1g600,3g30c0s,o31o00,1rdo000,0,10e3c,33cdvg0,1scpg6c,1s1g33o,co06c,36covg0,e00u6c,3uc0u00,1vc6f06,v6cfo0,3600u0c,1ucovg0,3g00u0c,1ucovg0,o30u0c,1ucovg0,u60,307g31o,1vc6f36,1v60f00,3600u6c,3uc0u00,3g00u6c,3uc0u00,3600s1g,o30u00,1ucce0o,c1gf00,3g00s1g,o30u00,333gr66,3vcdhg0,o3003o,36fpj00,e01v30,1s61v00,voc,1vsovo0,v6pj7u,36cpjg0,1sco03o,36cou00,co03o,36cou00,e003o,36cou00,1sco06c,36covg0,e006c,36covg0,co06c,367o37o,31hgf36,1j3o600,3601j6c,36cou00,c1gvm0,307s60o,s6op7g,1gedv00,36cou7s,ofoc1g,3scpj7q,33cvhm7,71m61s,c1hm3g,e00u0c,1ucovg0,s00s1g,o30u00,1o03o,36cou00,1o06c,36covg0,fg07o,36cpj00,3u01j7c,3udpj00,u6or1u,7s000,s6or1o,7o000,o00c30,30cou00,7s,30c0000,7s,60o000,31sdj6u,pmdj0f,31sdj6r,rmvjo3,c1g00o,c1g600,36pmc,1j36000,cophj,1jco000,h8g8k8,h8g8k8,1aqklda,1aqklda,3dnfmve,3dnfmve,c1g60o,c1g60o,c1g60o,3s1g60o,c1hu0o,3s1g60o,r3cdhm,3r3cdhm,0,3v3cdhm,1u0o,3s1g60o,r3dtg6,3r3cdhm,r3cdhm,r3cdhm,1vg6,3r3cdhm,r3dtg6,3v00000,r3cdhm,3v00000,c1hu0o,3s00000,0,3s1g60o,c1g60o,fg0000,c1g60o,3vg0000,0,3vhg60o,c1g60o,fhg60o,0,3vg0000,c1g60o,3vhg60o,c1g7oo,fhg60o,r3cdhm,rjcdhm,r3cdpg,vg0000,fpg,rjcdhm,r3dto0,3vg0000,1vo0,3rjcdhm,r3cdpg,rjcdhm,1vo0,3vg0000,r3dto0,3rjcdhm,c1hvo0,3vg0000,r3cdhm,3vg0000,1vo0,3vhg60o,0,3vjcdhm,r3cdhm,vg0000,c1g7oo,fg0000,7oo,fhg60o,0,vjcdhm,r3cdhm,3vjcdhm,c1hvoo,3vhg60o,c1g60o,3s00000,0,fhg60o,3vvvvvv,3vvvvvv,0,3vvvvvv,3of1s7g,3of1s7g,7gu3of,7gu3of,3vvvvvv,0,tms,34dotg0,7hj7o,36fhg60,fpj60,30c1g00,fsr3c,1m6or00,3ucoo1g,1gcpv00,vmo,3cdgs00,6cpj6,1j7oo60,7dn0o,c1g600,3u30u6c,367gc7s,s6phnu,336oe00,s6phm6,1m6prg0,e3063s,36cou00,vmr,3dns000,30ovmr,3dnso60,s61g7o,3060e00,1scpj6c,36cpj00,fo07s,fo000,o31v1g,o01v00,1g3061g,1g01v00,c30o1g,c01v00,71m6oo,c1g60o,c1g60o,cdhm3g,o3007s,30c00,7dn00,1rdo000,s6or1o,0,o,c00000,0,c00000,7go30c,3m6of0s,1s6or3c,1m00000,1o1gc30,1s00000,f1s,u3o000",
-8, 8, null, false, true 
+8, 8, null, true 
 ] );
 
 pi._.data.commands.loadFont( [ 
 "0,0,0,0,1v839c1,20rr6c1,1v00000,vnv,3dvvvu3,3jvuvg0,0,6pvnu,3vfsv1o,800000,g,s7pvjs,s10000,0,c3of77,3jue60o,u00000,61s,1vfvvru,c1gf00,0,o,u3o600,0,3vvvvvv,3vufgu3,3jvvvvv,3vvu000,f36,1144phs,0,3vvvvvv,31pjfdt,2cs7vvv,3vvu000,f0s6hi,1scpj6c,1s00000,f36,1j6cf0o,1v1g600,0,vj6fpg,o30s7g,3g00000,vr3,1vm6or3,1jufpm0,0,c1hmps,3jjpmoo,c00000,1060,3gfhvno,3gc1000,0,10c3hu,3v3s3g6,100000,61s,1v1g60o,1v3o600,0,1j6cpj6,1j6c036,1j00000,vur,3dtmuor,dhm6o0,3s,3360e3c,33ccr1o,6ccv00,0,0,3vftvg0,0,c3ovgo,c1gvhs,c7s000,61s,1v1g60o,c1g600,0,c1g60o,c1gvhs,c00000,0,c0pvgc,c00000,0,c30,3v60c00,0,0,c1g60,3v00000,0,a3c,3v6oa00,0,g,s3gv3s,3vfs000,0,ftvjs,1u3ge0g,0,0,0,0,0,c3of1s,c1g00o,c00000,6cpj6,i00000,0,0,1m6pvjc,1m6pvjc,1m00000,c1gv66,31c0v06,23ccv0o,c00000,1gm6,61gc36,3300000,e3c,1m3gtms,36cotg0,1g,o30o00,0,0,30o,o30c1g,o1g300,0,o1g30c,60o30o,o00000,0,1j3pvps,1j00000,0,60o,1v1g600,0,0,0,c1g61g,0,0,3v00000,0,0,0,1g600,0,10c30o,o61g40,0,v66,37dttn6,33ccv00,0,c3gu0o,c1g60o,1v00000,v66,30o61g,1gcdvg0,0,1ucc1g6,u0c1m6,1u00000,30s,u6pj7u,60o7g0,0,3vc1g60,3u0c1m6,1u00000,e30,30c1v66,33ccv00,0,3vcc1gc,c30c1g,o00000,v66,33ccv66,33ccv00,0,1ucdhm6,1v0c1gc,1s00000,o,c00000,c1g000,0,1g600,60o,o00000,1gc,c30o1g,c0o1g0,0,3u,vg0,0,o1g,c0o1gc,c30o00,0,1ucdhgc,c1g00o,c00000,v66,33dtnmu,3ec0v00,0,83gr66,33fthm6,3300000,1v36,1j6cv36,1j6dv00,0,u6dgm0,30c1gj6,u00000,1u3c,1j6cpj6,1j6pu00,0,3v6coj8,1s6goj6,3v00000,1vj6,1h6gu38,1g61s00,0,u6dgm0,30dthj6,t00000,1hm6,33cdvm6,33cdhg0,0,u1g60o,c1g60o,u00000,7gc,60o30c,36cou00,0,3j6cr3c,1s6or36,3j00000,1s30,1g60o30,1h6dvg0,0,33etvnu,3bcdhm6,3300000,1hn6,3rftnme,33cdhg0,0,s6phm6,33cdhjc,s00000,1v36,1j6cv30,1g61s00,0,1ucdhm6,33ddnjs,60s000,1v36,1j6cv3c,1j6dpg0,0,1ucdhj0,s0phm6,1u00000,vju,1d1g60o,c1gf00,0,33cdhm6,33cdhm6,1u00000,1hm6,33cdhm6,1m3g400,0,33cdhm6,3bddvjs,1m00000,1hm6,1m3ge1o,1mcdhg0,0,1j6cpj6,u1g60o,u00000,1vm6,261gc30,31cdvg0,0,u30c1g,o30c1g,u00000,1060,3g70e0s,70c0g0,0,u0o30c,60o30c,u00000,83gr66,0,0,0,0,0,1vo0,o30600,0,0,0,3o,67pj6c,1r00000,1o30,1g7gr36,1j6cv00,0,3s,33c1g66,1u00000,70c,63or6c,36cotg0,0,3s,33ftg66,1u00000,e3c,1i61s30,1g61s00,0,3m,36cpj3s,6cou00,1o30,1g6otj6,1j6dpg0,0,c1g01o,c1g60o,u00000,1g6,s1g6,30cpj6,u00000,3g60o36,1m7gr36,3j00000,e0o,c1g60o,c1gf00,0,7c,3vddlmm,3300000,0,dopj6,1j6cpg0,0,3s,33cdhm6,1u00000,0,dopj6,1j7oo30,3o00000,3m,36cpj3s,60o7g0,0,dotj6,1g61s00,0,3s,3370766,1u00000,41g,ofoc1g,o3c700,0,6c,36cpj6c,1r00000,0,6cpj6,1j3o600,0,66,33ddlnu,1m00000,0,ccr1o,s6phg0,0,66,33cdhju,30pu00,0,ftj0o,o6dvg0,0,71g60o,1o1g60o,700000,60o,c1g00o,c1g600,0,1o1g60o,71g60o,1o00000,tms,0,0,0,41o,1mcdhnu,0,f36,31c1g62,1j3o306,1u00000,36co06c,36cpj6c,1r00000,o61g,7phnu,30ccv00,g,s6o03o,67pj6c,1r00000,1j6c,7g33s,36cotg0,30,o1g03o,67pj6c,1r00000,3gr1o,7g33s,36cotg0,0,f36,1g6cf0c,33o000,10e3c,7phnu,30ccv00,0,36co03s,33ftg66,1u00000,60c0o,7phnu,30ccv00,0,1j6c01o,c1g60o,u00000,1gf36,3g60o,c1gf00,30,o1g01o,c1g60o,u00000,cdhgg,s6phm6,3vcdhg0,e3c,s00e3c,33cdvm6,3300000,c30o00,3v6co3s,1g6dvg0,0,1j3m,r7tm6o,1n00000,fjc,36cpvmc,36cpjg0,g,s6o03s,33cdhm6,1u00000,1hm6,7phm6,33ccv00,30,o1g03s,33cdhm6,1u00000,30u6c,cpj6c,36cotg0,30,o1g06c,36cpj6c,1r00000,1hm6,cdhm6,337s1gc,1s00066,333gr66,33cdhjc,s00000,cdhg0,33cdhm6,33ccv00,o,c3opj0,1g6cf0o,c00000,3gr34,1gf0o30,1gedv00,0,1j6cf0o,1v1gvgo,c00000,fhj6c,3sc9j6u,36cphg0,e,dhg60o,1v1g60o,cdgs00,1gc30,7g33s,36cotg0,c,c3001o,c1g60o,u00000,1gc30,7phm6,33ccv00,o,o6006c,36cpj6c,1r00000,tms,dopj6,1j6cpg0,tms,cdpnm,3vdtjm6,3300000,3or3c,v00vg0,0,1o,1m6oe00,1u00000,0,c1g,30c30,33ccv00,0,0,3vc1g60,0,0,1vg6,30c000,60,30cdj6o,o61n46,61gfg0,c1g66,36dgc36,379sfg6,300000,c1g00o,c3of1s,c00000,0,r6pm3c,r00000,0,1m3c,r6pm00,0,8k84a4,8k84a4,8k84a4,8k8lda,1aqklda,1aqklda,1aqklda,3enfnbn,3enfnbn,3enfnbn,3ene60o,c1g60o,c1g60o,c1g60o,c1g60o,c1g67o,c1g60o,c1g60o,c1g67o,cfg60o,c1g60o,r3cdhm,r3cdnm,r3cdhm,r3c000,0,fsdhm,r3cdhm,0,fg67o,c1g60o,c1gdhm,r3cdnm,3fcdhm,r3cdhm,r3cdhm,r3cdhm,r3cdhm,r3c000,7u,3fcdhm,r3cdhm,r3cdhm,rfc1nu,0,dhm,r3cdhm,rfs000,0,c1g60o,cfg67o,0,0,0,fg60o,c1g60o,c1g60o,c1g60v,0,60o,c1g60o,cfu000,0,0,7v,c1g60o,c1g60o,c1g60o,c1u60o,c1g60o,0,7v,0,60o,c1g60o,cfu60o,c1g60o,c1g60o,c1u60v,c1g60o,c1gdhm,r3cdhm,r3edhm,r3cdhm,r3cdhm,r3ec1v,0,0,1v,o3edhm,r3cdhm,r3cdhm,rfe07v,0,0,7v,fedhm,r3cdhm,r3cdhm,r3ec1n,r3cdhm,r3c000,7v,fu000,0,r3cdhm,rfe07n,r3cdhm,r3c60o,c1g67v,fu000,0,r3cdhm,r3cdnv,0,0,7v,fu60o,c1g60o,0,7v,r3cdhm,r3cdhm,r3cdhm,r3u000,0,c1g60o,c1u60v,0,0,v,c1u60o,c1g60o,0,1v,r3cdhm,r3cdhm,r3cdhm,rfudhm,r3cdhm,c1g60o,cfu67v,c1g60o,c1g60o,c1g60o,cfg000,0,0,v,c1g60o,c1hvvv,3vvvvvv,3vvvvvv,3vvvvvv,0,7v,3vvvvvv,3vvvs7g,3of1s7g,3of1s7g,3of1s7g,7gu3of,7gu3of,7gu3of,7gvvvv,3vvvvvv,3vg0000,0,0,7dn6o,3cdotg0,0,v66,3ucdhns,30c0g00,1vm6,33c1g60,30c1g00,0,1vjc,1m6or3c,1m00000,1vm6,1g3061g,1gcdvg0,0,3u,3cdhm6o,1o00000,0,1j6cpj6,1u60o60,0,tms,c1g60o,c00000,vgo,u6cpj6,u1gvg0,0,s6phm6,3vcdhjc,s00000,e3c,33cdhjc,1m6prg0,0,f3060c,v6cpj6,u00000,0,7tmur,1v00000,0,1gcvmr,3dv6vj0,3000000,71g,1g60v30,1g30700,0,7phm6,33cdhm6,3300000,7u,1vg0,fs000,0,1g63u,c1g000,3vg0000,c0o,60c30o,o00vg0,0,61gc30,o1g300,1v00000,3gr,dhg60o,c1g60o,c1g60o,c1g60o,c1hm6o,1o00000,o,c00vg0,c1g000,0,tms,7dn00,0,3gr3c,s00000,0,0,0,c1g000,0,0,o,0,f,60o30c,6eor1s,e00000,dgr3c,1m6or00,0,3g,3c30o68,3s00000,0,0,1u7ov3s,1u7o000,0",
-8, 14, null, false, true 
+8, 14, null, true 
 ] );
 
 pi._.data.commands.loadFont( [ 
 "0,0,0,0,vk1,2io30dt,2co30bu,0,vnv,3dvvvu3,3jvvvru,0,0,1mftvnu,3v7oe0g,0,0,83gv7u,1u3g400,0,o,u3ppv7,3jhg61s,0,o,u7tvvv,1v1g61s,0,0,0,0,0,3vvvvvv,3vvvpu3,31ufvvv,3vvvvvv,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,vr3,1vm6or3,1hmfpv6,3000000,o,cdmf77,udm60o,0,81g70,3ofhvno,3oe1g40,0,41ge,f3tvhu,f0s1g2,0,61s,1v1g60o,1v3o600,0,pj6,1j6cpj6,1j00pj6,0,vur,3dtmuor,dhm6or,0,7phj0,s6phm6,1m3g366,1u00000,0,0,3vftvnu,0,61s,1v1g60o,1v3o63u,0,61s,1v1g60o,c1g60o,0,60o,c1g60o,c7sf0o,0,0,1g37u,61g000,0,0,30o7u,1g30000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,61s,u3o60o,c0060o,0,6cpj6,i00000,0,0,3c,1mfsr3c,1mfsr3c,0,c1gv66,31c0v06,38dhjs,c1g000,0,31cc30o,o61hk6,0,e3c,1m3gtms,36cpj3m,0,30c1g,1g00000,0,0,30o,o30c1g,o3060c,0,c0o,60o30c,60o61g,0,0,6cf7v,u6c000,0,0,1g63u,c1g000,0,0,0,1g60o,o00000,0,7u,0,0,0,0,60o,0,0,10c30o,o61g40,0,f36,31s7mur,31s6phs,0,61o,1s1g60o,c1g63u,0,v66,30o61g,1gc1hnu,0,v66,30cf06,30dhjs,0,30s,u6pj7u,60o30u,0,1vm0,30c1v06,30dhjs,0,e30,30c1v66,33cdhjs,0,1vm6,30c30o,o30c1g,0,v66,33ccv66,33cdhjs,0,v66,33ccvg6,30c33o,0,0,c1g000,1g600,0,0,c1g000,1g61g,0,6,61gc30,o1g306,0,0,7s000,1v00000,0,30,o1g306,61gc30,0,v66,330o60o,c0060o,0,3s,33cdnmu,3fdpg3s,0,41o,1mcdhnu,33cdhm6,0,1v36,1j6cv36,1j6cpns,0,f36,31c1g60,30c4phs,0,1u3c,1j6cpj6,1j6cr7o,0,1vj6,1h6gu38,1g64pnu,0,1vj6,1h6gu38,1g60o7g,0,f36,31c1g6u,33ccphq,0,1hm6,33cdvm6,33cdhm6,0,f0o,c1g60o,c1g61s,0,7gc,60o30c,36cpj3o,0,1pj6,1j6ou3o,1m6cpn6,0,1s30,1g60o30,1g64pnu,0,1gv7,3vvvmu3,31s7gu3,0,1hn6,3rftnme,33cdhm6,0,v66,33cdhm6,33cdhjs,0,1v36,1j6cv30,1g60o7g,0,v66,33cdhm6,33ddnjs,60s000,1v36,1j6cv3c,1j6cpn6,0,v66,3360e0c,3cdhjs,0,1vur,2chg60o,c1g61s,0,1hm6,33cdhm6,33cdhjs,0,1gu3,31s7gu3,31mcf0o,0,1gu3,31s7gur,3dvupj6,0,1gu3,1j3o60o,u6dgu3,0,1gu3,31mcf0o,c1g61s,0,1vu3,230o61g,1gc3gvv,0,f1g,o30c1g,o30c1s,0,40,30e0s1o,e0s1g2,0,f0c,60o30c,60o31s,0,83gr66,0,0,0,0,0,0,fu000,o30600,0,0,0,0,7g33s,36cpj3m,0,1o30,1g7gr36,1j6cpjs,0,0,7phm0,30c1hjs,0,70c,63or6c,36cpj3m,0,0,7phnu,30c1hjs,0,e3c,1i61s30,1g60o7g,0,0,7dj6c,36cpj3s,6cou00,1o30,1g6otj6,1j6cpn6,0,60o,3g60o,c1g61s,0,1g6,s1g6,30c1g6,1j6cf00,1o30,1g6cr3o,1s6opn6,0,e0o,c1g60o,c1g61s,0,0,edvur,3dtnmur,0,0,dopj6,1j6cpj6,0,0,7phm6,33cdhjs,0,0,dopj6,1j6cpjs,1g61s00,0,7dj6c,36cpj3s,60o7g0,0,dotj6,1g60o7g,0,0,7phj0,s0phjs,0,41g,ofoc1g,o30dgs,0,0,cpj6c,36cpj3m,0,0,c7gu3,31mcf0o,0,0,c7gu3,3dtnvr6,0,0,c6phs,c3opm3,0,0,cdhm6,33cdhju,30pu00,0,ftj0o,o61hnu,0,3go,c1gs0o,c1g60e,0,60o,c1g00o,c1g60o,0,s0o,c1g3go,c1g63g,0,tms,0,0,0,0,83gr66,33cdvg0,0,f36,31c1g60,316cf0c,37o000,1j00,cpj6c,36cpj3m,0,o61g,7phnu,30c1hjs,0,10e3c,7g33s,36cpj3m,0,1j00,7g33s,36cpj3m,0,60c0o,7g33s,36cpj3m,0,3gr1o,7g33s,36cpj3m,0,0,u6co30,1j3o306,u00000,10e3c,7phnu,30c1hjs,0,1hg0,7phnu,30c1hjs,0,60c0o,7phnu,30c1hjs,0,pg0,3g60o,c1g61s,0,1gf36,3g60o,c1g61s,0,60c0o,3g60o,c1g61s,0,cc00g,s6phm6,3vcdhm6,0,s6oe00,s6phm6,3vcdhm6,0,c30o00,3v6co3s,1g60pnu,0,0,6seor,1vdhn3n,0,fjc,36cpvmc,36cpj6e,0,10e3c,7phm6,33cdhjs,0,1hg0,7phm6,33cdhjs,0,60c0o,7phm6,33cdhjs,0,30u6c,cpj6c,36cpj3m,0,60c0o,cpj6c,36cpj3m,0,1hg0,cdhm6,33cdhju,30ou00,cc03s,33cdhm6,33cdhjs,0,cc066,33cdhm6,33cdhjs,0,1g63u,31s1g60,31ns60o,0,3gr34,1gf0o30,1g61pns,0,1gr6,u1hvoo,3vhg60o,0,fopj6,1u64pjf,1j6cpnj,0,s6oo,c1gvgo,c1g60o,3c70000,1gc30,7g33s,36cpj3m,0,o61g,3g60o,c1g61s,0,1gc30,7phm6,33cdhjs,0,1gc30,cpj6c,36cpj3m,0,tms,dopj6,1j6cpj6,0,1rdo066,3jfdvmu,37cdhm6,0,3or3c,v00vg0,0,0,3gr3c,s00v00,0,0,c1g,30c30,30cdhjs,0,0,1vm0,30c1g00,0,0,1vg6,30c1g0,0,c1g62,33co61g,1gct6o6,61u000,c1g62,33co61g,1jct5hu,30c000,60o,1g60o,u3of0o,0,0,3cr6o,1m3c000,0,0,dgr1m,1mdg000,0,8k84a4,8k84a4,8k84a4,8k84a4,1aqklda,1aqklda,1aqklda,1aqklda,3enfnbn,3enfnbn,3enfnbn,3enfnbn,c1g60o,c1g60o,c1g60o,c1g60o,c1g60o,c1g67o,c1g60o,c1g60o,c1g60o,cfg67o,c1g60o,c1g60o,r3cdhm,r3cdnm,r3cdhm,r3cdhm,0,7u,r3cdhm,r3cdhm,0,fg67o,c1g60o,c1g60o,r3cdhm,rfc1nm,r3cdhm,r3cdhm,r3cdhm,r3cdhm,r3cdhm,r3cdhm,0,fs1nm,r3cdhm,r3cdhm,r3cdhm,rfc1nu,0,0,r3cdhm,r3cdnu,0,0,c1g60o,cfg67o,0,0,0,7o,c1g60o,c1g60o,c1g60o,c1g60v,0,0,c1g60o,c1g67v,0,0,0,7v,c1g60o,c1g60o,c1g60o,c1g60v,c1g60o,c1g60o,0,7v,0,0,c1g60o,c1g67v,c1g60o,c1g60o,c1g60o,c1u60v,c1g60o,c1g60o,r3cdhm,r3cdhn,r3cdhm,r3cdhm,r3cdhm,r3ec1v,0,0,0,3uc1n,r3cdhm,r3cdhm,r3cdhm,rfe07v,0,0,0,fu07n,r3cdhm,r3cdhm,r3cdhm,r3ec1n,r3cdhm,r3cdhm,0,fu07v,0,0,r3cdhm,rfe07n,r3cdhm,r3cdhm,c1g60o,cfu07v,0,0,r3cdhm,r3cdnv,0,0,0,fu07v,c1g60o,c1g60o,0,7v,r3cdhm,r3cdhm,r3cdhm,r3cdhv,0,0,c1g60o,c1u60v,0,0,0,1u60v,c1g60o,c1g60o,0,1v,r3cdhm,r3cdhm,r3cdhm,r3cdnv,r3cdhm,r3cdhm,c1g60o,cfu67v,c1g60o,c1g60o,c1g60o,c1g67o,0,0,0,v,c1g60o,c1g60o,3vvvvvv,3vvvvvv,3vvvvvv,3vvvvvv,0,7v,3vvvvvv,3vvvvvv,3of1s7g,3of1s7g,3of1s7g,3of1s7g,7gu3of,7gu3of,7gu3of,7gu3of,3vvvvvv,3vvvvo0,0,0,0,7dn6o,3cdhn3m,0,u6c,36cpm6c,33cdhmc,0,1vm6,33c1g60,30c1g60,0,0,3v6or3c,1m6or3c,0,7u,3360c0o,o61hnu,0,0,7tm6o,3cdhm3g,0,0,1j6cpj6,1j7oo30,3000000,0,1rdo60o,c1g60o,0,3u,c3opj6,1j3o63u,0,1o,1mcdhnu,33ccr1o,0,e3c,33cdhjc,1m6or7e,0,7hg,c0ofj6,1j6cphs,0,0,7tmur,3dns000,0,3,37tmur,3pnso60,0,71g,1g60v30,1g60c0s,0,3s,33cdhm6,33cdhm6,0,0,3v0007u,1vg0,0,0,c1gvgo,c0007v,0,1g,c0o1gc,c3003u,0,c,c30o1g,c0o03u,0,3gr,dhg60o,c1g60o,c1g60o,c1g60o,c1g60o,3cdhm3g,0,0,c1g03u,1g600,0,0,7dn00,1rdo000,0,3gr3c,s00000,0,0,0,o,c00000,0,0,0,c00000,0,u30c,60o37c,1m6of0s,0,dgr3c,1m6or00,0,0,71m1g,1gchu00,0,0,0,1u7ov3s,1u7ov00,0",
-8, 16, null, false, true 
+8, 16, null, true 
 ] );
 
 pi._.data.commands.setDefaultFont( [ 1 ] );

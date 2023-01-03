@@ -111,7 +111,7 @@ onExampleClose = function () {};
 examples['drawSprite'] = function() {
 var monkey, frame, interval;
 $.screen( "300x200" , 'canvasContainer');
-monkey = $.loadSpritesheet( "monkey.png", 32, 32, 1 );
+monkey = $.loadSpritesheet( "monkey.png", null, 32, 32, 1 );
 $.ready( function () {
 	frame = 0;
 	interval = setInterval( run, 500 );
@@ -249,7 +249,7 @@ $.screen( "300x200" , 'canvasContainer');
 $.setColor( 15 );
 x = 150;
 y = 100;
-requestAnimationFrame( run );
+frame = requestAnimationFrame( run );
 function run( dt ) {
 	var pads, factor;
 	factor = dt / 2500;
@@ -345,16 +345,19 @@ $.line( 15, 185, 285, 15 );
 onExampleClose = function () {};
 }
 examples['loadFont'] = function() {
-var fontBlock = $.loadFont( 
-  "font-block.png", 10, 10, 
-  [ 65, 66, 67, 68, 70, 71, 72, 73 ], true
+var font = $.loadFont( 
+  "gnsh-bitmapfont-colour2.png", 5, 12, 
+  " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]" +
+  "^_`abcdefghijklmnopqrstuvwxyz{|}~"
 );
 $.ready( function () {
 	$.screen( "300x200" , 'canvasContainer');
-	$.setFont( fontBlock );
-	$.print( "AABBCC" );
-	$.print( "DD  FF" );
-	$.print( "GGHHII" );
+  $.setBgColor( "#241c1c" );
+	$.setFont( font );
+  $.print();
+	$.print( " Hello World!" );
+	$.print( " 123456789" );
+	$.print( " #$%&?" );
 } );
 onExampleClose = function () {};
 }
@@ -832,8 +835,8 @@ onExampleClose = function () {};
 }
 examples['screen'] = function() {
 $.screen( "300e200" , 'canvasContainer');
-$.line( 0, 0, 299, 199 );
-$.line( 0, 199, 299, 0 );
+$.line( 0, 0, $.width(), $.height() );
+$.line( 0, $.height(), $.width(), 0 );
 onExampleClose = function () {};
 }
 examples['set'] = function() {
@@ -951,22 +954,12 @@ for( i = 0; i < colors.length; i++ ) {
 }
 onExampleClose = function () {};
 }
-examples['setColors'] = function() {
-var font = $.loadFont( "font-goofy-2.png", 8, 14 );
-$.ready( function () {
-	$.screen( "300x200" , 'canvasContainer');
-	$.setFont( font );
-	$.print( "Hello World" );
-	$.setColors( [ 1, 2, 3, 4 ] );
-	$.print( "Hello World" );
-} );
-onExampleClose = function () {};
-}
 examples['setContainerBgColor'] = function() {
 $.screen( "300x200" , 'canvasContainer');
 $.print( "Hello" );
 $.setContainerBgColor( 5 );
-onExampleClose = function () {};
+onExampleClose = function () {document.getElementById("canvasContainer").style.backgroundColor = "";
+}
 }
 examples['setDefaultFont'] = function() {
 $.setDefaultFont( 3 );
@@ -1008,7 +1001,7 @@ for( var i = 0; i < 4; i++ ) {
 onExampleClose = function () {};
 }
 examples['setFontSize'] = function() {
-var font = $.loadFont( "font-block.png", 10, 10, "ABCDFGHI", true );
+var font = $.loadFont( "font-block.png", 10, 10, "ABCDFGHI" );
 $.ready( function () {
 	$.screen( "100x100" , 'canvasContainer');
 	$.setFont( font );

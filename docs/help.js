@@ -1,30 +1,17 @@
 var onExampleClose = function () {};
+const OPEN_FOLDER_ENTITY = "▼";
+const CLOSED_FOLDER_ENTITY = "▲";
 
 function printIndex() {
-	var i, strContents, strLetter, isDivOpen, strIndex, name;
-	strIndex = "";
-	strContents = "<div>";
-	strLetter = "";
-	isDivOpen = false;
+	var i, ul, li;
+
+	ul = document.createElement( "ul" );
 	for( i = 0; i < commands.length; i++ ) {
-		name = commands[ i ].name;
-		if( name.charAt( 0 ).toUpperCase() !== strLetter ) {
-			strLetter = name.charAt( 0 ).toUpperCase();
-			strIndex += "* <a href='#letter_" + strLetter + "'>" + strLetter + "</a> ";
-			if( isDivOpen ) {
-				strContents += "</div>";
-			}
-			strContents += printBorderLine( strLetter ) + "<div class='contents-letter'>";
-			isDivOpen = true;
-		}
-		strContents += "<span class='wide-span'><a href='#command_" + name + "'>" + name + "</a></span>";
+		li = document.createElement( "li" );
+		li.innerHTML = "<a href='#command_" + commands[ i ].name + "'>" + commands[ i ].name + "</a>";
+		ul.appendChild( li );
 	}
-	if( isDivOpen ) {
-		strContents += "</div>";
-	}
-	strContents += "</div>";
-	document.getElementById( "index-list" ).innerHTML = strIndex;
-	document.getElementById( "contents" ).innerHTML = strContents;
+	document.getElementById( "menu" ).appendChild( ul );
 }
 
 function printCommands() {
@@ -94,8 +81,8 @@ function printCommands() {
 		msg += "<div class='sectionTitle'>Example:</div>";
 		msg += "<div class='example'><pre><code class='lang-javascript'>" + commands[ i ].example + "</pre></code></div>";
 		msg += "<div class='tabbed'>";
-		msg += "<input type='button' value='Run' onclick='RunExample(" + i + ")' />";
-		msg += "<input type='button' value='Copy' onclick='CopyExample(" + i +")' />";
+		msg += "<input type='button' class='btn' value='Run' onclick='RunExample(" + i + ")' />";
+		msg += "<input type='button' class='btn' value='Copy' onclick='CopyExample(" + i +")' />";
 		msg += "</div>";
 		msg += "</section>";
 	}
@@ -119,7 +106,7 @@ function printBorderItem( label ) {
 
 function printBorderLine( label ) {
 	var width, count, msg, msg1, msg2, msg3, i;
-	width = $.util.getWindowSize().width - 248;
+	width = $.util.getWindowSize().width - 448;
 	count = Math.floor( width / 16 ) - 5 - label.length * 2;
 	msg = "<div class='border' id='letter_" + label + "'>";
 	msg1 = "&#x2554;";

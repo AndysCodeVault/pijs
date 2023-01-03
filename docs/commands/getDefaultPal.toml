@@ -5,7 +5,7 @@ available when a new screen is created.
 """
 isScreen = false
 parameters = [ ]
-seeAlso = [ "findColor", "getPal", "getPixel", "setBgColor", "setColor", "setColors", "setPalColor", "swapColor" ]
+seeAlso = [ "findColor", "getPal", "getPixel", "setBgColor", "setColor", "setPalColor", "swapColor" ]
 returns = "An array of color data for the default color palette."
 example = """
 $.screen("300x200");

@@ -5,7 +5,7 @@ parameters = [ "color" ]
 pdata = [
 	"The color value you want as background color."
 ]
-seeAlso = [ "setColor", "setColors" ]
+seeAlso = [ "setColor" ]
 example = """
 $.screen( "300x200" );
 $.setColor( "white" );

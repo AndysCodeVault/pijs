@@ -17,7 +17,7 @@ pi._.addCommand(
 	"print", print, false, true, [ "msg", "inLine", "isCentered" ]
 );
 function print( screenData, args ) {
-	var msg, inLine, isCentered, colors, parts, i, i2, colorCount;
+	var msg, inLine, isCentered, parts, i;
 
 	msg = args[ 0 ];
 	inLine = args[ 1 ];
@@ -26,26 +26,6 @@ function print( screenData, args ) {
 	// bail if not possible to print an entire line on a screen
 	if( screenData.printCursor.font.height > screenData.height ) {
 		return;
-	}
-
-	if( screenData.printCursor.font.mode !== "bitmap" ) {
-
-		// Grab the colors from the screenData
-		colors = screenData.colors.slice();
-
-		// Set the first color to the background color
-		colors.unshift( screenData.pal[ 0 ] );
-
-		// Make sure there are enough colors -- if not then rotate colors
-		colorCount = colors.length;
-		for( i = 0; i < screenData.printCursor.font.colorCount; i ++ ) {
-			if( i >= colors.length ) {
-
-				// Rotate colors -- skip 0
-				i2 = ( i % ( colorCount - 1 ) ) + 1;
-				colors.push( colors[ i2 ] );
-			}
-		}
 	}
 
 	if( msg === undefined ) {
@@ -60,11 +40,11 @@ function print( screenData, args ) {
 	// Split messages by \n
 	parts = msg.split( /\n/ );
 	for( i = 0; i < parts.length; i++ ) {
-		startPrint( screenData, parts[ i ], inLine, isCentered, colors );
+		startPrint( screenData, parts[ i ], inLine, isCentered );
 	}
 }
 
-function startPrint( screenData, msg, inLine, isCentered, colors ) {
+function startPrint( screenData, msg, inLine, isCentered ) {
 	var width, overlap, onScreen, onScreenPct, msgSplit, index, msg1, msg2,
 		printCursor;
 
@@ -96,8 +76,8 @@ function startPrint( screenData, msg, inLine, isCentered, colors ) {
 				msg1 = msg1.substring( 0, index );
 			}
 		}
-		startPrint( screenData, msg1, inLine, isCentered, colors );
-		startPrint( screenData, msg2, inLine, isCentered, colors );
+		startPrint( screenData, msg1, inLine, isCentered );
+		startPrint( screenData, msg2, inLine, isCentered );
 		return;
 	}
 
@@ -117,7 +97,7 @@ function startPrint( screenData, msg, inLine, isCentered, colors ) {
 	}
 
 	printCursor.font.printFunction( screenData, msg, printCursor.x,
-		printCursor.y, colors
+		printCursor.y
 	);
 
 	//If it's not in_line print the advance to next line
@@ -199,7 +179,7 @@ function setWordBreak( screenData, args ) {
 
 // Print to the screen by using pi_fonts
 pi._.addCommand( "piPrint", piPrint, true, false );
-function piPrint( screenData, msg, x, y, colors ) {
+function piPrint( screenData, msg, x, y ) {
 	var i, printCursor, defaultPal, charIndex;
 
 	// Get reference to printCursor data
@@ -207,7 +187,7 @@ function piPrint( screenData, msg, x, y, colors ) {
 
 	// Setup a temporary pallette with the fore color and back color
 	defaultPal = screenData.pal;
-	screenData.pal = colors;
+	screenData.pal = [ screenData.pal[ 0 ], screenData.fColor ];
 
 	//Loop through each character in the message and put it on the screen
 	for( i = 0; i < msg.length; i++ ) {

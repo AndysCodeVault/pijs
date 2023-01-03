@@ -43,6 +43,6 @@ pdata = [
 seeAlso = [ "getScreen", "setScreen" ]
 example = """
 $.screen( "300e200" );
-$.line( 0, 0, 299, 199 );
-$.line( 0, 199, 299, 0 );
+$.line( 0, 0, $.width(), $.height() );
+$.line( 0, $.height(), $.width(), 0 );
 """

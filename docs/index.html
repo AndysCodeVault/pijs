@@ -11,9 +11,6 @@
 <body>
 	<section id="menu">
 		<div><a href="#header">Top</a></div>
-		<div><a href="#intro">Intro</a></div>
-		<div><a href="#usage">Usage</a></div>
-		<div><a href="#index">Index</a></div>
 		<div><a href="#allCommands">Commands</a></div>
 	</section>
 	<div class='mainBody'>
@@ -21,81 +18,12 @@
 			<h1>PI-JS</h1>
 			<div>Graphics, Sound, and Input Library</div>
 		</section>
-		<section id="intro">
-			<h1>Introduction</h1>
-			<p>
-				PI-JS is a javascript library that is inspired by QBasic and is intended to help make
-				pixel-perfect retro games and demos in the web browser. PI API is modelled after QBasic
-				and is easy to use for beginners.
-			</p>
-			<p>
-				Fonts for this site were provided by 
-				<a href='https://int10h.org/oldschool-pc-fonts/'>The Ultimate Oldschool PC Font Resource</a>.
-			</p>
-		</section>
-		<section id="usage">
-			<h1>Usage</h1>
-			<p>
-				To use this library just download the library here: <a href="https://github.com/AndysCodeVault/pijs">pi.min.js</a>
-				and add it to your project. If you want the full unminimized version you can get it here:
-				<a href="https://github.com/AndysCodeVault/pijs">pi.js</a>.
-			</p>
-			<p>
-				PI-JS is a collection of graphics, input, and sound commands that are all stored in a
-				global variable container. PI-JS commands can be accessed by using the global
-				variable "pi" or "$". If there is already a global variable set to "$" then the
-				PI-JS library will not override the "$". This is in case you want to use other
-				libraries such as jQuery that use the "$" global.
-			</p>
-			<p>
-				Graphics commands require a <a href ="#command_screen">screen</a> to be created
-				before being called. The screen command creates a canvas object and adds it to the
-				page by default. When the screen command is called a screen object is returned.
-				Graphics commands can be called from either the global "$", "pi", or the screen
-				object.
-			</p>
-			<div class="example"><pre><code class='lang-javascript'>$.screen("300x200");
-$.line(10, 10, 290, 190);</code></pre></div>
-			<div class="example"><pre><code class='lang-javascript'>pi.screen("300x200");
-pi.line(10, 10, 290, 190);</code></pre></div>
-			<div class="example"><pre><code class='lang-javascript'>var screen = $.screen("300x200");
-screen.line(10, 10, 290, 190);</code></pre></div>
-			<p>
-				The screen object comes in handy when working with multiple screens. If you are only
-				working with one screen the simpliest way to run the graphics commands is to use
-				the "$" variable. If you are working with multiple screens you can still use "$"
-				variable but you will have to call the <a href="#command_setScreen">setScreen</a>
-				command if you want to change drawing screens.
-			</p>
-			<p>
-				There are two ways to call commands, the first is to use a comma seperated list
-				of parameters and the second is to pass in an object that contains names of
-				the parameters as object properties.
-			</p>
-			<div class="example"><pre><code class='lang-javascript'>$.screen("300x200");
-
-// Comma seperated list call
-$.line(10, 10, 290, 190);
-
-// Object properties call
-$.line({
-	"x1": 10, 
-	"y1": 10, 
-	"x2": 290, 
-	"y2": 190
-});</code></pre></div>
-		</section>
-		<section id="index">
-			<h1>Commands Index</h1>
-			<div id="index-list"></div>
-			<div id="contents"></div>
-		</section>
 		<section id="allCommands"></section>
 	</div>
 	<div id="exampleBox" style="display: none;">
 		<div id="canvasContainer"></div>
-		<input type="button" value="Close" onclick="CloseExample()" style="position: absolute;left:36px;" />
-		<input type="button" id="clearFocus" value="" style="line-height: 0px; height:0px;" />
+		<input type="button" class="btn" value="Close" onclick="CloseExample()" style="position: absolute;left:36px;" />
+		<input type="button" class="btn" id="clearFocus" value="" style="line-height: 0px; height:0px;" />
 	</div>
 	<script src="highlights/highlight.pack.js"></script>
 	<script src="commands2.js"></script>

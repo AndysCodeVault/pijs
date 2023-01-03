@@ -4,30 +4,31 @@
 	font-weight: normal;
 	font-style: normal;
 }
-@font-face {
-	font-family: "VERITE";
-	src: url( "Web_IBM_EGA_8x14.woff" ) format( "woff" );
-	font-weight: normal;
-	font-style: normal;
-}
 body {
-	font-family: IBM_FONT, VERITE, monospace;
+	font-family: IBM_FONT, monospace;
 	font-size: 28px;
 	line-height: 28px;
 	color: white;
-	background-color: #0000AA;
+	background-color: #202020;
 }
 code {
-	font-family: IBM_FONT, VERITE, monospace;
+	font-family: IBM_FONT, monospace;
 }
 .mainBody {
-	margin-left: 150px;
+	margin-left: 369px;
 }
 h1 {
 	font-weight: normal;
 	font-size: 42px;
 	line-height: 42px;
 	margin: 0px;
+}
+ul {
+	padding-left: 15px;
+	margin-top: 5px;
+}
+li {
+	display: block;;
 }
 .wide-span {
 	width: 360px;
@@ -54,7 +55,7 @@ a:active {
 	color: #555555;
 }
 input {
-	font-family: IBM_FONT, VERITE, monospace;
+	font-family: IBM_FONT, monospace;
 	font-size: 28px;
 	line-height: 28px;
 	background-color: rgba(0,0,0,0);
@@ -62,7 +63,7 @@ input {
 	color: white;
 	padding: 5px;
 }
-input[type=button] {
+input.btn {
 	color: #fff;
 	text-align: center;
 	width: 102px;
@@ -74,14 +75,18 @@ input[type=button] {
 	box-shadow: 8px 8px 0 0 #000;
 	outline: none;
 }
-input[type=button]:enabled:hover {
+input.btn:enabled:hover {
 	background-color: #aaa;
 	color: #000;
 	cursor: pointer;
 }
-input[type=button]:active {
+input.btn:active {
 	transform: translate(3px, 3px);
 	box-shadow: 4px 4px 0 0 #000;
+}
+input.btn-wide {
+	width: 275px;
+	text-align: left;
 }
 #menu {
 	position:fixed;
@@ -90,9 +95,10 @@ input[type=button]:active {
 	padding: 5px;
 	margin-top: 0px;
 	background-color: #AAAAAA;
-	width: 136px;
+	width: 350px;
 	height: 100%;
 	color: black;
+	overflow-y: auto;
 }
 #menu a:link {
 	color: black;

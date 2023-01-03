@@ -4,7 +4,7 @@ parameters = [ "x", "y" ]
 description = "Gets the pixel color from the screen and returns the color palette index."
 pdata = [ "The horizontal coordinate for the pixel", "The vertical coordinate for the pixel" ]
 seeAlso = [
-	"findColor", "get", "getPixel", "pset", "put", "setColor", "setColors"
+	"findColor", "get", "getPixel", "pset", "put", "setColor"
 ]
 returns = "The color index (integer)."
 example = """

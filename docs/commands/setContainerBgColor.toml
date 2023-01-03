@@ -3,9 +3,12 @@ description = "Sets the background color of the canvas container."
 isScreen = true
 parameters = [ "color" ]
 pdata = [ "The color to set the new background for the canvas container" ]
-seeAlso = [ "setBgColor", "setColor", "setColors" ]
+seeAlso = [ "setBgColor", "setColor" ]
 example = """
 $.screen( "300x200" );
 $.print( "Hello" );
 $.setContainerBgColor( 5 );
+"""
+onclose = """
+document.getElementById("canvasContainer").style.backgroundColor = "";
 """

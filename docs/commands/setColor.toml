@@ -6,7 +6,7 @@ pdata = [
 	"The color value to set the foreground color.",
 	"[OPTIONAL] If set to true and the color is not part of the current color palette then it will add it to the color palette."
 ]
-seeAlso = [ "setBgColor", "setColors" ]
+seeAlso = [ "setBgColor" ]
 example = """
 var i, colors, x, y, size;
 

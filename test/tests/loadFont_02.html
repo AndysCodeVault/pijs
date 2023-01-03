@@ -7,8 +7,8 @@
 			test = "screenshot.js"
 			file = "loadFont_02"
 			name = "Load Font 02"
-			width = 650
-			height = 400
+			width = 100
+			height = 100
 			delay = 0
 			[[TOML_END]]
 		</script>
@@ -28,20 +28,42 @@
 		</style>
 	</head>
 <body>
-<div>
-	<img src="images/font-goofy.png" id="goofy"></img>
-</div>
-<div id="div"></div>
 <script>
+	var font1 = $.loadFont( "images/font-block.png", 10.1, 10.1, "ABCDFGHI" );
+	var font2 = $.loadFont( "images/font-block2.png", 10, 10, "ABCDFGHI" );
+	var font3 = $.loadFont(
+		"images/gnsh-bitmapfont-colour2.png", 5, 12,
+		" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~",
+	);
+	$.ready( function () {
+		$.screen( "100x100" );
+		$.setBgColor( "navy" );
+		$.setFont( font1 );
+		$.print( "CAB" );
+		$.print( "ABCD" );
+		$.print( "DACB" );
+		$.print( "BAD" );
+		$.print( "FIGHAB" );
+		$.setFontSize( 20, 20 );
+		$.print( "FIGHAB" );
 
-var font = $.loadFont( document.getElementById( "goofy" ), 8, 14 );
-$.ready( function () {
-	$.screen( "300x100", "div" );
-	$.setFont( font );
-	$.print( "The quick brown fox jumped over the lazy dog. 0123456789" );
-	$.render();
-} );
+		$.setFont( font2 );
+		$.setPos( 6, 0 );
+		$.print( "CAB" );
+		$.setPos( 6, 1 );
+		$.print( "ABCD" );
+		$.setPos( 6, 2 );
+		$.print( "DACB" );
+		$.setPos( 6, 3 );
+		$.print( "BAD" );
 
+		$.setFont( font3 );
+		$.setPos( 4.5, 6 );
+		$.print( "The quick brown" );
+		$.setPos( 4.5, 7 );
+		$.print( "fox jumped over" );
+
+	} );
 </script>
 </body>
 </html>

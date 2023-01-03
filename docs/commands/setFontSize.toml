@@ -8,7 +8,7 @@ pdata = [
 ]
 seeAlso = [ "loadFont", "print", "setFont" ]
 example = """
-var font = $.loadFont( "font-block.png", 10, 10, "ABCDFGHI", true );
+var font = $.loadFont( "font-block.png", 10, 10, "ABCDFGHI" );
 $.ready( function () {
 	$.screen( "100x100" );
 	$.setFont( font );

@@ -952,7 +952,7 @@ pi._.addSetting( "palColor", setPalColor, true,
 	[ "index", "color" ]
 );
 function setPalColor( screenData, args ) {
-	var index, color, colorValue, i;
+	var index, color, colorValue;
 
 	index = args[ 0 ];
 	color = args[ 1 ];
@@ -976,13 +976,6 @@ function setPalColor( screenData, args ) {
 	// Check if we are changing the current selected fore color
 	if( screenData.fColor.s === screenData.pal[ index ].s ) {
 		screenData.fColor = colorValue;
-	}
-
-	// Check if we are changing any of the colors
-	for( i = 0; i < screenData.colors.length; i++ ) {
-		if( screenData.colors[ i ].s === screenData.pal[ index ].s ) {
-			screenData.colors[ i ] = colorValue;
-		}
 	}
 
 	screenData.pal[ index ] = colorValue;
@@ -1012,7 +1005,7 @@ pi._.addCommand( "setColor", setColor, false, true,
 );
 pi._.addSetting( "color", setColor, true, [ "color", "isAddToPalette" ] );
 function setColor( screenData, args ) {
-	var colorInput, colorValue, isAddToPalette, colors;
+	var colorInput, colorValue, isAddToPalette;
 
 	colorInput = args[ 0 ];
 	isAddToPalette = !!( args[ 1 ] );
@@ -1023,7 +1016,6 @@ function setColor( screenData, args ) {
 	if( colorValue === undefined ) {
 		return;
 	}
-	colors = [ colorValue ];
 
 	if( isAddToPalette ) {
 		screenData.fColor = screenData.screenObj.findColor(
@@ -1032,44 +1024,6 @@ function setColor( screenData, args ) {
 	} else {
 		screenData.fColor = colorValue;
 	}
-
-	screenData.colors = colors;
-
-	screenData.context.fillStyle = colorValue.s;
-	screenData.context.strokeStyle = colorValue.s;
-}
-
-// Colors command
-pi._.addCommand( "setColors", setColors, false, true, [ "colors" ] );
-pi._.addSetting( "colors", setColors, true, [ "colors" ] );
-function setColors( screenData, args ) {
-	var colorInput, colorValue, i, colors;
-
-	colorInput = args[ 0 ];
-	colors = [];
-	if( pi.util.isArray( colorInput ) ) {
-		if( colorInput.length === 0 ) {
-			m_piData.log( "color: color array cannot be empty." );
-			return;
-		}
-		for( i = 0; i < colorInput.length; i++ ) {
-			colorValue = m_piData.commands.findColorValue(
-				screenData, colorInput[ i ], "color"
-			);
-			if( colorValue === undefined ) {
-				return;
-			}
-			colors.push( colorValue );
-		}
-		colorValue = colors[ 0 ];
-	} else {
-		m_piData.log( "color: colors must be an array." );
-		return;
-	}
-
-	screenData.fColor = colorValue;
-	screenData.colors = colors;
-
 	screenData.context.fillStyle = colorValue.s;
 	screenData.context.strokeStyle = colorValue.s;
 }

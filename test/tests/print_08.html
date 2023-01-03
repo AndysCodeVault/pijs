@@ -5,11 +5,12 @@
 		<script type="text/toml">
 			[[TOML_START]]
 			test = "screenshot.js"
+			
 			file = "print_08"
 			name = "Print 08"
-			width = 620
-			height = 400
-			delay = 0
+			width = 320
+			height = 200
+			delay = 1000
 			commands = """
 				DL 100
 			"""
@@ -18,33 +19,19 @@
 		<!-- [PI-JS Script]-->
 		<script src="../../build/pi-1.0.js"></script>
 		<!-- [/PI-JS Script]-->
-		<style>
-			html, body {
-				background-color: gray;
-			}
-			div {
-				background-color: blue;
-				width: 600px;
-				height: 140px;
-			}
-		</style>
 	</head>
 <body>
-<div>
-	<img src="images/font-goofy-2.png" id="goofy"></img>
-</div>
-<div id="div"></div>
-<script>
-
-var font = $.loadFont( document.getElementById( "goofy" ), 8, 14 );
-$.ready( function () {
-	$.screen( "300x100", "div" );
-	$.setColors( [ 7, 1, 4, 2, 8 ] );
-	$.setFont( font );
-	$.print( "The quick brown fox jumped over the lazy dog. 0123456789", false );
-	$.render();
-} );
-
-</script>
+	<script>		
+		$.ready(function () {
+			$.screen("320x200");
+			$.setFont( 2 );
+			$.setChar( 97, "1092ba547cc6fe92" );
+			$.setChar( 98, "423c2418187e1818" );
+			$.setChar( 99, "7cd67cfec6aafe00" );
+			$.setChar( 100, "00183c667e5a42c3" );
+			$.setChar( 101, "008199FFDBFFBD18" );
+			$.print( "abcde" );
+		} );
+	</script>
 </body>
 </html>
