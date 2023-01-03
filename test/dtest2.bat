@@ -1,5 +1,5 @@
 @echo off
-echo Deleting d:\AndysCodeVault\pijs\test\tests\screenshots\set_01.png
-del d:\AndysCodeVault\pijs\test\tests\screenshots\set_01_new.png
-echo Deleting d:\AndysCodeVault\pijs\test\tests\screenshots\set_01_new.png
-del d:\AndysCodeVault\pijs\test\tests\screenshots\set_01.png
+echo Deleting d:\AndysCodeVault\pijs\test\tests\screenshots\print_04.png
+del d:\AndysCodeVault\pijs\test\tests\screenshots\print_04_new.png
+echo Deleting d:\AndysCodeVault\pijs\test\tests\screenshots\print_04_new.png
+del d:\AndysCodeVault\pijs\test\tests\screenshots\print_04.png

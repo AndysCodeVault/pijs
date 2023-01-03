@@ -96,7 +96,7 @@ function writeCompressedFont() {
 		font = g_Fonts[ i ];
 		fontStr = compressFont( font.data );
 		msg += "pi._.data.commands.loadFont( [ \n\"" + fontStr + "\",\n" + 
-			font.width + ", " + font.height + ", null, false, true \n] );\n\n";
+			font.width + ", " + font.height + ", null, true \n] );\n\n";
 	}
 	msg += "pi._.data.commands.setDefaultFont( [ 1 ] );\n";
 	msg += "\n} )();\n";
