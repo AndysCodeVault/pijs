@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>FilterImg 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "filterImg_01"
+			name = "FilterImg 01"
+			width = 200
+			height = 200
+			delay = 0
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+
+Math.seedrandom('constant');
+$.ready( function () {
+	$.screen( "200x200" );
+	$.setPen( "circle", 10, 35 );
+	$.setColor( 9 );
+	$.line( 0, 0, 199, 199 );
+	$.setColor( 10 );
+	$.line( 0, 199, 199, 0 );
+	$.setColor( 2 );
+	$.print( "This color is green." );
+	$.setColor( 4 );
+	$.print( "This color is red." );
+	$.setColor( 1 );
+	$.print( "This color is blue." );
+	$.filterImg( function ( color, x, y ) {
+		var avg = Math.round( ( color.r + color.g + color.b ) / 3 );
+		if( y % 50 > 30 || x % 50 > 30 ) {
+			color.r = avg;
+			color.g = avg;
+			color.b = avg;
+		}
+		return color;
+	} );
+	$.render();
+} );
+
+</script>
+</body>
+</html>

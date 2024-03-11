@@ -1,0 +1,28 @@
+name = "drawImage"
+description = "Draws an image on to the screen.  Note: this method will fail if it gets called before the image is loaded."
+isScreen = true
+parameters = [ "name", "x", "y", "angle", "anchorX", "anchorY", "alpha", "scaleX", "scaleY" ]
+pdata = [
+	"Name or id of the image.",
+	"Horizontal coordinate.",
+	"Vertical coordinate.",
+	"[OPTIONAL] Rotate the image in degrees.",
+	"[OPTIONAL] Horizontal rotation coordinate.",
+	"[OPTIONAL] Vertical rotation coordinate.",
+	"[OPTIONAL] Transparency amount number 0-100.",
+	"[OPTIONAL] Horizontal scaling amount.",
+	"[OPTIONAL] Vertical scaling amount."
+]
+seeAlso = [
+	"drawSprite",
+	"loadImage",
+	"ready"
+]
+category = "images"
+example = """
+$.screen( "300x200" );
+var monkey = $.loadImage( "/images/monkey.png" );
+$.ready( function () {
+	$.drawImage( monkey, 150, 100, 0, 0.5, 0.5 );
+} );
+"""

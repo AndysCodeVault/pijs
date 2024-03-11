@@ -1,0 +1,17 @@
+name = "setWordBreak"
+descripttion = "Toggle word break setting between breaking on spaces or breaking in the middle of words."
+isScreen = true
+parameters = [ "isEnabled" ]
+pdata = [ "If set to false then break in the middle of words otherwise break on spaces." ]
+seeAlso = [ "print" ]
+category = "print"
+example = """
+var msg = "abcdefghijklmnopqrstuvwxyz " +
+	"abcdefghijklmnopqrstuvwxyz " +
+	"abcdefghijklmnopqrstuvwxyz";
+$.screen( "300x200" );
+$.print( msg );
+$.setWordBreak( false );
+$.print();
+$.print( msg );
+"""

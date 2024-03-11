@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ontouch 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ontouch_03"
+			name = "ontouch 03"
+			width = 320
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var isDrawing = false;
+	var hitbox = {
+		x: 25, y: 25, width: 100, height: 100
+	};
+	$.screen( "320x200" );
+	$.startTouch();
+	$.setPinchZoom( false );
+	$.rect( hitbox.x, hitbox.y, hitbox.width, hitbox.height );
+	$.render();
+	$.setColor( 2 );
+	
+	$.ontouch( "start", function ( touches, customData ) {
+		var i, touch;
+		console.log( customData );
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			$.pset( touch.x, touch.y );
+		}
+		$.render();
+	}, false, hitbox, "Touch Start" );
+	$.ontouch( "move", function ( touches ) {
+		var i, touch;
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			touch.lastX = pi.util.clamp( touch.lastX, hitbox.x, hitbox.x + hitbox.width );
+			touch.lastY = pi.util.clamp( touch.lastY, hitbox.y, hitbox.y + hitbox.height );
+			if( touch.lastX ) {
+				$.line( touch.x, touch.y, touch.lastX, touch.lastY );
+			}
+		}
+		$.render();
+	}, false, hitbox );
+	$.ontouch( "end", function ( touches ) {
+		var i, touch;
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			if( touch.lastX ) {
+				$.line( touch.x, touch.y, touch.lastX, touch.lastY );
+			}
+		}
+		$.render();
+	}, false, hitbox );
+} );
+</script>
+</body>
+</html>

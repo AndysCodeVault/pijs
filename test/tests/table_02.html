@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Table 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "table_02"
+			name = "table 02"
+			width = 300
+			height = 310
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+var $screen;
+
+$screen = $.screen( { "aspect": "300x310", "isMultiple": true } );
+$screen.setColor( 2 );
+$screen.setFont( 1 );
+$screen.print( "12345678901234567890123456789012345678901234567890");
+$screen.printTable( [
+	[ "One", "2", "3", "4", "5", "6" ],
+	[ "Four", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+], null, null );
+
+$screen.setColor( 3 );
+$screen.printTable( [
+	[ "One", "2", "3", "4", "5", "6" ],
+	[ "Four", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ],
+
+], null, "double" );
+
+$screen.setColor( 4 );
+$screen.printTable( [
+	[ "time", "for", "action", "getting", "into", "space" ],
+], null, null, 1 );
+
+$screen.setColor( 5 );
+$screen.printTable( [
+[ "One", "2", "3", "4", "5", "6" ],
+	[ "Four", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+], null, "singleDouble" );
+
+$screen.setColor( 6 );
+$screen.printTable( [
+	[ "One", "2", "3", "4", "5", "6" ],
+	[ "Four", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+], null, "doubleSingle" );
+
+
+$screen.setColor( 9 );
+$screen.printTable( [
+	[ "One", "2", "3", "4", "5", "6" ],
+	[ "Four", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+], null, "thick" );
+
+$screen.render();
+</script>
+</body>
+</html>

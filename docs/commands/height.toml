@@ -1,0 +1,11 @@
+name = "height"
+description = "Returns the height of the screen."
+isScreen = true
+parameters = [ ]
+returns = "A number containing the height of the screen."
+seeAlso = [ "screen", "width" ]
+category = "graphics"
+example = """
+$.screen( "300x200" );
+$.print( "Height: " + $.height() );
+"""

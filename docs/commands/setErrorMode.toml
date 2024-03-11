@@ -1,0 +1,10 @@
+name = "setErrorMode"
+description = "Sets how Pi.js handles errors by setting an error mode between throw, log, and none."
+isScreen = false
+parameters = [ "mode" ]
+pdata = [ "Set to throw, log, or none for the different error modes." ]
+category = "functional"
+example = """
+$.setErrorMode( "throw" );
+$.screen( "23514235" );
+"""

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pi.js - Library</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="stylesheet" href="highlights/styles/sunburst.css">
+	<!-- [Pi.js Script]-->
+		<script src="../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+</head>
+<body>
+	<section id="menu">
+		<div><a href="#header">Top</a></div>
+		<div><a href="#allCommands">Commands</a></div>
+	</section>
+	<div class='mainBody'>
+		<section id="header">
+			<h1>Pi.js</h1>
+			<div>Graphics, Sound, and Input Library</div>
+		</section>
+		<section id="allCommands"></section>
+	</div>
+	<div id="exampleBox" style="display: none;">
+		<div id="canvasContainer"></div>
+		<input type="button" class="btn" value="Close" onclick="CloseExample()" style="position: absolute;left:36px;" />
+		<input type="button" class="btn" id="clearFocus" value="" style="line-height: 0px; height:0px;" />
+	</div>
+	<script src="highlights/highlight.pack.js"></script>
+	<script src="commands2.js"></script>
+	<script src="pi-examples-1.1.0.js"></script>
+	<script src="help.js"></script>
+</body>
+</html>

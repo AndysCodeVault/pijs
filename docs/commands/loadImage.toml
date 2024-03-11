@@ -1,0 +1,26 @@
+name = "loadImage"
+description = """
+Loads an image for later use in the drawImage command. It is recommended to use the ready \
+command after loadImage and before calling the drawImage command.
+"""
+isScreen = false
+parameters = [ "src", "name" ]
+pdata = [
+	"The source location of an image file or an image element.",
+	"""[OPTIONAL]. A name you can use to refer to the image later in the drawImage command. If\
+		left blank then the name will be created automatically."""
+]
+returns = "The name of image to use with the drawImage command."
+seeAlso = [
+	"drawImage",
+	"loadImage",
+	"ready"
+]
+category = "images"
+example = """
+$.screen( "300x200" );
+$.loadImage( "/images/monkey.png", "monkey" );
+$.ready( function () {
+	$.drawImage( "monkey", 150, 100, 0, 0.5, 0.5 );
+} );
+"""

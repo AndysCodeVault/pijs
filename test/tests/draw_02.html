@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "draw_02"
+			name = "draw 02"
+			width = 300
+			height = 320
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen("300x320");
+		pi.pset( 0, 0 );
+
+		// ----------- START DRAWING -------------
+		pi.draw( "C15 D319 R299 U319 L299" );
+		pi.draw( "D180 NR300 R40 BU20 P1,15 BD40 P2,15 BU20 C10 L39 R298" );
+		pi.draw( "L80 H5 L120 G5 R10 BU P10,10 R40 D20 G30 L60 G5 L43 D10 R43 E5" );
+		pi.draw( "R60 E40 U18 L5 BD2 P10,10 U8 L50 U C8 U25 R20 D5 R2 U2 R2 D2 R2" );
+		pi.draw( "U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U10 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 U2" );
+		pi.draw( "R2 D2 R2 U2 R2 D2 R2 U2 R2 D10 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2" );
+		pi.draw( "U2 R2 D2 R2 U2 R2 D2 R2 U5 R20 D25 L102" );
+		pi.draw( "U25 L5 U7 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 D5 L2" );
+
+		pi.draw( "BR5 BD5 U25 L5 U7 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 D5 L5 D15" );
+
+		pi.draw( "BR14 U15 L5 U7 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 D5 L5 D25" );
+
+		pi.draw( "BR8 BD10 U15 L5 U7 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2 D2 R2 U2 R2" );
+		pi.draw( "D2 R2 D5 L5 BD15 BL16 P8,8 BU18 P8,8 BL80 P8,8 BR22 P7,8 BR40" );
+		pi.draw( "P7,8 BU23 U10 R5 D3 L5 U BR2 P4,7 BL C0 BD59 BL13 U8 H2 L8 G2 D8 R12 U BL" );
+		pi.draw( "P0,0" );
+
+		pi.draw( "BU10 BL35 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+		pi.draw( "BU10 BR5 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+		pi.draw( "BU5 BR50 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+		pi.draw( "BD10 BR50 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+		pi.draw( "BL15 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+		pi.draw( "BU30 BL20 C8 L2 ND2 L2 NU2 L2 NL2 D2 L2 ND2 L2" );
+
+		pi.draw( "BD32 BR8" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 R D2 C9 R U" );
+
+		pi.draw( "BU2 BR17" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 R D2 C9 R U" );
+
+		pi.draw( "BR20 BD80" );
+
+		pi.draw( "BU50 BL40" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R2 BR BL3 D U BR3 BU BL2" );
+		pi.draw( "C4 BU L R2 U L U C0 R L2 D BD2 BL2 C7 L D L2 D L R2 D L U2 R U R6" );
+
+		pi.draw( "BL40 BD40" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R2 BR BL3 D U BR3 BU BL2" );
+		pi.draw( "C4 BU L R2 U L U C0 R L2 D BD2 BL2 C7 L D L2 D L R2 D L U2 R U R6" );
+
+		pi.draw( "BL40" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R2 BR BL3 D U BR3 BU BL2" );
+		pi.draw( "C4 BU L R2 U L U C0 R L2 D BD2 BL2 C7 L D L2 D L R2 D L U2 R U R6" );
+
+		pi.draw( "BU5 BR40" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R2 BR BL3 D U BR3 BU BL2" );
+		pi.draw( "C4 BU L R2 U L U C0 R L2 D BD2 BL2 C7 L D L2 D L R2 D L U2 R U R6" );
+
+		pi.draw( "BD30 BR10" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+
+		pi.draw( "BU32 BR80" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+
+		pi.draw( "BU32 BL80" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+		pi.draw( "C4 R90 D L90 D R90 D L90 BD5 C14 BU7 BR5 NU3 NH2 BR8 NH2 BR5 NU3 BR8" );
+		pi.draw( "NU3 NE2 BR8 NE2 BR12 NU4 BR4 NE2 BR15 NU3 BR8 NH3 BR8 NH2 NE3 BD7 BL81" );
+
+		pi.draw( "BU48" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R3 C4 R3 C15 F D BU4 BL6 C4 L R U R D" );
+		pi.draw( "U2 C0 L2 D BD3 C6 D" );
+
+		pi.draw( "BR48" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R3 C4 R3 C15 F D BU4 BL6 C4 L R U R D" );
+		pi.draw( "U2 C0 L2 D BD3 C6 D" );
+
+		pi.draw( "BR20 BD20" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R3 C4 R3 C15 F D BU4 BL6 C4 L R U R D" );
+		pi.draw( "U2 C0 L2 D BD3 C6 D" );
+
+		pi.draw( "BU20" );
+		pi.draw( "C6 U2 E2 R G2 D2 R U2 E2 G R3 C4 R3 C15 F D BU4 BL6 C4 L R U R D" );
+		pi.draw( "U2 C0 L2 D BD3 C6 D" );
+
+		pi.draw( "BL10 BU200" );
+		pi.draw( "C15 E7 R5 F7 R5 E7 R5 F7 R5 E7 R5 F7" );
+		pi.draw( "D15 G7 L5 H7 L5 G7 L5 H7 L5 G7 L5 H7 U15" );
+		pi.draw( "BR5 BD15 P7,15" );
+
+		pi.draw( "BL180" );
+		pi.draw( "C15 E7 R5 F7 R5 E7 R5 F7 R5 E7 R5 F7" );
+		pi.draw( "D15 G7 L5 H7 L5 G7 L5 H7 L5 G7 L5 H7 U15" );
+		pi.draw( "BR5 BD15 P7,15" );
+		$.render();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Point 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "point_01"
+			name = "point 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../../build/qbs.min.js"></script>
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen( "200x200" );
+		$.setColor(2);
+		$.pset(50, 50);
+		var c = $.point(50, 50);
+		$.setColor(15);
+		$.print("Color value at 50,50: " + c);
+		$.render();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Offkey 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "offkey_02"
+			name = "offkey 02"
+			width = 300
+			height = 200
+			commands = """
+				KP "Control"
+				KP "z"
+				KD "Control"
+				KD "z"
+				KU "Control"
+				KU "z"
+				KP "Control"
+				KP "z"
+				KD "Control"
+				KD "z"
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		$.screen( "300x200" );
+		$.print( "Press key Ctrl+Z." );
+		$.render();
+		$.onkey( [ "Control", "z" ], "down", press );
+		$.onkey( "Control", "down", press2 );
+		$.onkey( "Z", "down", press2 );
+	} );
+	function press( e ) {
+		$.print( "You pressed Ctrl+Z." );
+		$.render();
+		$.offkey( [ "Control", "z" ], "down", press );
+	}
+	function press2( e ) {
+		$.print( "You pressed " + e.key );
+		$.render();
+	}
+</script>
+</body>
+</html>

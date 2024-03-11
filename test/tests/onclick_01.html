@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onclick 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "onclick_01"
+			name = "onclick 01"
+			width = 300
+			height = 200
+			commands = """
+				KT "Hello"
+				MV 60, 60
+				MC
+				MV 120, 60
+				MC
+				MV 45, 160
+				MC
+				KT "41"
+				MV 75, 160
+				MC
+				KT "Test"
+				MV 60, 60
+				MC
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+
+var hitbox = {
+	"x": 50,
+	"y": 50,
+	"width": 50,
+	"height": 50
+};
+
+var hitbox2 = {
+	"x": 110,
+	"y": 50,
+	"width": 50,
+	"height": 50
+};
+
+$.screen( "300x200" );
+
+var hitbox3 = {
+	"x": 35,
+	"y": 150,
+	"width": 20,
+	"height": 20
+};
+
+var hitbox4 = {
+	"x": 65,
+	"y": 150,
+	"width": 20,
+	"height": 20
+};
+
+drawBox( hitbox );
+drawBox( hitbox2 );
+drawBox( hitbox3 );
+drawBox( hitbox4 );
+
+$.onclick( clickOne, false, hitbox, "button1" );
+$.onclick( clickTwo, false, hitbox2, { "name": "button2", "val": 7 } );
+$.onclick( clickThree, true, hitbox3, "button3" );
+$.onclick( clickFour, true, hitbox4, "button4" );
+
+$.input( "Enter your name: ", function ( data ) {
+	$.print( data );
+} );
+$.input( "Enter your age: ", function ( data ) {
+	$.print( data );
+}, true, true );
+
+function clickOne( data, customData ) {
+	console.log( data, customData );
+	$.setColor( 2 );
+	drawBox( hitbox );
+
+	$.setColor( 7 );
+	drawBox( hitbox2 );
+}
+
+function clickTwo( data, customData ) {
+	console.log( data, customData );
+	$.setColor( 7 );
+	drawBox( hitbox );
+
+	$.setColor( 1 );
+	drawBox( hitbox2 );
+
+	$.setColor( 7 );
+}
+
+function clickThree( data, customData ) {
+	console.log( data, customData );
+	$.offclick( clickOne, false, hitbox );
+	$.offclick( clickTwo, false, hitbox2 );
+	$.setColor( 4 );
+	drawBox( hitbox3 );
+	$.cancelInput();
+	$.print( "" );
+	$.print( "Click boxes are turned off!" );
+}
+
+function clickFour( data, customData ) {
+	console.log( data, customData );
+	$.offclick( clickOne, false, hitbox );
+	$.offclick( clickTwo, false, hitbox2 );
+	$.offclick( clickThree, true, hitbox3 );
+	$.setColor( 4 );
+	drawBox( hitbox4 );
+	$.cancelInput();
+	$.print( "" );
+	$.print( "Click boxes are turned off!" );
+	$.print( "All inputs have been cancelled" );
+}
+
+
+function drawBox( box ) {
+	$.rect( box.x, box.y, box.width, box.height );
+}
+
+</script>
+</body>
+</html>

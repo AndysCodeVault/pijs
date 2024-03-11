@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onmouse 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "onmouse_02"
+			name = "onmouse 02"
+			width = 320
+			height = 200
+			commands = """
+				MV 35, 35
+				MD
+				MV 115, 115, 5
+				MU
+				MV 150, 10
+				MD
+				MV 35, 115
+				MU
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var isDrawing = false;
+	var hitbox = {
+		x: 25, y: 25, width: 100, height: 100
+	};
+	$.screen( "320x200" );
+	$.set( { "enableContextMenu": false } );
+	$.startMouse();
+	$.setPinchZoom( false );
+	$.rect( hitbox.x - 1, hitbox.y - 1, hitbox.width, hitbox.height );
+	$.render();
+	$.setColor( 2 );
+	
+	$.onmouse( "down", function ( data ) {
+		$.pset( data.x, data.y );
+		$.render();
+		isDrawing = true;
+	}, false, hitbox );
+	$.onmouse( "move", function ( data ) {
+		if( isDrawing ) {
+			data.x = pi.util.clamp( data.x, hitbox.x, hitbox.x + hitbox.width - 2 );
+			data.y = pi.util.clamp( data.y, hitbox.y, hitbox.y + hitbox.height - 2 );
+			data.lastX = pi.util.clamp( data.lastX, hitbox.x, hitbox.x + hitbox.width - 2 );
+			data.lastY = pi.util.clamp( data.lastY, hitbox.y, hitbox.y + hitbox.height - 2 );
+			$.line( data.x, data.y, data.lastX, data.lastY );
+			$.render();
+		}
+	}, false, hitbox );
+	$.onmouse( "up", function ( data ) {
+		isDrawing = false;
+	}, false );
+} );
+</script>
+</body>
+</html>

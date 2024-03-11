@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ellipse 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ellipse_01"
+			name = "ellipse 01"
+			width = 300
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready(function () {
+	$.screen( "300x200" );
+	$.setColor(57);
+	$.ellipse(267, 166, 25, 15);
+	$.render();
+	$.setColor(55);
+	$.ellipse(165, 13, 33, 6);
+	$.render();
+	$.setColor(86);
+	$.ellipse(244, 52, 8, 9);
+	$.render();
+	$.setColor(96);
+	$.ellipse(149, 128, 17, 7);
+	$.render();
+	$.setColor(81);
+	$.ellipse(113, 118, 41, 18);
+	$.render();
+	$.setColor(78);
+	$.ellipse(195, 51, 33, 15);
+	$.render();
+	$.setColor(17);
+	$.ellipse(168, 87, 63, 119);
+	$.render();
+	$.setColor(53);
+	$.ellipse(56, 95, 44, 165);
+	$.render();
+	$.setColor(34);
+	$.ellipse(190, 68, 227, 43);
+	$.render();
+	$.setColor(40);
+	$.ellipse(242, 58, 155, 35);
+	$.render();
+});
+</script>
+</body>
+</html>

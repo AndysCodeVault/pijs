@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Circle 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "circle_01"
+			name = "circle 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen("100x100");
+		$.circle(50, 50, 25);
+		$.render();
+	});
+</script>
+</body>
+</html>

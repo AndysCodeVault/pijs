@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "draw_01"
+			name = "draw 01"
+			width = 320
+			height = 224
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		pi.screen( "320x224" );
+		pi.pset(160, 112);
+		pi.draw( "BH10" );
+		pi.draw( "C15 U20 R40 D40 L40 U20" );
+		pi.render();
+		pi.draw( "BR10 P2,15" );
+		pi.render();
+		pi.draw( "BD12 BL5" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BU12 BR7" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BU12 BL7" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BU10 BR8" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BD10 BR7" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BD12 BR" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.draw( "BU5 BL17" );
+		pi.draw( "C9 U2 G2 L C15 NU4 BR3 C9 U2 R D2 R U2 D C10 R D L R D R U R U L" );
+		pi.draw( "BU2 BL2 C6 L U L R3 L UC0 L BD6 BL C9 D2 R C8 U2 C9 R D2" );
+		pi.render();
+	});
+</script>
+</body>
+</html>

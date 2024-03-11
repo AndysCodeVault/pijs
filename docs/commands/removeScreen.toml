@@ -1,0 +1,11 @@
+name = "removeScreen"
+description = "Removes the active screen from memory and the DOM."
+isScreen = true
+parameters = [ ]
+category = "graphics"
+example = """
+$.screen( "300x200" );
+$.setColor( 5 );
+$.rect( 25, 25, 150, 100, 2 );
+$.removeScreen();
+"""

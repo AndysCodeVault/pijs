@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pos & PosPx 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "pos_01"
+			name = "pos & posPx 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen( "200x200" );
+		$.setFont(1);
+		$.setColor(15);
+		$.setPos(0, 0);
+		for(var i = 0; i < 25; i++) {
+			$.print(i);
+		}
+		$.setPos(1, 0);
+		for(var i = 1; i < 33; i++) {
+			$.print(i % 10, true);
+		}
+		$.setColor(2);
+		$.setPos(1, 2);
+		$.print($.getPos().col + ", " + $.getPos().row);
+
+		$.setColor(3);
+		$.setPos(6, 5);
+		$.print($.getPos().col + ", " + $.getPos().row);
+
+		$.setColor(4);
+		$.setPos(28, 1);
+		$.print($.getPos().col + ", " + $.getPos().row);
+
+		$.setColor(5);
+		$.setPos(27, 22);
+		$.print($.getPos().col + ", " + $.getPos().row);
+
+		$.setColor(6);
+		$.setPos(15, 15);
+		$.print($.getPos().col + ", " + $.getPos().row);
+
+		$.setColor(9);
+		$.setPos(15, 16);
+		$.print($.getPosPx().x + ", " + $.getPosPx().y);
+		$.render();
+	});
+</script>
+</body>
+</html>

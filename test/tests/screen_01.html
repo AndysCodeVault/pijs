@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 01 - Fullscreen - Fullsize</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_01"
+			name = "Fullscreen Canvas - Fullsize"
+			width = 640
+			height = 400
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+	</head>
+<body>
+<script>
+	pi.screen();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+name = "offgamepad"
+isScreen = false
+parameters = [ "gamepadIndex", "mode", "item", "fn" ]
+description = """
+Removes a gamepad event created by the ongamepad command.
+"""
+pdata = [
+	"The index of the gamepad.",
+	"""The event mode must be one of the following strings: connect, disconnect, axis,\
+		pressed, touched, pressReleased, touchReleased.""",
+	"The index of the button or axis for the event. Use the string 'any' for any button or axis.",
+	"The function to be called back for the event."
+]
+seeAlso = [
+	"ingamepads", "ongamepad", "stopGamepads"
+]
+category = "gamepad"
+example = """
+$.screen( "300x300" );
+$.print( "Press button 3 to stop" );
+$.ongamepad( 0, "pressed", "any", pressButton );
+$.ongamepad( 0, "pressed", 3, stop );
+
+// Press button function
+function pressButton( btn ) {
+	console.log( btn );
+	$.print( "Button " + btn.index + " pressed" );
+}
+
+// Stop function
+function stop() {
+	$.offgamepad( 0, "pressed", "any", pressButton );
+	$.offgamepad( 0, "pressed", 3, stop );
+	$.print( "Stopped" );
+}
+"""

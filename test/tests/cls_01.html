@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cls 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "cls_01"
+			name = "cls 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen( "200x200" );
+		$.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		$.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		$.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		$.print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		$.setColor(10);
+		$.draw("r10d10");
+		$.draw("r10d10");
+		$.render();
+		$.cls();
+		$.print("All Clear");
+		$.draw("d9r54");
+		$.draw("u9l54");
+		$.render();
+		$.cls( 0, 0, 20, 10 );
+	} ) ;
+</script>
+</body>
+</html>

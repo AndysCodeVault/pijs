@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Set 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "set_01"
+			name = "set 01"
+			width = 250
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+var font = $.loadFont( "images/font-8x14.png", 8, 14 );
+$.set( {
+	"defaultPal": [ 
+		"#000000", "#FFFFFF", "#FF0000", "#00FF00",
+		"#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"
+	],
+	"defaultFont": font
+} );
+$.ready( function () {
+	var s1 = $.screen( "100x100" );
+	var s2 = $.screen( "100x100" );
+	$.set( {
+		"screen": s1,
+		"pixelMode": true,
+		"bgColor": 3,
+		"containerBgColor": 6,
+		"color": [ 32, 78, 99 ],
+		"pen": {
+			"pen": "circle",
+			"size": 3,
+			"noise": 35
+		},
+		"palColor": {
+			"index": 3,
+			"color": [ 34, 12, 7 ]
+		},
+		"pos": {
+			"col": 1,
+			"row": 2
+		}
+	} );
+	$.print( "Good Font" );
+	$.pset( 50, 50 );
+	$.setColor( 3 );
+	$.pset( 75, 75 );
+	$.set( {
+		"screen": s2,
+		"bgColor": 0,
+		"color": 2 
+	} );
+	$.pset( 5, 9 );
+	$.setColor( 1 );
+	$.set( {
+		"font": 1,
+		"wordBreak": false
+	} );
+	$.print( "Hello World! Lightning fast fox jumped." );
+	$.set( {
+		"posPx": { "x": 90, "y": 90 }
+	} );
+	$.print( "Z" );
+	$.render();
+} );
+</script>
+</body>
+</html>

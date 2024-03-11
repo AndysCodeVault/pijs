@@ -1,0 +1,16 @@
+name = "filterImg"
+description = "Filters a screens colors."
+isScreen = true
+parameters = [ "filter" ]
+pdata = [ "Function to be called on each pixel." ]
+seeAlso = [ "setColor" ]
+category = "graphics"
+example = """
+$.screen("300x200");
+$.circle(150, 100, 50, "red");
+$.filterImg(function (color, x, y) {
+	color.r = color.r - Math.round( Math.tan( ( x + y ) / 10 ) * 128 );
+	color.g = color.g + Math.round( Math.cos( x / 7 ) * 128 );
+	color.b = color.b + Math.round( Math.sin( y / 5 ) * 128 );
+	return color;
+});"""

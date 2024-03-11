@@ -1,0 +1,4 @@
+name = "util.rgbToColor"
+isScreen = false
+isUtil = true
+parameters = [ ]

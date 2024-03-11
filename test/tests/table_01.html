@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Table 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "table_01"
+			name = "table 01"
+			width = 300
+			height = 210
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+
+var $screen, data, format;
+
+data = [
+	[ "One", "2", "3", "FourSandwhiches", "EggMcMuffins", "6a" ],
+	[ "Hotdogs", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+];
+format = [
+	"*-----------*---*---*---*----*",
+	"|           |   |   |V  |V   |",
+	"*----*------*---*---*   |    |",
+	"|    |      |       |   |    |",
+	"|    *------*       |   |    |",
+	"*----*      |       |   |    |",
+	"|    |      |       |   |    |",
+	"*----*------*-------*---*----*"
+];
+$screen = $.screen( { "aspect": "300x210", "isMultiple": true } );
+$screen.setColor( 2 );
+$screen.setFont( 1 );
+$screen.print( "12345678901234567890123456789012345678901234567890" );
+$screen.setPos( 18, 2 );
+$screen.printTable( data, format, null, false );
+$screen.printTable( data, format, null, true );
+$screen.printTable( data, null, null );
+$screen.render();
+
+</script>
+</body>
+</html>

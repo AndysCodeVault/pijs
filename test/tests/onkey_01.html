@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onkey 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "onkey_01"
+			name = "onkey 01"
+			width = 220
+			height = 200
+			commands = """
+				KP "A"
+				SL "#turn"
+				MC
+				SL "canvas"
+				KP "B"
+				KP "C"
+				SL "#turn"
+				MC
+				DL 100
+				SL "#turn"
+				DL 100
+				DL 10
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+
+			#screen {
+				width: 200px;
+				height: 100px;
+			}
+		</style>
+	</head>
+<body>
+<div id="screen"></div>
+<input type="button" value="Turn on keyboard" id="turn" />
+<script>
+	$.screen( "200x100", "screen" );
+	$.print( "Click button below to turn on keyboard event listeners." );
+	$.onkey( "any", "down", function ( key ) {
+		$.print( "You pressed " + key.key + "!" );
+	} );
+	$.stopKeyboard();
+
+	var turn = document.getElementById( "turn" );
+	var isOn = false;
+	turn.onclick = function () {
+		if( isOn ) {
+			turn.value = "Turn on keyboard";
+			$.stopKeyboard();
+			$.print( "Keyboard turned off." );
+		} else {
+			turn.value = "Turn off keyboard";
+			$.startKeyboard();
+			$.print( "Keyboard turned on." );
+		}
+		isOn = !( isOn );
+	}
+
+</script>
+</body>
+</html>

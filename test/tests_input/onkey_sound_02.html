@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onkey & Sound 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "onkey_sound_02"
+			name = "onkey and sound 02"
+			width = 600
+			height = 300
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	var sound1, sound2;
+	var step = 1;
+	sound1 = $.createAudioPool( "sounds/RECRUITS.wav", 3 );
+	sound2 = $.createAudioPool( "sounds/TEST.wav", 3 );
+
+	//sound = $.loadSound( "../test/tests_input/sounds/star.wav", 6 );
+	$.ready( function () {
+		$.screen( "600x300" );
+		$.print(
+			"1. Two sounds will play. They will " +
+			"stop after 2.5 seconds."
+		);
+		$.print(
+			"2. Two sounds will play but be only the " +
+			" first will stop after 2.5 seconds."
+		);
+		$.print( "3. Any subsequent steps will play the first sound pool." );
+		$.print( "Press any key to start." );
+		$.render();
+		$.onkey( "any", "down", start );
+	} );
+
+	function start() {
+		if( step === 1 ) {
+			$.print( "Step 1 - 2 songs playing" );
+			$.render();
+			$.playAudioPool( sound1, 0.25, 3.5, 4.5 );
+			setTimeout( function () {
+				$.playAudioPool( sound2, 0.5, 0 );
+			}, 500 );
+			setTimeout( function () {
+				$.stopAudioPool();
+				step = 2;
+				$.print( "Step 1 - 2 songs stopped" );
+				$.render();
+			}, 2500 );
+		} else if( step === 2 ) {
+			$.print( "Step 2 - 2 songs playing" );
+			$.render();
+			$.playAudioPool( sound1, 0.25, 3.5, 4.5 );
+			setTimeout( function () {
+				$.playAudioPool( sound2, 0.5, 0 );
+			}, 500 );
+			setTimeout( function () {
+				$.stopAudioPool( sound1 );
+				step = 3;
+				$.print( "Step 2 - 1 song stopped" );
+				$.render();
+			}, 2500 );
+		} else {
+			$.playAudioPool( sound1, 0.25, 3.5, 4.5 );
+			$.print( "Sound Started" );
+			$.render();
+		}
+	}
+</script>
+</body>
+</html>

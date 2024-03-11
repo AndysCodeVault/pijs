@@ -1,0 +1,4 @@
+name = "util.rgbToHex"
+isScreen = false
+isUtil = true
+parameters = [ ]

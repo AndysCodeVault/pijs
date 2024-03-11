@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/-->
+	<title>Test App</title>
+	<script src="../test/libs/seedrandom.js"></script>
+	<script src="pi.js"></script>
+	<script src="pi-util.js"></script>
+	<script src="pi-keyboard.js"></script>
+	<script src="pi-gamepad.js"></script>
+	<script src="pi-font.js"></script>
+	<script src="pi-screen.js"></script>
+	<script src="pi-screen-mouse.js"></script>
+	<script src="pi-screen-touch.js"></script>
+	<script src="pi-screen-commands.js"></script>
+	<script src="pi-screen-helper.js"></script>
+	<script src="pi-screen-graphics.js"></script>
+	<script src="pi-screen-paint.js"></script>
+	<script src="pi-screen-bezier.js"></script>
+	<script src="pi-screen-images.js"></script>
+	<script src="pi-screen-print.js"></script>
+	<script src="pi-screen-table.js"></script>
+	<script src="pi-screen-draw.js"></script>
+	<script src="pi-sound.js"></script>
+	<script src="pi-play.js"></script>
+	<script src="fonts/font-data.js"></script>
+	<script src="pi-pal.js"></script>
+	<script src="pi-init.js"></script>
+	<style>
+		html, body {
+			color: white;
+			background-color: blue;
+			margin: 10px;
+		}
+		pre {
+			width: 100%;
+			color: white;
+			font-size: 14px;
+		}
+		textarea {
+			width: 800px;
+			height: 300px;
+		}
+		#screen {
+			width: 600px;
+			height: 300px;
+		}
+	</style>
+</head>
+<body>
+<script>
+
+Math.seedrandom( 'constant' );
+
+$.screen("300x200");
+var pal = $.getDefaultPal();
+$.setColor( 4 );
+$.print( pal[ 4 ].s );
+</script>
+</body>
+</html>

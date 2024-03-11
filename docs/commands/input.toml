@@ -1,0 +1,36 @@
+name = "input"
+isScreen = true
+parameters = [
+  "prompt",
+  "callback",
+  "isNumber",
+  "isInteger",
+  "allowNegative",
+  "onscreenKeyboard"
+]
+description = """
+Shows a prompt on screen and allows a user type in a string. The prompt is ended when the user
+presses the return key. There are two ways to get the data returned. The function returns a
+promise that will pass the response data. You can also pass a callback function which will get
+called when the enter key is pressed.
+"""
+pdata = [
+	"[OPTIONAL] The text that will display when the user is entering text.",
+	"[OPTIONAL] A function you can pass which will get called when the user presses the return key.",
+	"[OPTIONAL] Limit the data to numeric data only.",
+	"[OPTIONAL] Limit the data to integer values only.",
+	"[OPTIONAL] A boolean that indicates if negative numbers are allowed.",
+	"[OPTIONAL] A string value that can specify an onscreen keyboard valid values include: \"auto\", \"always\", \"none\"."
+]
+seeAlso = [ "cancelInput", "inkey", "setInputCursor" ]
+category = "keyboard"
+returns = "A promise that will return the users response."
+example = """
+$.screen( "300x200" );
+askQuestions();
+async function askQuestions() {
+	var name = await $.input( "What is your name? " );
+	var age = await $.input( "How old are you? ", null, true, true, false, "always" );
+	$.print( "Your name is " + name + " you are " + age + " years old." );
+}
+"""

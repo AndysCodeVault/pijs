@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ready 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ready_01"
+			name = "ready 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.screen( "200x200" );
+	$.circle( 150, 100, 50, "red" );
+	$.filterImg( function ( color, x, y ) {
+		let z = x + y;
+		color.r = color.r - Math.round( Math.tan( z / 10 ) * 128 );
+		color.g = color.g + Math.round( Math.cos( x / 7 ) * 128 );
+		color.b = color.b + Math.round( Math.sin( y / 5 ) * 128 );
+		
+		return color;
+	} );
+</script>
+<script>
+	$.ready( function () {
+		$.line( 10, 10, 50, 50 );
+	} );
+</script>
+<script>
+	$.ready( function () {
+		$.circle( 100, 100, 50, "blue" );
+	} );
+</script>
+<script>
+	$.loadImage( "images/thief.png", "thief" );
+	$.ready( function () {
+		$.drawImage( "thief", 10, 10 );
+	} );
+</script>
+</body>
+</html>

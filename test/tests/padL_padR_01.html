@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PadL & PadR 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "padL_padR_01"
+			name = "padL_padR_01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		var border = $.screen("320x220");
+		var inner = $.screen("300x200", null, true);
+		$.setScreen(inner);
+		$.print( $.util.padR( "Land:", 7 ) + 12 );
+		$.print( $.util.padR( "Owner:", 7 ) + "Blackbeard" );
+		$.print( $.util.padL( "", 23, "-" ) );
+		$.print( $.util.padR( "Town Value:", 16 ) + $.util.padL( 3700, 7 ) );
+		$.print( $.util.padR( "Gold:", 16 ) + $.util.padL( 1208, 7 ) );
+		$.print( $.util.padR( "Soldiers:", 16 ) + $.util.padL( 123, 7 ) );
+		$.print( $.util.padR( "Fighting Skill:", 16 ) + $.util.padL( 1200, 7 ) );
+		$.print( $.util.padR( "Population:", 16 ) + $.util.padL( 5700, 7 ) );
+		$.render();
+		$.setScreen(border);
+		$.drawImage(inner, 10, 10);
+		$.render();
+	});
+</script>
+</body>
+</html>

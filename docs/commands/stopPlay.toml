@@ -1,0 +1,19 @@
+name = "stopPlay"
+description = "Stops music created by the play command. Leave first parameter blank to stop all play tracks."
+isScreen = false
+parameters = [ "trackId" ]
+pdata = [ "[OPTIONAL] the trackId to stop playing." ]
+category = "sound"
+example = """
+var song = "sawtooth v80 MO1" + 
+	"t200l4o2mneel2el4eel2el4egl3cl8dl1el4ffl3fl8fl4fel2el8eel4edde" +
+	"l2dgl4eel2el4eel2el4egl3cl8dl1el4ffl3fl8fl4fel2el8efl4ggfdl2c";
+$.play( song );
+var timeout = setTimeout( function () {
+	$.stopPlay();
+}, 3500 );
+"""
+onclose = """
+$.stopPlay();
+clearTimeout( timeout );
+"""

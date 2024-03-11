@@ -1,0 +1,17 @@
+name = "circle"
+description = "Draws a circle on the screen."
+isScreen = true
+parameters = [ "x", "y", "radius", "fillColor" ]
+pdata = [
+  "The x coordinate of the center of the circle.",
+  "The y coordinate of the center of the circle.",
+  "The radius of the circle.",
+  "[OPTIONAL]. The fill color for the circle."
+]
+seeAlso = [
+	"arc", "bezier", "draw", "ellipse", "line", "rect", "paint", "point", "pset", "setColor"
+]
+category = "primatives"
+example = """
+$.screen("300x200");
+$.circle(150, 100, 50, "red");"""

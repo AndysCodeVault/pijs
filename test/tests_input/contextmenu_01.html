@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Contextmenu 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "contextmenu_01"
+			name = "contextmenu 01"
+			width = 350
+			height = 120
+			commands = """
+				SL "#screen1 canvas"
+				MC "right"
+				SL "#screen2 canvas"
+				MC "right"
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+			div {
+				width: 160px;
+				height: 100px;
+				display: inline-block;
+			}
+		</style>
+	</head>
+<body>
+<div id="screen1"></div>
+<div id="screen2"></div>
+<script>
+	$.ready( function () {
+		var screen1 = $.screen( "160x100", "screen1" );
+		var screen2 = $.screen( "160x100", "screen2" );
+		screen1.setEnableContextMenu( false );
+	} );
+</script>
+</body>
+</html>

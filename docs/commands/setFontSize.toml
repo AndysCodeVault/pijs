@@ -1,0 +1,20 @@
+name = "setFontSize"
+description = "Sets the font-size for bitmap fonts. Can only be used in bitmap fonts."
+isScreen = true
+parameters = [ "width", "height" ]
+pdata = [
+	"The width of the font.",
+	"The height of the font."
+]
+seeAlso = [ "loadFont", "print", "setFont" ]
+category = "print"
+example = """
+var font = $.loadFont( "/images/font-block.png", 10, 10, "ABCDFGHI" );
+$.ready( function () {
+	$.screen( "100x100" );
+	$.setFont( font );
+	$.print( "ABCD" );
+	$.setFontSize( 20, 20 );
+	$.print( "ABCD" );
+} );
+"""

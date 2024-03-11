@@ -1,0 +1,19 @@
+name = "setFont"
+description = """
+Sets a font on a screen. The font must already be loaded with the 
+loadFont command. There are several preloaded fonts that come with
+Pi.js. Font 0 = 6x6, font 1 = 6x8, font 2 = 8x8, font 3 = 8x14, font
+4 = 8x16.
+"""
+isScreen = true
+parameters = [ "fontId" ]
+pdata = [ "The id of the font to set. The default fonts loaded are." ]
+seeAlso = [ "loadFont", "print", "setDefaultFont" ]
+category = "print"
+example = """
+$.screen( "300x200" );
+for( var i = 0; i < 4; i++ ) {
+	$.setFont( i );
+	$.print( "Font - " + i );
+}
+"""

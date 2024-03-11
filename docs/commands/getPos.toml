@@ -1,0 +1,17 @@
+name = "getPos"
+description = """
+Gets the position of the print cursor and returns the coordinates. The data
+returned is an object containing a row and a column. Example: { row: 5, col: 5 }. The rows
+and columns are based on a grid system using the size of the font and not on exact pixels.
+"""
+isScreen = true
+parameters = [ ]
+seeAlso = [ "getPosPx", "print", "setPos", "setPosPx" ]
+category = "print"
+returns = "An object containing the row and col of the print cursor."
+example = """
+$.screen( "300x200" );
+$.setPos( 5, 5 );
+var pos = $.getPos();
+$.print( pos.row + ", " + pos.col );
+"""

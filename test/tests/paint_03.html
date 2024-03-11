@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Paint 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "paint_03"
+			name = "paint 03"
+			width = 256
+			height = 256
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+$.ready( function () {
+	var color = [ 0, 255, 0 ];
+	var color2 = [ 0, 87, 225 ];
+	$.screen( "256x256" );
+	$.setColor( 15 );
+	$.setPen( "pixel", 1, 35 );
+	for( i = 0; i < 128; i++ ) {
+		color[ 1 ] -= 2;
+		$.setColor( color );
+		$.rect( i, i, 255 - i * 2 + 1, 255 - i * 2 + 1 );
+	}
+	$.paint( 127, 127, color2, 0.8 );
+	$.render();
+} );
+</script>
+</body>
+</html>

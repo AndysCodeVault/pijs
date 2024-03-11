@@ -1,0 +1,4 @@
+name = "util.convertToColor"
+isScreen = false
+isUtil = true
+parameters = [ ]

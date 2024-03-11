@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Input 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "input_02"
+			name = "input 02"
+			width = 300
+			height = 210
+			commands = """
+				KT "Andy Stubbs"
+				KD "Enter"
+				SL "canvas"
+				TS 150, 105
+				TE
+				TS 45, 37
+				TE
+				TS 8, 37
+				TE
+				TS 119, 54
+				TE
+				KT "-800"
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+
+$.screen( { "aspect": "300x210", "isMultiple": true } );
+
+$.input( {
+	"prompt": "What is your name? ", 
+	"callback": function ( name ) {
+		$.print( "Hello " + name );
+	},
+	"onscreenKeyboard": "always"
+} );
+$.input( {
+	"prompt": "What is your age? ", 
+	"callback": function ( age ) {
+		$.print( "You are " + age + " years old." );
+	},
+	"onscreenKeyboard": "auto",
+	"isNumber": true,
+	"isInteger": true,
+	"allowNegative": false
+} );
+$.input( {
+	"prompt": "How much money do you have? ", 
+	"callback": function ( money ) {
+		$.print( "You have $" + money + "." );
+	},
+	"onscreenKeyboard": "auto",
+	"isNumber": true,
+	"allowNegative": true
+} );
+
+</script>
+</body>
+</html>

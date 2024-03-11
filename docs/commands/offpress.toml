@@ -1,0 +1,38 @@
+name = "offpress"
+isScreen = true
+parameters = [ "mode", "fn" ]
+description = """
+Removes an onpress event.
+"""
+pdata = [
+	"The mode must be a string and can be up, down, or move.",
+	"The function that was used to create the hitbox by the onpress command."
+]
+seeAlso = [
+	"clearEvents", "inpress", "onpress", "setPinchZoom", "startMouse", "startTouch", "stopMouse", "stopTouch"
+]
+category = [ "mouse", "touch" ]
+example = """
+$.screen( "300x200" );
+$.print( "Move mouse or touch to paint screen, click/touch up to stop." );
+$.onpress( "move", pressMove );
+$.onpress( "up", pressStop, true );
+
+// Press move function
+function pressMove( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Press stop function
+function pressStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.offpress( "move", pressMove );
+}
+"""

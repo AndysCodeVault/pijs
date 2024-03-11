@@ -1,0 +1,22 @@
+name = "createAudioPool"
+description = """
+	Creates a group of audio players that can play sounds. Audio pools are useful if you want to
+	play a sound multiple times without reloading it each time. The number of audio players you
+	specify determines how many sounds you can play simultanously. If you only want to play one
+	sound at a time set 1 for the poolSize."""
+isScreen = false
+parameters = [ "src", "poolSize" ]
+pdata = [
+	"The source of the audio file.",
+	"[OPTIONAL] The number of audio players."
+]
+seeAlso = [
+	"deleteAudioPool", "playAudioPool", "setVolume", "stopAudioPool"
+]
+category = "sound"
+example = """
+var bombPool = $.createAudioPool( "/sounds/bomb.wav", 1 );
+$.ready( function () {
+	$.playAudioPool( bombPool );
+} );
+"""

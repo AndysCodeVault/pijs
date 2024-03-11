@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ontouch 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ontouch_01"
+			name = "ontouch 01"
+			width = 320
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var last = {x: 0, y: 0};
+	var isDrawing = false;
+	$.screen( "320x200" );
+	$.startTouch();
+	$.setPinchZoom( false );
+
+	var corner = $.get(0, 0, 8, 14);
+	$.ontouch( "start", function ( touches ) {
+		var i, touch;
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			if( touch === undefined ) {
+				debugger;
+			}
+			$.pset( touch.x, touch.y );
+		}
+		$.render();
+	} );
+	$.ontouch( "move", function ( touches ) {
+		var i, touch;
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			if( touch === undefined ) {
+				debugger;
+			}
+			if( touches[ touch.id ] ) {
+				$.line( touch.x, touch.y, touches[ touch.id ].x, touches[ touch.id ].y );
+			}
+		}
+		$.render();
+	});
+	$.ontouch( "end", function ( touches ) {
+		var i, touch;
+		for( i = 0; i < touches.length; i++ ) {
+			touch = touches[ i ];
+			if( touch === undefined ) {
+				debugger;
+			}
+			if( touches[ touch.id ] ) {
+				$.line( touch.x, touch.y, touches[ touch.id ].x, touches[ touch.id ].y );
+			}
+		}
+		$.render();
+	} );
+} );
+</script>
+</body>
+</html>

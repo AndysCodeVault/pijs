@@ -1,0 +1,18 @@
+name = "setPosPx"
+description = "Sets the position of the print cursor using pixels."
+isScreen = true
+parameters = [ "x", "y" ]
+pdata = [
+	"The horziontal coordinate for the new print cursor position.",
+	"The vertical coordinate for the new print cursor position."
+]
+seeAlso = [ "getPos", "getPosPx", "print", "setPos" ]
+category = "print"
+example = """
+$.screen( "300x200" );
+$.setPosPx( 5, 10 );
+$.print( "X" );
+$.setPosPx( 10, 15 );
+$.print( "Y" );
+"""
+

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onpress 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "onpress_01"
+			name = "onpress 01"
+			width = 220
+			height = 200
+			commands = """
+				DL 10
+				SL "#screen canvas"
+				TS 30, 40
+				TM 200, 100, 50
+				TE
+				SL ""
+				MV 200, 40
+				MD
+				MV 30, 100, 50
+				MU
+				SL "#turn"
+				MC
+				SL "#screen canvas"
+				TS 30, 60
+				TM 200, 60, 50
+				TE
+				SL ""
+				MV 30, 50
+				MD
+				MV 200, 50, 50
+				MU
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				color: white;
+				background-color: blue;
+				margin: 10px;
+			}
+			#screen {
+				width: 200px;
+				height: 100px;
+			}
+		</style>
+	</head>
+<body>
+
+<div id="screen"></div>
+<input type="button" value="Turn off press" id="turn" />
+<script>
+	var isDrawing = false;
+	$.screen( "200x100", "screen" );
+	$.print( "Click button below to turn on/off press event listeners." );
+	$.onpress( "down", function ( data ) {
+		if( data.buttons > 0 ) {
+			$.pset( data.x, data.y );
+		}
+	} );
+	$.onpress( "move", function ( data ) {
+		if( data.buttons > 0 ) {
+			$.pset( data.x, data.y );
+		}
+	} );
+
+	var turn = document.getElementById( "turn" );
+	var isOn = true;
+	turn.onclick = function () {
+		if( isOn ) {
+			turn.value = "Turn on press";
+			$.stopTouch();
+			$.stopMouse();
+			$.print( "Press turned off." );
+		} else {
+			turn.value = "Turn off press";
+			$.startTouch();
+			$.startMouse();
+			$.print( "Press turned on." );
+		}
+		isOn = !( isOn );
+	};
+</script>
+
+</body>
+</html>

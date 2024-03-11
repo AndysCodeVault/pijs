@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Layers 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "layers_01"
+			name = "layers 01"
+			width = 300
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		var screen1, screen2;
+
+		// Draw Screen 1
+		screen1 = $.screen( "300x200" );
+		$.setColor("#000000");
+		$.setBgColor("rgba(0, 0, 0, 0)");
+		$.print("Screen # " + screen1.id );
+		$.setColor(1);
+		$.circle(150, 100, 50);
+		$.paint(150, 100, 2);
+		$.render();
+
+		// Draw Screen 2
+		screen2 = $.screen( "300x200" );
+		$.setBgColor("rgba(0, 0, 0, 0)");
+		$.print("");
+		$.print("Screen # " + screen2.id );
+		$.setColor(4);
+		$.line(50, 50, 250, 125);
+		$.line(250, 125, 75, 100);
+		$.line(75, 100, 50, 50);
+		$.paint(55, 55, 5);
+		$.render();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw Sprite 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "drawSprite_01"
+			name = "drawSprite 01"
+			width = 320
+			height = 200
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+	<img id="thief" src="images/thief.png" style="display:none"/>
+	<img id="ship" src="images/spaceship_0.png" style="display:none"/>
+	<script>
+		$.loadSpritesheet( "images/squares.png", "squares", 32, 32, 0 );
+		$.loadSpritesheet(
+			document.getElementById( "thief" ), "thief", 32, 32, 1
+		);
+		$.loadImage(
+			document.getElementById( "ship" ), "ship"
+		);
+		$.loadImage(
+			document.getElementById( "thief" ), "thieves"
+		);
+		$.loadImage(
+			document.getElementById( "thief" ), "thieves2"
+		);
+		$.ready( function () {
+			$.screen( "320x200" );
+			$.drawSprite( "squares", 0, 0, 0 );
+			$.drawSprite( "squares", 1, 32, 32 );
+			$.drawSprite( "squares", 2, 64, 64 );
+			$.drawSprite( "squares", 3, 96, 96 );
+			$.drawSprite( "squares", 4, 128, 128 );
+
+			$.setColor( 1 );
+			var x = 5;
+			var y = 5;
+			var a = 0;
+			for( var i = 0; i < 40; i += 1 ) {
+				$.rect( x, y, 32, 32 );
+				$.drawSprite( "thief", i % 12, x + 16, y + 16, a, 0.5, 0.5 );
+				x += 40;
+				if( x > 320 ) {
+					x = 5;
+					y += 40;
+				}
+				if( i > 8 ) {
+					a += 45;
+				}
+			}
+
+			$.drawSprite( "thief", 0, 160, 100, 0, 0.5, 0.5, 255, 2, 2 );
+		} );
+	</script>
+</body>
+</html>

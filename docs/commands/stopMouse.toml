@@ -1,0 +1,39 @@
+name = "stopMouse"
+description = "Stops tracking mouse input."
+isScreen = true
+parameters = [ ]
+seeAlso = [ "offmouse", "onmouse", "startMouse" ]
+category = "mouse"
+example = """
+var isMouseEnabled = true;
+$.screen( "300x200" );
+$.onkey( "m", "down", function () {
+	isMouseEnabled = !isMouseEnabled;
+	if( isMouseEnabled ) {
+		$.startMouse();
+	} else {
+		$.stopMouse();
+	}
+	drawScreen();
+} );
+$.onmouse( "move", function ( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( pos.col );
+	$.print( "+", true );
+} );
+
+drawScreen();
+
+function drawScreen() {
+	$.cls();
+	$.setColor( 7 );
+	$.print();
+	$.print( " Press 'm' key to toggle mouse" );
+	$.print( isMouseEnabled ? " Mouse Enabled" : " Mouse Disabled" );
+	$.setPen( "square", 2 );
+	$.setColor( isMouseEnabled ? 2 : 4 );
+	$.rect( 0, 0, 300, 200 );	
+}
+"""

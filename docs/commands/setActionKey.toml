@@ -1,0 +1,42 @@
+name = "setActionKey"
+description = """
+Disables the default behavior for a key.  This is helpful if you 
+want to use a key that has default behaviour that the web browser
+you want to disable.  Such as if you want to use the function keys
+in your game/app you would need to call setActionKey to disable the
+web browser default behaviour.
+"""
+isScreen = false
+parameters = [ "key", "isEnabled" ]
+pdata = [
+	"The key you wish to disable default behaviour.",
+	"[OPTIONAL] If set to true or left blank then it disables default behaviour. False re-enables default behaviour."
+]
+category = "keyboard"
+example = """
+$.screen( "200x200" );
+$.setActionKey( 17 );
+$.setActionKey( "KeyS" );
+var interval = setInterval( function () {
+	var keys, key;
+	keys = $.inkey();
+	$.cls();
+	$.print( "Press Ctrl+S." );	
+	key = $.inkey( 17 );
+	if( key ) {
+		$.print( "Control key is pressed." );
+	} else {
+		$.print( "Control key is not pressed." );
+	}
+	for( key in keys ) {
+		$.print( "--------------------------" );
+		$.print( "key:      " + keys[ key ].key );
+		$.print( "location: " + keys[ key ].location );
+		$.print( "code:     " + keys[ key ].code );
+		$.print( "keyCode:  " + keys[ key ].keyCode );
+	}
+}, 60 );
+"""
+onclose = """
+clearInterval( interval );
+"""

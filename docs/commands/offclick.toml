@@ -1,0 +1,44 @@
+name = "offclick"
+isScreen = true
+parameters = [ "fn" ]
+description = """
+Removes a hitbox from the screen created by the onclick command.
+"""
+pdata = [
+	"The function that was used to create the hitbox by the onclick command."
+]
+seeAlso = [
+	"onclick"
+]
+category = "mouse"
+example = """
+$.screen( "300x200" );
+var hitBox = {
+	"x": 25,
+	"y": 25,
+	"width": 100,
+	"height": 100
+};
+
+// Draw a green box
+$.setColor( 2 );
+$.rect( hitBox );
+
+// Setup the onclick function for the hitBox
+$.onclick( clickBox, false, hitBox );
+
+// Click function
+function clickBox() {
+
+	// Draw a red box
+	$.setColor( 4 );
+	$.rect( hitBox );
+	$.offclick( clickBox );
+
+	// Wait a second then clear the box
+	setTimeout( function () {
+		$.setColor( 0 );
+		$.rect( hitBox );
+	}, 1000 );
+}
+"""

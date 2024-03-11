@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>View 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "view_01"
+			name = "view 01"
+			width = 150
+			height = 100
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		var screen0 = $.screen("150x100");
+		$.setContainerBgColor("#000000");
+		$.paint(1, 1, 1);
+		$.render();
+		var screen1 = $.screen("120x70", null, true);
+		$.setWordBreak(false);
+		$.setColor(15);
+		$.paint(1, 1, 8);
+		$.print("This is an excellent time to be alive; don't you think so? I like chocolate ice-cream!");
+		$.print("The quick brown fox jumped over the lazy dog.");
+		$.render();
+		$.setScreen(screen0);
+		$.drawImage(screen1, 15, 15);
+	});
+</script>
+</body>
+</html>

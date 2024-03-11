@@ -1,0 +1,45 @@
+name = "onpress"
+isScreen = true
+parameters = [ "mode", "fn", "once", "hitBox", "customData" ]
+description = """
+Creates a press event which activates on mouse or touch.
+"""
+pdata = [
+	"The mode must be a string and can be up, down, or move.",
+	"The function to callback when the event occurs.",
+	"[OPTIONAL]. A boolean if true deletes the event after being called one time.",
+	"[OPTIONAL]. A hitBox to restrict events occuring outside the box",
+	"""[OPTIONAL]. This can be used to assign data that will be passed into the callback event. \
+		This is useful if you have multiple onmouse commands that use the same callback function."""
+]
+seeAlso = [
+	"clearEvents", "inpress", "offpress", "setPinchZoom", "startMouse", "startTouch", "stopMouse", "stopTouch"
+]
+category = [ "touch", "mouse" ]
+example = """
+$.screen( "300x200" );
+$.print( 
+	"Move mouse or touch to paint screen," +
+	" click/touch up to stop."
+);
+$.onpress( "move", pressMove );
+$.onpress( "up", pressStop, true );
+
+// Press move function
+function pressMove( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Press stop function
+function pressStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.offpress( "move", pressMove );
+}
+"""

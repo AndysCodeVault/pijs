@@ -1,0 +1,45 @@
+name = "printTable"
+isScreen = true
+parameters = [ "items", "tableFormat", "borderStyle", "isCentered" ]
+description = "Prints a table on the screen."
+pdata = [
+	"An array of strings that get put into the table from top-left to bottom-right order.",
+	"""[OPTIONAL] An array of strings that creates the table shape.
+		<ul style='margin:0'>
+			<li><span class='gray'>"*"</span> Indicates a table corner.</li>
+			<li><span class='gray'>"-"</span> Indicates a table horiztontal line.</li>
+			<li><span class='gray'>"|"</span> Indicates a table vertical line.</li>
+			<li><span class='gray'>"V"</span> Inside a cell for vertical orientation of the cell.</li>
+		</ul>
+		""",
+	"[OPTIONAL] The style of borders. Must be one of the following strings single, double, singleDouble, doubleSingle, or thick.",
+	"[OPTIONAL] Horizontally centers the table."
+]
+seeAlso = [ "print" ]
+category = "print"
+returns = "An array of data with information on each cell. Includes the position of each cell in the table."
+example = """
+var data = [
+	[ "One", "2", "3", "FourSandwhiches", "EggMcMuffins", "6a" ],
+	[ "Hotdogs", "Five", "Six", "7", "8", "9" ],
+	[ "Seven", "Eight", "Nine", "a", "b", "c" ]
+];
+var format = [
+	"*-----------*---*---*---*----*",
+	"|           |   |   |V  |V   |",
+	"*----*------*---*---*   |    |",
+	"|    |      |       |   |    |",
+	"|    *------*       |   |    |",
+	"*----*      |       |   |    |",
+	"|    |      |       |   |    |",
+	"*----*------*-------*---*----*"
+];
+$.screen( "300x210" );
+$.setColor( 2 );
+$.setFont( 1 );
+$.print( "12345678901234567890123456789012345678901234567890" );
+$.setPos( 18, 2 );
+$.printTable( data, format, null, false );
+$.printTable( data, format, null, true );
+$.printTable( data, null, null );
+"""

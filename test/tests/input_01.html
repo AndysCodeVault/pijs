@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Input 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "input_01"
+			name = "input 01"
+			width = 300
+			height = 200
+			commands = """
+				DL 100
+				KT "Hello World"
+				KP "Enter"
+				KT "5"
+				KP "Enter"
+				KT "Andy"
+				KP "Enter"
+				KT "Stubbs"
+				KP "Enter"
+				KT "500"
+				KP "Enter"
+				"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	$.screen( "300x200" );
+	$.setContainerBgColor( "#000000" );
+	$.paint( 1, 1, 1 );
+	$.setColor( 15 );
+	$.render();
+	$.input( "Say something? ", function ( val ) {
+		$.print( "You said, \"" + val + "\"" );
+		getInput2();
+	} );
+	$.input(
+		"Pick a number between 1 and 10: ", function ( val ) {
+			$.print( "Your number is " + val + "." );
+		}, true, 10, false
+	);
+});
+
+async function getInput2() {
+	var first = await $.input( "First name: " );
+	var last = await $.input( "Last name: " );
+	var money = await $.input( "Money: " );
+	$.print(
+		first + " " + last + " has $" + money + "."
+	);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+name = "pset"
+isScreen = true
+parameters = [ "x", "y" ]
+pdata = [
+	"The x coordinate of the pixel to set the color.",
+  	"The y coordinate of the pixel to set the color.",
+]
+description = "Sets a pixel on the screen to the current foreground color."
+seeAlso = [ "bezier", "circle", "draw", "ellipse", "line", "rect", "paint", "point", "setColor" ]
+category = "primatives"
+example = """
+$.screen("300x200");
+$.setColor(2);
+$.pset(148, 101);
+$.pset(149, 100);
+$.pset(150, 101);
+$.pset(151, 100);
+$.pset(152, 101);"""

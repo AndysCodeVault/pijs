@@ -1,0 +1,21 @@
+name = "line"
+isScreen = true
+parameters = [ "x1", "y1", "x2", "y2" ]
+description = "Draws a line on the screen."
+pdata = [
+  "The first x coordinate of the line.",
+  "The first y coordinate of the line.",
+  "The second x coordinate of the line.",
+  "The second y coordinate of the line."
+]
+seeAlso = [
+	"arc", "bezier", "circle", "draw", "ellipse", "rect", "paint", "point", "pset", "setColor", "setPen"
+]
+category = "primatives"
+example = """
+$.screen( "300x200" );
+$.setColor( 4 );
+$.line( 15, 15, 285, 185 );
+$.setColor( 2 );
+$.line( 15, 185, 285, 15 );
+"""

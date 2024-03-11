@@ -1,0 +1,49 @@
+name = "onclick"
+isScreen = true
+parameters = [ "fn", "once", "hitBox", "customData" ]
+description = """
+Creates an area on the screen that when the user clicks in that area a function is called. In \
+order for a click event to trigger the user must move the mouse cursor over the hitbox area and
+mouse down and mouse up over that area.
+"""
+pdata = [
+	"The function that gets called when the area is clicked.",
+	"Boolean if set to true the event will be deleted after it is clicked.",
+	"[OPTIONAL]. The hitBox area for where the click event will occur. { x, y, width, height }.",
+	"""[OPTIONAL]. This can be used to assign data that will be passed into the callback event. This is \
+		useful if you have multiple onclick commands that use the same callback function."""
+]
+seeAlso = [
+	"offclick"
+]
+category = "mouse"
+example = """
+$.screen( "300x200" );
+var hitBox = {
+	"x": 25,
+	"y": 25,
+	"width": 100,
+	"height": 100
+};
+
+// Draw a green box
+$.setColor( 2 );
+$.rect( hitBox );
+
+// Setup the onclick function for the hitBox
+$.onclick( clickBox, true, hitBox );
+
+// Click function
+function clickBox() {
+
+	// Draw a red box
+	$.setColor( 4 );
+	$.rect( hitBox );
+
+	// Wait a second then clear the box
+	setTimeout( function () {
+		$.setColor( 0 );
+		$.rect( hitBox );
+	}, 1000 );
+}
+"""

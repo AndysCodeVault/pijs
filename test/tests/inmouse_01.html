@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Inmouse 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "inmouse_01"
+			name = "inmouse 01"
+			width = 160
+			height = 100
+			delay = 0
+			commands = """
+				SL "canvas"
+				DL 100
+				MV 10, 10
+				MD
+				MV 150, 90
+				MU
+				MV 10, 90
+				MD
+				MV 150, 10
+				MU
+				DL 100
+				"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		var last = { x: 0, y: 0 };
+		var isDrawing = false;
+		$.screen( "160x100" );
+		$.set( { "enableContextMenu": false } );
+		$.startMouse();
+		$.setColor( 16 );
+		$.rect( 0, 0, 8, 14 );
+		$.paint( 1, 1, 16 );
+		$.setColor( 15 );
+		var corner = $.get(0, 0, 8, 14);
+		setInterval( function () {
+			var mouse = $.inmouse();
+			$.put( corner, 0, 0 );
+			$.setPos(0, 0);
+			$.print( mouse.buttons );
+			if( mouse.buttons > 0 ) {
+				if( ! isDrawing ) {
+					$.pset( mouse.x, mouse.y );
+				} else if( mouse.x !== last.x || mouse.y !== last.y ) {
+					$.line( last.x, last.y, mouse.x, mouse.y);
+				}
+				last.x = mouse.x;
+				last.y = mouse.y;
+				isDrawing = true;
+			} else {
+				isDrawing = false;
+			}
+			$.render();
+
+			var keys = $.inkey();
+			for( i = 0; i < 10; i++) {
+				if( keys[ "Digit" + i ] ) {
+					$.setColor( i );
+				}
+			}
+
+		}, 60 );
+	} );
+</script>
+</body>
+</html>

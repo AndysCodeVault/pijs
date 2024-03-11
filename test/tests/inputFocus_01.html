@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Input Focus 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "inputFocus_01"
+			name = "inputFocus 01"
+			width = 300
+			height = 220
+			commands = """
+				DL 100
+				KT "This is a test"
+				SL "#container"
+				KT "Andy Stubbs"
+				KD "Enter"
+				TS 150, 105
+				TE
+				TS 45, 37
+				TE
+				TS 8, 37
+				TE
+				TS 119, 54
+				TE
+				KT "-800"
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+			/*div[tabIndex]:focus {
+				outline: none;
+				border: none;
+				background-color: transparent;
+				cursor: default;
+				user-select: none;
+			}*/
+		</style>
+	</head>
+	<div id="container"></div>
+<body>
+<script>
+
+$.setDefaultInputFocus( "container" );
+$.screen( { "aspect": "300x210", "isMultiple": true, "container": "container" } );
+
+$.input( {
+	"prompt": "What is your name? ", 
+	"callback": function ( name ) {
+		$.print( "Hello " + name );
+	},
+	"onscreenKeyboard": "always"
+} );
+$.input( {
+	"prompt": "What is your age? ", 
+	"callback": function ( age ) {
+		$.print( "You are " + age + " years old." );
+	},
+	"onscreenKeyboard": "auto",
+	"isNumber": true,
+	"isInteger": true,
+	"allowNegative": false
+} );
+$.input( {
+	"prompt": "How much money do you have? ", 
+	"callback": function ( money ) {
+		$.print( "You have $" + money + "." );
+	},
+	"onscreenKeyboard": "auto",
+	"isNumber": true,
+	"allowNegative": true
+} );
+
+</script>
+</body>
+</html>

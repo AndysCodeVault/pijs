@@ -1,0 +1,21 @@
+name = "setScreen"
+description = "Sets the default screen for which gaphics operations will get applied."
+isScreen = false
+parameters = [ "screen" ]
+pdata = [
+	"The id or screenObject of the screen to select."
+]
+seeAlso = [ "getScreen", "screen" ]
+category = "graphics"
+example = """
+$.screen( "300x200" );
+var spriteScreen = $.screen( "32x32", null, true );
+$.setScreen( 0 );
+$.setColor( 2 );
+$.rect( 134, 84, 33, 33 );
+$.setScreen( spriteScreen );
+$.circle( 16, 16, 16, 9 );
+$.render();
+$.setScreen( 0 );
+$.drawImage( spriteScreen, 134, 84 );
+"""

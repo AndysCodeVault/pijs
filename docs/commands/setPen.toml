@@ -1,0 +1,18 @@
+name = "setPen"
+description = "Sets the pen to use for drawing operations."
+isScreen = true
+parameters = [ "pen", "size", "noise" ]
+pdata = [
+	"A string that is either circle, square, or pixel for the shape of the pen.",
+	"A number for the size of the pen.",
+	"[OPTIONAL] Noise is either a number between 0 and 128 or an array of 4 values between 0 and 128 that represents the range of color values for red/green/blue/alpha. Noise does not work for anti-alias drawing mode."
+]
+seeAlso = [ "setBlendMode", "setPixelMode" ]
+category = "primatives"
+example = """
+$.screen( "300x200" );
+$.setPen( "circle", 5, [ 32, 16, 8, 0 ] );
+$.line( 30, 80, 270, 50 );
+$.pset( 150, 100 );
+$.draw( "BR15 D15 R100 D30 L15" );
+"""

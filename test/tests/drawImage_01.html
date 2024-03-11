@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw Image 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "drawImage_01"
+			name = "drawImage 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	var imgSrc = "images/spaceship_0.png";
+	$.loadImage(imgSrc, "ship");
+	$.ready(function () {
+		$.screen( "200x200" );
+		$.setColor(1);
+		$.line(100, 0, 100, 200);
+		$.line(0, 100, 200, 100);
+		$.drawImage("ship", 100, 100, 0, 0.5, 0.5);
+		$.drawImage("ship", 30, 50, 45, 0.5, 0.5);
+		$.drawImage("ship", 60, 50, 45, 0.5, 0.5);
+		$.drawImage("ship", 90, 50, 90, 0.5, 0.5);
+		$.drawImage("ship", 100, 150, 0, 0.5, 0.5, 255, 2, 2);
+		$.drawImage("ship", 120, 50, 135, 0.5, 0.5);
+		$.drawImage("ship", 150, 50, 180, 0.5, 0.5);
+		$.drawImage("ship", 180, 50, 225, 0.5, 0.5);
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+name = "setPixelMode"
+description = "Toggles between pixel mode and anti-aliased drawing modes."
+isScreen = true
+parameters = [ "isEnabled" ]
+pdata = [ "If set to true use the pixel mode otherwise use anit-aliased mode." ]
+seeAlso = [ "setBlendMode", "setPen" ]
+category = "graphics"
+example = """
+$.screen( "300x200" );
+$.setColor( 4 );
+$.line( 30, 80, 270, 50 );
+$.setPixelMode( false );
+$.line( 30, 120, 270, 90 );
+"""

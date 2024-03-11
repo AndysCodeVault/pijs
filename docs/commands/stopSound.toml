@@ -1,0 +1,28 @@
+name = "stopSound"
+description = "Stops sounds made from the sound command. Leave soundId blank to stop all sounds."
+isScreen = false
+parameters = [ "soundId" ]
+pdata = [ "The soundId to be stopped." ]
+category = "sound"
+example = """
+var duration = 0.05;
+var volume = 0.5;
+var decay = 0.03;
+var totalDuration = 0;
+var i;
+for( i = 0; i < 30; i++ ) {
+	$.sound(
+		240 + i * 8, duration, volume, "sawtooth", totalDuration, 0,
+		decay
+	);
+	totalDuration += duration + decay;
+}
+
+var timeout = setTimeout( function () {
+	$.stopSound();
+}, 750 );
+"""
+onclose = """
+$.stopSound();
+clearTimeout( timeout );
+"""

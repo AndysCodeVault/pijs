@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Print 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			
+			file = "print_01"
+			name = "Print 01"
+			width = 320
+			height = 200
+			delay = 1000
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+	</head>
+<body>
+	<script>
+		var msg = "";
+		var i = 0;
+		for(i = 0; i < 255; i++) {
+			msg += String.fromCharCode(i);
+		}
+		$.ready(function () {
+			$.screen("320x200");
+			$.setWordBreak(false);
+			$.print(msg);
+			$.print("Hello World!", false, true);
+			$.print("This is a great message.");
+			$.print("When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.");
+			$.render();
+		});
+	</script>
+</body>
+</html>

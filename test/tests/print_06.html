@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Print 06</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "print_06"
+			name = "Print 06"
+			width = 200
+			height = 200
+			delay = 1000
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+	</head>
+<body>
+	<script>
+		$.ready(function () {
+			$.screen( "200x200" );
+			$.print("Hello World\nHello\tAndy\\n\\tTest\\");
+			$.print("This is a really long line that has some formatting characters in it. \nThis is the second line.\n\t\t\t\t\t\t\t\t\tTest.");
+			$.render();
+		});
+	</script>
+</body>
+</html>

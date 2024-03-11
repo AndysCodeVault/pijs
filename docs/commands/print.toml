@@ -1,0 +1,27 @@
+name = "print"
+isScreen = true
+description = """
+Prints text onto the screen and moves the text cursor to the next line. Will automatically
+vertically scroll the text and screen image up when text cursor reaches the bottom of the screen.
+"""
+parameters = [ "msg", "inLine", "isCentered" ]
+pdata = [
+	"[OPTIONAL] The text message to print on the screen.",
+	"[OPTIONAL] Does not move the text cursor to the next line.",
+	"[OPTIONAL] Centers the text horizontally on the screen."
+]
+seeAlso = [
+	"cls", "getCols", "getPos", "getPosPx", "getRows", "setFont", "setFontSize", "setPos",
+	"setPosPx", "setWordBreak"
+]
+category = "print"
+example = """
+$.screen( "300x200" );
+$.print( "Welcome to PI JS", false, true );
+$.print();
+$.print( "This is a line of text." );
+$.print( "This is inline text", true );
+$.print( ". Some more inline text.", true );
+$.print();
+$.print( "The End" );
+"""

@@ -1,0 +1,17 @@
+name = "setPos"
+description = "Sets the position of the print cursor using columns and rows based on the font size."
+isScreen = true
+parameters = [ "col", "row" ]
+pdata = [
+	"The column value where to move the print cursor.",
+	"The row value where to move the print cursor."
+]
+seeAlso = [ "getPos", "getPosPx", "print", "setPosPx" ]
+category = "print"
+example = """
+$.screen( "300x200" );
+$.setPos( 5, 10 );
+$.print( "X" );
+$.setPos( 10, 15 );
+$.print( "Y" );
+"""

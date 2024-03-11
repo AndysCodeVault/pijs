@@ -1,0 +1,20 @@
+name = "getPixel"
+description = "Gets the pixel color from the screen and returns the color data."
+isScreen = true
+parameters = [ "x", "y" ]
+pdata = [ 
+	"The horizontal coordinate for the pixel",
+	"The vertical coordinate for the pixel"
+]
+seeAlso = [
+	"get", "findColor", "point", "put", "setColor"
+]
+category = "color"
+returns = "The color data { r: red, g: green, b: blue, a: alpha: s: rgbaString, s2: hexString }."
+example = """
+$.screen( "300x200" );
+$.setColor( 5 );
+$.pset( 55, 55 );
+var pixel = $.getPixel( 55, 55 );
+$.print( pixel.s );
+"""

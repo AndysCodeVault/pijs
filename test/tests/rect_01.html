@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rect 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "rect_01"
+			name = "rect 01"
+			width = 160
+			height = 100
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		$.screen("160x100");
+		$.rect( 10, 10, 141, 81 );
+		$.rect( 20, 20, 51, 61 );
+		$.rect( 90, 20, 51, 61 );
+		$.render();
+	} );
+</script>
+</body>
+</html>

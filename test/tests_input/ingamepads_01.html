@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ingamepads 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ingamepads_01"
+			name = "ingamepads 01"
+			width = 300
+			height = 300
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var x = 150;
+	var y = 150;
+	var gamepads;
+	var i, j, msg, msg2;
+
+	$.screen( "300x300" );
+	setInterval( function () {
+		$.cls();
+		$.setColor( 7 );
+		gamepads = $.ingamepads();
+		if( gamepads[ 0 ] ) {
+			i = 0;
+			if( gamepads[ i ].axes2 ) {
+				x = pi.util.clamp( x + gamepads[ i ].axes2[ 0 ], 0, 299 );
+				y = pi.util.clamp( y + gamepads[ i ].axes2[ 1 ], 0, 299 );
+				msg = "";
+				msg2 = "";
+				for( j = 0; j < gamepads[ i ].axes2.length; j++ ) {
+					msg += pi.util.padL( gamepads[ i ].axes2[ j ].toFixed( 4 ), 8 );
+					msg2 += pi.util.padL( "axis " + j, 8 ); 
+				}
+				$.print( msg2 );
+				$.print( "--------------------------------------------------" );
+				$.print( msg );
+				$.print();
+			}
+			if( gamepads[ i ].buttons ) {
+				$.print( 
+						pi.util.padL( "btn", 3 ) +
+						pi.util.padL( "press", 6 ) +
+						pi.util.padL( "touch", 6 ) +
+						pi.util.padL( "value", 7 )
+					);
+				$.print( "--------------------------------------------------" );
+				for( j = 0; j < gamepads[ i ].buttons.length; j++ ) {
+					$.print( 
+						pi.util.padL( j, 3 ) +
+						pi.util.padL( gamepads[ i ].buttons[ j ].pressed, 6 ) +
+						pi.util.padL( gamepads[ i ].buttons[ j ].touched, 6 ) +
+						pi.util.padL( gamepads[ i ].buttons[ j ].value.toFixed( 4 ), 7 )
+					);
+				}
+			}
+		}
+		
+		$.setColor( 15 );
+		$.circle( Math.floor( x ), Math.floor( y ), 10 );
+		$.pset( Math.floor( x ), Math.floor( y ) );
+
+		$.render();
+		//console.log( $.ingamepad() );
+		
+	}, 1 );
+} );
+</script>
+</body>
+</html>

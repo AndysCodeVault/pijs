@@ -1,0 +1,24 @@
+name = "stopTouch"
+description = """
+Stops the touch event listeners for the screen.
+"""
+isScreen = true
+parameters = [ ]
+seeAlso = [ "intouch", "ontouch", "setPinchZoom", "startTouch" ]
+category = "touch"
+example = """
+$.screen( "100x100" );
+$.startTouch();
+$.setPinchZoom( false );
+var count = 5;
+$.print( count + " touches left" );
+$.ontouch( "start", function ( touches ) {
+	$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+	$.print( --count + " touches left" );
+	var touch = touches[ 0 ];
+	$.pset( touch.x, touch.y );
+	if( count === 0 ) {
+		$.stopTouch();
+	}
+} );
+"""

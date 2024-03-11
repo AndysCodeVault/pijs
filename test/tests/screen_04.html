@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 04 - Divs - 320x200 - 640x480</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_04"
+			name = "Divs - 320x200 - 640x480"
+			width = 640
+			height = 480
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+	<div id="div1"></div>
+	<div>&nbsp;</div>
+	<div id="div2"></div>
+<script>
+	$.screen("320x200", document.getElementById("div1"));
+	$.screen("640x480", document.getElementById("div2"));
+</script>
+</body>
+</html>

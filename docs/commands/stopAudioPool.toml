@@ -1,0 +1,19 @@
+name = "stopAudioPool"
+description = "Stops and audio pool if it is currently playing audio."
+isScreen = false
+parameters = [ "audioId" ]
+pdata = [ "The audio id of the audio pool." ]
+category = "sound"
+example = """
+var bombPool = $.createAudioPool( "/sounds/bomb.wav", 1 );
+var timeout = 0;
+$.ready( function () {
+	$.playAudioPool( bombPool );
+	timeout = setTimeout( function () {
+		$.stopAudioPool( bombPool );
+	}, 500 );
+} );
+"""
+onclose = """
+clearTimeout( timeout );
+"""

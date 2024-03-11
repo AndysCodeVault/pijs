@@ -1,0 +1,4 @@
+name = "util.copyProperties"
+isScreen = false
+isUtil = true
+parameters = [ ]

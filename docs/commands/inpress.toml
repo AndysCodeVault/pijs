@@ -1,0 +1,25 @@
+name = "inpress"
+description = "Gets the most recent mouse or touch status."
+isScreen = true
+parameters = [ ]
+returns = "An object containing data about the mouse or touch position and press status."
+seeAlso = [
+	"inmouse", "intouch", "offmouse", "onpress", "ontouch", "onmouse", "setPinchZoom", "startMouse",
+	"startTouch", "stopMouse", "stopTouch"
+]
+category = [ "mouse", "touch" ]
+example = """
+$.screen( "4x4" );
+$.startTouch();
+$.setPinchZoom( false );
+var interval = setInterval( function () {
+	var press = $.inpress();
+	if( press.buttons > 0 ) {
+		$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+		$.pset( press.x, press.y );
+	}
+}, 50 );
+"""
+onclose = """
+clearInterval( interval );
+"""

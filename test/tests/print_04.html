@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Print 04</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "print_04"
+			name = "Print 04"
+			width = 900
+			height = 600
+			delay = 1000
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+	</head>
+<body>
+	<script>
+		var msg = "";
+		var i = 0;
+		for(i = 0; i < 255; i++) {
+			msg += String.fromCharCode(i);
+		}
+		$.ready(function () {
+			$.screen("3:2");
+			$.setWordBreak(false);
+
+			// 6x6
+			$.setFont(0);
+			$.print("6x6");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.print(msg);
+			$.print("");
+
+			// 6x8
+			$.setFont(1);
+			$.print("6x8");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.print(msg);
+			$.print("");
+
+			// 8x8
+			$.setFont(2);
+			$.print("8x8");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.print(msg);
+			$.print("");
+
+			// 8x14
+			$.setFont(3);
+			$.print("8x14");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.print(msg);
+			$.print("");
+
+			// 8x16
+			$.setFont(4);
+			$.print("8x16");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.print(msg);
+			$.render();
+		});
+	</script>
+</body>
+</html>

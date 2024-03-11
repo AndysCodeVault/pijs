@@ -1,0 +1,30 @@
+name = "bezier"
+description = "Draws a bezier curve on the screen."
+isScreen = true
+parameters = [ "xStart", "yStart", "x1", "y1", "x2", "y2", "xEnd", "yEnd" ]
+pdata = [
+  "The x coordinate of the starting point of the line.",
+  "The y coordinate of the starting point of the line.",
+  "The x coordinate of the first control point.",
+  "The y coordinate of the first control point.",
+  "The x coordinate of the second control point.",
+  "The y coordinate of the second control point.",
+  "The x coordinate of the ending point of the line.",
+  "The y coordinate of the ending point of the line."
+]
+seeAlso = [
+	"arc", "circle", "draw", "ellipse", "line", "rect", "paint", "point", "pset", "setColor"
+]
+category = "primatives"
+example = """
+$.screen("300x200");
+$.bezier({
+\t"xStart": 15,
+\t"yStart": 10,
+\t"x1": 45,
+\t"y1": 135,
+\t"x2": 195,
+\t"y2": 75,
+\t"xEnd": 280,
+\t"yEnd": 185
+});"""

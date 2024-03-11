@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 08</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_08"
+			name = "Screen 08"
+			width = 700
+			height = 400
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: gray;
+			}
+		</style>
+	</head>
+<body>
+	<script>
+	$.ready( function () {
+
+		$.screen( { 
+			"aspect": "320 e 200",
+			"isMultiple": true
+		} );
+		$.setColor( 9 );
+		$.rect( 0, 0, $.width(), $.height() );
+		$.setColor( 15 );
+		$.print();
+		$.print( " 320 e 200, exact multiples - extend." );
+		$.print();
+		$.print( " The quick brown fox jumped over the lazy dog!" );
+		$.render();
+
+		$.screen( { 
+			"aspect": "320 x 200",
+			"isMultiple": true
+		} );
+		$.setColor( 4 );
+		$.rect( 0, 0, 320, 200 );
+		$.setColor( 15 );
+		$.print();
+		$.print( " 320 x 200, exact multiples." );
+		$.print();
+		$.print( " The quick brown fox jumped over the lazy dog!" );
+		$.render();
+
+	} );
+	</script>
+</body>
+</html>

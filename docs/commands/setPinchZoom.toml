@@ -1,0 +1,18 @@
+name = "setPinchZoom"
+isScreen = false
+parameters = [ "isEnabled" ]
+pdata = [ "Set to true if you want to enable this is the default state. Set to false if you want to disable zoom." ]
+description = """
+Enables or disables pinch zoom. This is recommended when working with touch if you want to disable zoom.
+"""
+seeAlso = [ "intouch", "ontouch", "startTouch", "stopTouch" ]
+category = "touch"
+example = """
+$.screen( "4x4" );
+$.setPinchZoom( false );
+$.ontouch( "start", function ( touches ) {
+	var touch = touches[ 0 ];
+	$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+	$.pset( touch.x, touch.y );
+} );
+"""

@@ -1,0 +1,12 @@
+name = "setDefaultInputFocus"
+description = "Sets the default input focus for keyboard. By default this will be set to the window.  Normally you don't really need to change this but if you have multiple elements on your screen that will compete for keyboard focus then this will come in handy."
+isScreen = false
+parameters = [ "element" ]
+pdata = [ "Font id for the new default " ]
+seeAlso = []
+category = "keyboard"
+example = """
+$.setDefaultInputFocus( window );
+$.screen( "300x200" );
+$.print( "Keyboard event handlers has been placed on the window object." );
+"""

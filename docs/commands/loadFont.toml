@@ -1,0 +1,36 @@
+name = "loadFont"
+isScreen = false
+parameters = [
+  "fontSrc",
+  "width",
+  "height",
+  "charSet",
+  "isBitmap"
+]
+description = "Loads a font from an image or encoded string."
+pdata = [
+  "The source location of the image or the encoded string location.",
+  "The width of each character in the font.",
+  "The height of each character in the font.",
+  "[OPTIONAL] A string or an array of integers containing the ascii value for each font character in order.",
+  "[OPTIONAL] Boolean to use the font as a bitmap font versus a pixel font. Pixel fonts (default) are slower but can change colors."
+]
+returns = "The id of the font."
+seeAlso = [ "print", "setDefaultFont", "setFont" ]
+category = "print"
+example = """
+var font = $.loadFont( 
+  "/images/gnsh-bitmapfont-colour2.png", 5, 12, 
+  " !\\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]" +
+  "^_`abcdefghijklmnopqrstuvwxyz{|}~"
+);
+$.ready( function () {
+	$.screen( "300x200" );
+  $.setBgColor( "#241c1c" );
+	$.setFont( font );
+  $.print();
+	$.print( " Hello World!" );
+	$.print( " 123456789" );
+	$.print( " #$%&?" );
+} );
+"""

@@ -1,0 +1,22 @@
+name = "rect"
+description = "Draws a rectangle to the screen."
+isScreen = true
+parameters = [ "x", "y", "width", "height", "fillColor" ]
+pdata = [
+  "The x coordinate of the upper left corner of the rectangle.",
+  "The y coordinate of the upper left corner of the rectangle.",
+  "The width of the rectangle.",
+  "The height of the rectangle.",
+  "[OPTIONAL]. The fill color for the rectangle."
+]
+seeAlso = [
+	"arc", "bezier", "circle", "draw", "ellipse", "line", "paint", "point", "pset", "setColor"
+]
+category = "primatives"
+example = """
+$.screen( "300x200" );
+$.setColor( 5 );
+$.rect( 15, 15, 150, 100 );
+$.rect( 25, 25, 150, 100, 6 );
+$.rect( 35, 35, 150, 100, 2 );
+"""

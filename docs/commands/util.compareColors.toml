@@ -1,0 +1,4 @@
+name = "util.compareColors"
+isScreen = false
+isUtil = true
+parameters = [ ]

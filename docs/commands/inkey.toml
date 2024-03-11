@@ -1,0 +1,30 @@
+name = "inkey"
+description = """Gets the most recent status of keys."""
+returns = """If the first parameter is left blank then it will return an array of key data objects. If not then it returns the
+an object containing data for a single key."""
+isScreen = false
+parameters = [ "key" ]
+pdata = [ "[OPTIONAL] Name (string) or keyCode (integer) of key to return the status. Leave blank for the status of all keys that have been pressed." ]
+seeAlso = [ "input", "inpress", "inmouse", "intouch" ]
+category = "keyboard"
+example = """
+$.screen( "300x200" );
+var frame = requestAnimationFrame( run );
+function run() {
+	var keys, key;
+	keys = $.inkey();
+	$.cls();
+	$.print( "Press any key" );
+	for( key in $.inkey() ) {
+		$.print( "--------------------------" );
+		$.print( "key:      " + keys[ key ].key );
+		$.print( "location: " + keys[ key ].location );
+		$.print( "code:     " + keys[ key ].code );
+		$.print( "keyCode:  " + keys[ key ].keyCode );
+	}
+	frame = requestAnimationFrame( run );
+}
+"""
+onclose = """
+cancelAnimationFrame( frame );
+"""

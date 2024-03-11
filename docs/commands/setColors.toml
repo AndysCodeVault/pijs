@@ -1,0 +1,23 @@
+name = "setColors"
+description = """
+Sets an array of color values for use with multi-color fonts
+using the print statement. The first color in the array will
+be used in all drawing commands while the rest are only used
+in multi-color fonts.
+"""
+isScreen = true
+parameters = [ "colors" ]
+pdata = [
+	"An array of color values to be set."
+]
+seeAlso = [ "setBgColor", "setContainerBgColor", "setColor" ]
+example = """
+var font = $.loadFont( "font-goofy-2.png", 8, 14 );
+$.ready( function () {
+	$.screen( "300x200" );
+	$.setFont( font );
+	$.print( "Hello World" );
+	$.setColors( [ 1, 2, 3, 4 ] );
+	$.print( "Hello World" );
+} );
+"""

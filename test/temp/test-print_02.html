@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QBS Test Results</title>
+	<style>
+		img {
+			max-width: calc(50% - 25px);
+		}
+		span {
+			font-weight: bold;
+			background-color: black;
+			font-size: larger;
+			padding: 5px;
+		}
+		.error {
+			color: red;
+		}
+		.good {
+			color: green;
+		}
+		.neutral {
+			color: gold;
+		}
+		.link {
+			margin-bottom: 15px;
+    		font-size: large;
+		}
+	</style>
+</head>
+<body>
+	<h1>Test Results</h1>
+	<div id="test_stats">
+			<span class='good'>All images match!</span>
+		</div>
+	<hr />
+	<div id="unit_tests"></div>
+	<div id="web_tests">
+	
+		<div id='test_0'></div>
+		<h2>Print 02</h2>
+		<div class='link'><a href='http://localhost:8080/test/tests/print_02.html' target='_blank'>http://localhost:8080/test/tests/print_02.html</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href='#stats'>Go back</a></div>
+		<span class='good'>MATCHED</span><br />
+		<a href='image-compare.html?file1=..%2Ftests%2Fscreenshots%2Fprint_02.png&file2=..%2Ftests%2Fscreenshots%2Fprint_02_new.png' target='_blank'><img src='../tests/screenshots/print_02.png' /></a>
+		<a href='image-compare.html?file1=..%2Ftests%2Fscreenshots%2Fprint_02.png&file2=..%2Ftests%2Fscreenshots%2Fprint_02_new.png' target='_blank'><img src='../tests/screenshots/print_02_new.png' /></a></div>
+	<div id="performance_tests"></div>
+</body>
+</html>

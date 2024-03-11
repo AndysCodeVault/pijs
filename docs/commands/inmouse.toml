@@ -1,0 +1,20 @@
+name = "inmouse"
+description = "Gets the most recent mouse status."
+isScreen = true
+parameters = [ ]
+returns = "An object containing data about the mouse's position and button status."
+seeAlso = [ "inpress", "offmouse", "onmouse", "startMouse", "stopMouse" ]
+category = "mouse"
+example = """
+$.screen( "4x4" );
+var interval = setInterval( function () {
+	var mouse = $.inmouse();
+	if( mouse.buttons > 0 ) {
+		$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+		$.pset( mouse.x, mouse.y );
+	}
+}, 50 );
+"""
+onclose = """
+clearInterval( interval );
+"""

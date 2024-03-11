@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 10</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_10"
+			name = "Screen 10"
+			width = 320
+			height = 220
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: gray;
+			}
+			#myDiv {
+				background-color: blue;
+				width: 300px;
+				height: 200px;
+				display:inline-block;
+			}
+		</style>
+	</head>
+<body>
+<div id="myDiv"></div>
+<script>
+	$.ready( function () {
+		$.screen( "110x100", "myDiv" );
+		for( var i = 0; i < 16; i++ ) {
+			$.setColor( i + 30 );
+			$.print( " " + pi.util.padR( i, 2 ) + " - abcdefghijkl" );
+		}
+		$.render();
+	} );
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+name = "getSpritesheetData"
+isScreen = true
+parameters = [ "name" ]
+description = """
+Gets information on the spritesheet including the total number of frames, and width and height of each frame.
+"""
+pdata = [
+	"The name of the spritesheet.",
+]
+returns = "An object containing the frame count and an array with the width and height of each frame."
+seeAlso = [
+	"drawSprite",
+	"loadSpritesheet",
+	"ready"
+]
+category = "images"
+example = """
+var frame, interval, frameData, monkeySpritesheet;
+$.screen( "300x200" );
+monkeySpritesheet = $.loadSpritesheet( "/images/monkey.png" );
+$.ready( function () {
+	frameData = $.getSpritesheetData( monkeySpritesheet );
+	frame = 0;
+	interval = setInterval( run, 500 );
+	function run() {
+		frame += 1;
+		$.cls();
+		$.drawSprite( monkeySpritesheet, frame % frameData.frameCount, 150, 100, 0, 0.5, 0.5 );
+	}
+	run();
+} );"""
+onclose = """
+clearInterval( interval );
+"""

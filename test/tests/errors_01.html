@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Errors 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "errors_01"
+			name = "errors 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.draw("R10U10");
+		$.line(5, 5, 10, 10);
+		$.ready(function () {
+			var screen0 = $.screen( "200x200" );
+			$.setColor(1);
+			$.line(100, 0, 100, 200);
+			$.line(0, 100, 200, 100);
+			$.render();
+			$.removeAllScreens();
+			$.draw("r5u10");
+			var screen1 = $.screen("100x100");
+			var screen2 = $.screen("50x50");
+			$.draw("r10d10");
+			$.render();
+			$.removeScreen(screen2);
+			$.circle(25, 25, 24);
+			$.render();
+			$.setScreen(screen1);
+			$.circle(25, 25, 24);
+			$.render();
+		});
+</script>
+</body>
+</html>

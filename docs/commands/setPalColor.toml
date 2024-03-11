@@ -1,0 +1,17 @@
+name = "setPalColor"
+description = "Sets a color value in the current screen's palette."
+isScreen = true
+parameters = [ "index", "color" ]
+pdata = [
+	"The index value of the color to change.",
+	"The color value of the new color."
+]
+seeAlso = [ "findColor", "getDefaultPal", "getPal", "getPixel", "setBgColor", "setColor", "swapColor" ]
+category = "color"
+example = """
+$.screen( "300x200" );
+$.setColor( 2 );
+$.print( "Hello" );
+$.setPalColor( 2, "purple" );
+$.print( "Hello" );
+"""

@@ -1,0 +1,17 @@
+name = "setAutoRender"
+description = """
+Auto render will automatically render any graphics drawn using pixel mode
+after any drawing routine is called using a microtask that executes after
+the current execution thread. Auto render is set by default. Use setAutoRender
+to enable and disable the auto rendering.
+"""
+isScreen = true
+parameters = [ "isAutoRender" ]
+pdata = [ "If set to true then autorender will run" ]
+category = "graphics"
+example = """
+$.screen( "300x200" );
+$.line( 1, 1, 299, 199 );
+$.setAutoRender( false );
+// Note nothing will render because auto render is disabled
+"""

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Blend 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "blend_01"
+			name = "blend 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen( "5x5" );
+		$.setColor( "rgba(255,0,0,1)" );
+		$.pset( 1, 2 );
+		$.pset( 2, 2 );
+		$.pset( 3, 2 );
+		$.render();
+		$.setBlendMode( "blend" );
+		$.setColor( "rgba(0,255,0,0.5)" );
+		$.pset( 2, 2 );
+		$.setColor( "rgba(0,0,255,0.5)" );
+		$.pset( 3, 2 );
+	});
+</script>
+</body>
+</html>

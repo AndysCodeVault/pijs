@@ -1,0 +1,29 @@
+name = "render"
+description = """
+Renders buffered graphics to the screen. Render is called
+automatically when all drawing has been completed at the
+of execution so it is generally not needed to call it.
+However, there are some cases you may need to call the
+render function. Such as if you are drawing to an offscreen
+canvas and then want to draw that canvas onto another canvas.
+"""
+isScreen = true
+parameters = [ ]
+category = "graphics"
+example = """
+// Create a main screen.
+var screen1 = $.screen( "320x200" );
+
+// Create an offscreen buffer.
+var screen2 = $.screen( "32x32", null, true );
+
+// Draw circle to offscreen buffer.
+screen2.circle( 15, 15, 15, 1 );
+
+// Without this render the subsequent drawImage
+// method would not show the circle.
+screen2.render();
+
+// Draw the image
+screen1.drawImage( screen2, 100, 100 );
+"""

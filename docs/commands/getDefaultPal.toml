@@ -1,0 +1,16 @@
+name = "getDefaultPal"
+description = """
+Gets default palette and returns an array with all the color data. The default color palette defines what colors are
+available when a new screen is created.
+"""
+isScreen = false
+parameters = [ ]
+seeAlso = [ "findColor", "getPal", "getPixel", "setBgColor", "setColor", "setPalColor", "swapColor" ]
+category = "colors"
+returns = "An array of color data for the default color palette."
+example = """
+$.screen("300x200");
+var pal = $.getDefaultPal();
+$.setColor( 4 );
+$.print( pal[ 4 ].s );
+"""

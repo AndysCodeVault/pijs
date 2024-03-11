@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Inkey 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "inkey_01"
+			name = "inkey 01"
+			width = 200
+			height = 200
+			commands = """
+				KD "Control"
+				DL 100
+				KD "s"
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		$.screen( "200x200" );
+		$.setActionKey( 17 );
+		$.setActionKey( "KeyS" );
+		setInterval( function () {
+			var keys, key;
+			keys = $.inkey();
+			$.cls();
+			$.print( "Press any key" );
+			key = $.inkey( 17 );
+			if( key ) {
+				$.print( "Control key is pressed." );
+			} else {
+				$.print( "Control key is not pressed." );
+			}
+			for( key in keys ) {
+				$.print( "--------------------------" );
+				$.print( "key:      " + keys[ key ].key );
+				$.print( "location: " + keys[ key ].location );
+				$.print( "code:     " + keys[ key ].code );
+				$.print( "keyCode:  " + keys[ key ].keyCode );
+			}
+			$.render();
+		}, 60 );
+	} );
+</script>
+</body>
+</html>

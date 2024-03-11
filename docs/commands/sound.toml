@@ -1,0 +1,74 @@
+name = "sound"
+description = """
+Plays a sound based on a frequency and duration. Sounds will only play as the 
+results of an event from the user, so any attempt to play a sound on page 
+load will not work. If attack + delay is greater than 1 then there may be a 
+clicking sound.
+"""
+isScreen = false
+parameters = [
+  "frequency",
+  "duration",
+  "volume",
+  "oType",
+  "delay",
+  "attack",
+  "decay"
+]
+pdata = [
+  "The sound frequency.",
+  "How long to play the sound.",
+  "[OPTIONAL] The volume of the sound.",
+  "[OPTIONAL] The type of oscillator to use for the sound ie: (sawtooth, sine, square, triangle).",
+  "[OPTIONAL] A pause before the sound plays.",
+  "[OPTIONAL] How long to ramp up to the full volume, prevents clicking sound.",
+  "[OPTIONAL] How long to ramp down to 0 volume, prevents clicking sound."
+]
+seeAlso = [ "play", "playAudioPool", "sound" ]
+category = "sound"
+example = """
+var data = [
+  392, 8, "My ", 659, 8, "Bon-", 587, 8, "nie ", 523, 8, "lies ", 587, 8,
+  "o-", 523, 8, "ver ", 440, 8, "the ", 392, 8, "o-", 330, 32, "cean\\n",
+  392, 8, "My ", 659, 8, "Bon-", 587, 8, "nie ", 523, 8, "lies ", 523, 8,
+  "o-", 494, 8, "ver ", 523, 8, "the ", 587, 40, "sea\\n", 392, 8, "My ",
+  659, 8, "Bon-", 587, 8, "nie", 523, 8, " lies ", 587, 8, "o-", 523, 8,
+  "ver ", 440, 8, "the ", 392, 8, "o-", 330, 32, "cean\\n", 392, 8, "Oh ",
+  440, 8, "bring ", 587, 8, "back ", 523, 8, "my ", 494, 8, "Bon-", 440,
+  8, "nie ", 494, 8, "to ", 523, 32, "me"
+];
+var i;
+var totalDuration = 0;
+var volume = 0.15;
+var attackRate = 0.01;
+var decayRate = 0.1;
+var sustainRate = 0.89;
+var printTimeouts = [];
+
+$.screen( "300x200" );
+for( i = 0; i < data.length; i += 3 ) {
+  var freq = data[ i ];
+  var duration = data[ i + 1 ] / 18.2;
+  var sustain = duration * sustainRate;
+  var attack = duration * attackRate;
+  var decay = duration * decayRate;
+  var word = data[ i + 2 ];
+  $.sound(
+    freq, sustain, volume, "sawtooth", totalDuration, attack, decay
+  );
+  printWord( word, totalDuration );
+  totalDuration += duration;
+}
+
+function printWord( word, delay ) {
+	printTimeouts.push( setTimeout( function () {
+		$.print( word, word.indexOf( "\\n" ) === -1 );
+	}, delay * 1000 ) );
+}
+"""
+onclose = """
+$.stopSound();
+for( var i = 0; i < printTimeouts.length; i++ ) {
+  clearTimeout( printTimeouts[ i ] );
+}
+"""

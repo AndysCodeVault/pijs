@@ -1,0 +1,34 @@
+name = "offkey"
+isScreen = false
+parameters = [ "key", "mode", "fn" ]
+description = """
+Removes an onkey event.
+"""
+pdata = [
+	"The key that was used in the onkey command.",
+	"The mode can be up or down.",
+	"The function that was used to create the hitbox by the onclick command."
+]
+seeAlso = [
+	"onkey"
+]
+category = "keyboard"
+example = """
+$.screen( "300x200" );
+$.print( "Press any key." );
+$.print( "Press q to stop" );
+$.onkey( "any", "down", keyPress );
+$.onkey( "Q", "down", stopPress );
+
+// Key press function
+function keyPress( key ) {
+	$.print( "You pressed " + key.key + "!" );
+}
+
+// Stop key press function
+function stopPress() {
+	$.print( "You pressed Q! Stopping." );
+	$.offkey( "any", "down", keyPress );
+	$.offkey( "Q", "down", keyPress );
+}
+"""

@@ -1,0 +1,37 @@
+{
+  "name": "pijs",
+  "version": "1.2.2",
+  "description": "Graphics and sound library",
+  "main": "build.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/run-tests.js",
+    "server": "start node server.js",
+    "server2": "node server.js",
+    "build": "node build.js",
+    "update-version": "node update-version.js",
+    "build-docs": "node build-docs.js",
+    "build-map": "node build-command-map.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndyStubbs/pi-js"
+  },
+  "author": "Andy Stubbs",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/AndyStubbs/pi-js/issues"
+  },
+  "homepage": "https://www.pijs.org",
+  "devDependencies": {
+    "@iarna/toml": "^2.2.3",
+    "connect": "^3.7.0",
+    "node-cmd": "^3.0.0",
+    "pngjs": "^3.4.0",
+    "puppeteer": "^4.0.1",
+    "serve-static": "^1.14.1",
+    "uglify-js": "^3.8.0"
+  }
+}

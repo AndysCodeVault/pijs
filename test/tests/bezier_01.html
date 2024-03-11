@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bezier 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "bezier_01"
+			name = "bezier 01"
+			width = 640
+			height = 480
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+$.ready( function () {
+	var width = 640;
+	var height = 480;
+	var half = Math.round( height / 2 );
+	$.screen( width + "x" + height );
+	Math.random();
+	for( var i = 0; i < 10; i++ ) {
+		var p = [
+			{ "x": r( width ), "y": r( half ) },
+			{ "x": r( width ), "y": r( half ) },
+			{ "x": r( width ), "y": r( half ) },
+			{ "x": r( width ), "y": r( half ) }
+		];
+		$.setColor( r( 34 ) + 18 );
+		$.setPixelMode( true );
+		$.bezier( p[ 0 ].x, p[ 0 ].y, p[ 1 ].x, p[ 1 ].y, p[ 2 ].x, p[ 2 ].y, p[ 3 ].x, p[ 3 ].y );
+		$.setPixelMode( false );
+		$.bezier( p[ 0 ].x, p[ 0 ].y + half, p[ 1 ].x, p[ 1 ].y + half, p[ 2 ].x, p[ 2 ].y + half, p[ 3 ].x, p[ 3 ].y + half );
+	}
+	$.render();
+	function r( n ) {
+		return Math.floor( Math.random() * n );
+	}
+} );
+</script>
+</body>
+</html>

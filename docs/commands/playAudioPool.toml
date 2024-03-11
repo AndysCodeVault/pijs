@@ -1,0 +1,20 @@
+name = "playAudioPool"
+isScreen = false
+description = "Plays an audio pool sound. "
+parameters = [ "audioId", "volume", "startTime", "duration" ]
+pdata = [
+	"The id of the audio pool to play.",
+	"Sets the volume level. Use a float value between 0 and 1.",
+	"Allows you to choose a specific time in seconds at which the audio starts.",
+	"Max length in seconds the audio will play."
+]
+seeAlso = [
+	"createAudioPool", "deleteAudioPool", "playAudioPool", "setVolume", "stopAudioPool"
+]
+category = "sound"
+example = """
+var bombPool = $.createAudioPool( "/sounds/bomb.wav", 1 );
+$.ready( function () {
+	$.playAudioPool( bombPool );
+} );
+"""

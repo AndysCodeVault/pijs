@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/-->
+	<title>Generaate Font 4 App</title>
+	<script src="../test/libs/seedrandom.js"></script>
+	<script src="pi.js"></script>
+	<script src="pi-util.js"></script>
+	<script src="pi-keyboard.js"></script>
+	<script src="pi-gamepad.js"></script>
+	<script src="pi-font.js"></script>
+	<script src="pi-screen.js"></script>
+	<script src="pi-screen-mouse.js"></script>
+	<script src="pi-screen-touch.js"></script>
+	<script src="pi-screen-commands.js"></script>
+	<script src="pi-screen-helper.js"></script>
+	<script src="pi-screen-graphics.js"></script>
+	<script src="pi-screen-paint.js"></script>
+	<script src="pi-screen-bezier.js"></script>
+	<script src="pi-screen-images.js"></script>
+	<script src="pi-screen-print.js"></script>
+	<script src="pi-screen-table.js"></script>
+	<script src="pi-screen-draw.js"></script>
+	<script src="pi-sound.js"></script>
+	<script src="pi-play.js"></script>
+	<script src="fonts/font-data.js"></script>
+	<script src="pi-pal.js"></script>
+	<script src="pi-init.js"></script>
+	<style>
+		html, body {
+			color: white;
+			background-color: blue;
+			margin: 10px;
+		}
+		pre {
+			width: 100%;
+			color: white;
+			font-size: 14px;
+		}
+		textarea {
+			width: 800px;
+			height: 300px;
+		}
+		#screen {
+			width: 600px;
+			height: 300px;
+		}
+	</style>
+</head>
+<body>
+<script>
+
+Math.seedrandom( 'constant' );
+
+var width = 292;
+var height = 140;
+$.screen( { "aspect": width + "x" + height, "isMultiple": true } );
+$.setFont( 4 );
+var msg = "";
+var x = 1;
+var y = 1;
+
+$.setColor( 15 );
+$.setBgColor( "rgba(255,255,255,0)" );
+for( var i = 0; i < 256; i++ ) {
+	$.setPosPx( x, y );
+	$.print( String.fromCharCode( i ), true );
+	x += 9;
+	if( x >= width - 9 ) {
+		y += 17;
+		x = 1;
+	}
+}
+
+</script>
+</body>
+</html>

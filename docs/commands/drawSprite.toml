@@ -1,0 +1,51 @@
+name = "drawSprite"
+isScreen = true
+description = "Draws a sprite from a spritesheet on to the screen. Note: this method will fail if it gets called before the sprite image is loaded."
+parameters = [
+	"name",
+	"frame",
+	"x",
+	"y",
+	"angle",
+	"anchorX",
+	"anchorY",
+	"alpha",
+	"scaleX",
+	"scaleY"
+]
+pdata = [
+	"Name or id of the spritesheet.",
+	"Frame number of the specific sprite on the spritesheet.",
+	"Horizontal coordiante.",
+	"Vertical coordinate.",
+	"[OPTIONAL] Rotate the image in degrees.",
+	"[OPTIONAL] Horizontal rotation coordinate.",
+	"[OPTIONAL] Vertical rotation coordinate.",
+	"[OPTIONAL] Transparency amount number 0-100.",
+	"[OPTIONAL] Horizontal scaling amount.",
+	"[OPTIONAL] Vertical scaling amount."
+]
+seeAlso = [
+	"drawImage",
+	"getSpritesheetData",
+	"loadSpritesheet",
+	"ready"
+]
+category = "images"
+example = """
+var monkey, frame, interval;
+$.screen( "300x200" );
+monkey = $.loadSpritesheet( "/images/monkey.png", null, 32, 32, 1 );
+$.ready( function () {
+	frame = 0;
+	interval = setInterval( run, 500 );
+	function run() {
+		frame += 1;
+		$.cls();
+		$.drawSprite( monkey, frame % 2, 150, 100, 0, 0.5, 0.5, null, 2, 2 );
+	}
+	run();
+} );"""
+onclose = """
+clearInterval( interval );
+"""

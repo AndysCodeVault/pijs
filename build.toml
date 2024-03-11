@@ -1,0 +1,62 @@
+################################################################################
+## All
+################################################################################
+
+[[builds]]
+
+name = "pi"
+
+version = "1.2.2"
+
+files = [
+	"src/pi.js",
+	"src/pi-util.js",
+	"src/pi-keyboard.js",
+	"src/pi-gamepad.js",
+	"src/pi-font.js",
+	"src/pi-screen.js",
+	"src/pi-screen-mouse.js",
+	"src/pi-screen-touch.js",
+	"src/pi-screen-commands.js",
+	"src/pi-screen-helper.js",
+	"src/pi-screen-graphics.js",
+	"src/pi-screen-paint.js",
+	"src/pi-screen-bezier.js",
+	"src/pi-screen-images.js",
+	"src/pi-screen-print.js",
+	"src/pi-screen-table.js",
+	"src/pi-screen-draw.js",
+	"src/pi-sound.js",
+	"src/pi-play.js",
+	"src/fonts/font-data.js",
+	"src/pi-pal.js",
+	"src/pi-init.js",
+]
+
+extraCommand = """
+	let m_mapStr = "";
+	setTimeout( function () {
+		let commands = m_commandList;
+		m_mapStr = "var $ = {";
+		for( let i = 0; i < commands.length; i++ ) {
+			m_mapStr += "\\"" + commands[ i ].name + "\\"" + ": function(";
+			if( commands[ i ].name === "set" ) {
+				commands[ i ].parameters = [ "settings" ];
+			}
+			for( let j = 0; j < commands[ i ].parameters.length; j++ ) {
+				if( j > 0 ) {
+					m_mapStr += ",";
+				}
+				m_mapStr += " " + commands[ i ].parameters[ j ];
+				if( j === commands[ i ].parameters.length - 1 ) {
+					m_mapStr += " ";
+				}
+			}
+			m_mapStr += ") { /* " + commands[ i ].name + " */ }, "
+			delete m_api[ commands[ i ].name ];
+		}
+		m_mapStr += "}; var pi = $;";
+		delete m_api[ "util" ];
+		m_api.getMap = function () { return m_mapStr; }
+	} );
+"""

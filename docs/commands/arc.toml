@@ -1,0 +1,18 @@
+name = "arc"
+description = "Draws an arc on the screen."
+isScreen = true
+parameters = [ "x", "y", "radius", "angle1", "angle2" ]
+pdata = [
+  "The x coordinate of the center point of the arc's circle.",
+  "The y coordinate of the center point of the arc's circle.",
+  "The radius of the arc's circle.",
+  "The starting angle.",
+  "The ending angle."
+]
+seeAlso = [
+	"bezier", "circle", "draw", "ellipse", "line", "rect", "paint", "point", "pset", "setColor"
+]
+category = "primatives"
+example = """
+$.screen("300x200");
+$.arc(150, 100, 50, 45, 270);"""

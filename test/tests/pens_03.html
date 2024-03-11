@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pens 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "pens_03"
+			name = "pens 03"
+			width = 250
+			height = 250
+			delay = 0
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+Math.seedrandom('constant');
+$.ready( function () {
+	var x, y, i;
+	function draw( x, y ) {
+		$.setColor( 15 );
+		$.pset( x, y );
+		y += 20;
+		$.setColor( 1 );
+		$.circle( x, y, 10 );
+		y += 20;
+		$.setColor( 2 );
+		$.arc( x, y, 10, 90, 180 );
+		y += 20;
+		$.setColor( 3 );
+		$.line( x - 5, y, x + 5, y + 10 );
+		y += 30;
+		$.setColor( 4 );
+		$.ellipse( x, y, 10, 7 );
+		y += 20;
+	}
+
+	$.screen( "250x250" );
+
+	// First row squares
+	x = 15;
+	y = 15
+	for( i = 1; i < 5; i++ ) {
+		y = 15;
+
+		$.setPixelMode( true );
+		$.setPen( "square", i , [ 100, 200, 100, 1 ] );
+		draw( x, y );
+		$.setPixelMode( false );
+		draw( x + 30, y );
+		y += 120;
+
+		$.setPixelMode( true );
+		$.setPen( "circle", i, 100 );
+		draw( x, y );
+		$.setPixelMode( false );
+		draw( x + 30, y );
+
+		x += 60;
+	}
+
+	$.setPixelMode( true );
+	$.setPen( "circle", 3 );
+	$.setColor( 9 );
+	$.line( 10, 243, 240, 243 );
+	$.setPen( "circle", 3, 100 );
+	$.line( 10, 6, 240, 6 );
+
+	$.render();
+} );
+</script>
+</body>
+</html>

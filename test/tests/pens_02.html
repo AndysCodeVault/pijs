@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pens 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "pens_02"
+			name = "pens 02"
+			width = 250
+			height = 250
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var x, y, i;
+	function draw( x, y ) {
+		$.setColor( 15 );
+		$.pset( x, y );
+		y += 20;
+		$.setColor( 1 );
+		$.circle( x, y, 10 );
+		y += 20;
+		$.setColor( 2 );
+		$.arc( x, y, 10, 90, 180 );
+		y += 20;
+		$.setColor( 3 );
+		$.line( x - 5, y, x + 5, y + 10 );
+		y += 30;
+		$.setColor( 4 );
+		$.ellipse( x, y, 10, 7 );
+		y += 20;
+	}
+
+	$.screen( "250x250" );
+
+	// First row squares
+	x = 15;
+	y = 15
+	for( i = 1; i < 5; i++ ) {
+		y = 15;
+		$.setColor( 7 );
+
+		$.setPixelMode( true );
+		$.setPen( "square", i );
+		draw( x, y );
+		$.setPixelMode( false );
+		draw( x + 30, y );
+		y += 120;
+
+		$.setPixelMode( true );
+		$.setPen( "circle", i );
+		draw( x, y );
+		$.setPixelMode( false );
+		draw( x + 30, y );
+
+		x += 60;
+	}
+
+	$.render();
+} );
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+name = "onmouse"
+isScreen = true
+parameters = [ "mode", "fn", "once", "hitBox", "customData" ]
+description = """
+Creates a onmouse event.
+"""
+pdata = [
+	"The mode must be a string and can be up, down, or move.",
+	"The function to callback when the event occurs.",
+	"[OPTIONAL]. A boolean if true deletes the event after being called one time.",
+	"[OPTIONAL]. A hitBox to restrict events occuring outside the box",
+	"""[OPTIONAL]. This can be used to assign data that will be passed into the callback event. \
+		This is useful if you have multiple onmouse commands that use the same callback function."""
+]
+seeAlso = [
+	"clearEvents", "inmouse", "offmouse", "startMouse", "stopMouse"
+]
+category = "mouse"
+example = """
+$.screen( "300x200" );
+$.print( "Move mouse to paint screen, click to stop." );
+$.onmouse( "move", mouseMove );
+$.onmouse( "up", mouseStop, true );
+
+// Mouse move function
+function mouseMove( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Mouse stop function
+function mouseStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.offmouse( "move", mouseMove );
+}
+"""

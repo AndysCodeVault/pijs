@@ -1,0 +1,22 @@
+name = "intouch"
+description = "Gets the most recent touch status."
+isScreen = true
+parameters = [ ]
+returns = "An array of touch objects."
+seeAlso = [ "inpress", "offtouch", "onpress", "ontouch", "setPinchZoom", "startTouch", "stopTouch" ]
+category = "touch"
+example = """
+$.screen( "4x4" );
+$.startTouch();
+$.setPinchZoom( false );
+var interval = setInterval( function () {
+	var touches = $.intouch();
+	if( touches.length > 0 ) {
+		$.setColor( Math.floor( Math.random() * 9 ) + 1 );
+		$.pset( touches[ 0 ].x, touches[ 0 ].y );
+	}
+}, 50 );
+"""
+onclose = """
+clearInterval( interval );
+"""

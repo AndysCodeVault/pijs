@@ -1,0 +1,15 @@
+name = "removeImage"
+description = "Removes an image from memory."
+isScreen = false
+parameters = [ "name" ]
+pdata = [ "The name or id of the image to remove." ]
+category = "images"
+example = """
+$.screen( "300x200" );
+var monkey = $.loadImage( "/images/monkey.png" );
+$.ready( function () {
+	$.drawImage( monkey, 150, 100, 0, 0.5, 0.5 );
+	$.removeImage( monkey );
+	$.drawImage( monkey, 200, 150 );
+} );
+"""

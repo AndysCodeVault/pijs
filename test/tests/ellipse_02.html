@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ellipse 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ellipse_02"
+			name = "Ellipse 02"
+			width = 160
+			height = 100
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		$.screen("160x100");
+		$.ellipse(80, 50, 60, 30);
+		$.render();
+		$.setPixelMode( false );
+		$.ellipse(80, 50, 70, 40);
+	} );
+</script>
+</body>
+</html>

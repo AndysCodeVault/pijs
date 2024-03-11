@@ -1,0 +1,4 @@
+name = "util.rndRange"
+isScreen = false
+isUtil = true
+parameters = [ ]

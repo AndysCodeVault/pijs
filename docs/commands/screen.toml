@@ -1,0 +1,49 @@
+name = "screen"
+description = """
+When the screen command is called it will create a canvas element and when graphics
+commands are called they will manipulate the canvas created. There are three types
+of canvas styles that can be created a fullscreen canvas that gets appended to the
+body of the page, a canvas that gets appended to a container element supplied, or
+an offscreen canvas.
+<br /><br />
+The screen command must be called before any graphics commands can be called.
+<br /><br />
+The aspect command allows certain types of screen resolutioins to be used. An x is
+used to specify specific pixel dimensions of the screen. A : is used to provide a
+aspect ratio. An e is to extend the canvas to fill 100% of the screen regardless of
+aspect ratio. 
+<br /><br />
+Examples:<br />
+300x200 = A canvas that has data for 300x200 canvas filled to fit in the screen dimensions with a 3:2 pixel ratio. <br />
+16:9 = A canvas that has data and the maximum screen size for the 16:9 aspect ratio. <br />
+640e480 = A canvas that tries to fit 640x480 resolution but will extend the data and 
+the canvas size to fill the entire screen. <br />
+<br />
+If aspect is left blank then the canvas will fill the screen 100% width and height.
+"""
+isScreen = false
+parameters = [
+  "aspect",
+  "container",
+  "isOffscreen",
+  "willReadFrequently",
+  "noStyles",
+  "isMultiple",
+  "resizeCallback"
+]
+category = "graphics"
+pdata = [
+  "[OPTIONAL] Specify the dimensions of the screen using string in the format of: (width)(x/:/e)(height). Ie: 300x200.",
+  "[OPTIONAL] A DOM element or a string that contains the id tag of a dom element to use as the container for the canvas.",
+  "[OPTIONAL] Is the canvas an offscreen buffer. If true canvas will not show on screen but can be used as an offscreen buffer.",
+  "[OPTIONAL] This sets the image data to not use hardware acceleration. This will help speed things up if you are using a lot of pixel mode primative graphics commands. It won't help with drawImage or drawSprite commands.",
+  "[OPTIONAL] Create a canvas that has no css applied to it. Just use a default canvas element.",
+  "[OPTIONAL] Set the auto size of the canvas to only expand to exact multiples of the target resolution.",
+  "[OPTIONAL] A function that will get called after any time the canvas gets resized."
+]
+seeAlso = [ "getScreen", "setScreen" ]
+example = """
+$.screen( "300e200" );
+$.line( 0, 0, $.width(), $.height() );
+$.line( 0, $.height(), $.width(), 0 );
+"""

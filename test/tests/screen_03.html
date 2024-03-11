@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 03 - Fullscreen - 8:2 - 2:8</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_03"
+			name = "Fullscreen Canvas - 8:2 - 2:8"
+			width = 640
+			height = 400
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	pi.screen("8:2");
+	pi.screen("2:8", null);
+</script>
+</body>
+</html>

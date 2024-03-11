@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pens 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "pens_01"
+			name = "pens 01"
+			width = 200
+			height = 200
+			delay = 0
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var x, y, i;
+
+	$.screen( "200x200" );
+
+	// First row squares
+	x = 0;
+	y = 15
+	for( i = 1; i < 13; i++ ) {
+		x += i * 2 + 1;
+		$.setColor( 7 );
+		$.setPen( "square", i );
+		$.pset( x, y );
+		$.setColor( 15 );
+		$.setPen( "pixel", 1 );
+		$.pset( x, y );
+	}
+
+	// Circles
+	x = 0;
+	for( i = 1; i < 13; i++ ) {
+		x += i * 2 + 1;
+		$.setPixelMode( true );
+
+		// Draw the pen
+		$.setColor( 7 );
+		$.setPen( "circle", i );
+		$.pset( x, 40 );
+
+		// Draw the outer circle
+		$.setColor( 15 );
+		$.setPen( "pixel", 1 );
+		$.circle( x, 65, i );
+
+		// Draw the inner dots
+		$.setColor( 8 );
+		$.pset( x, 40 );
+
+		// Draw the arcs
+		$.setColor( 9 );
+		$.arc( x, 90, i, 0, 180 );
+		$.setColor( 10 );
+		$.arc( x, 90, i, 180, 360 );
+
+		$.setPixelMode( false );
+		$.setColor( 9 );
+		$.arc( x, 115, i, 0, 180 );
+		$.setColor( 10 );
+		$.arc( x, 115, i, 180, 360 );
+
+		$.setColor( 9 );
+		$.circle( x, 140, i );
+
+		$.setPixelMode( true );
+		$.setColor( 10 );
+		$.circle( x, 140, i );
+	}
+
+	$.render();
+} );
+</script>
+</body>
+</html>

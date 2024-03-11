@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Image Comparison</title>
+		<script
+			src="https://code.jquery.com/jquery-3.4.1.min.js"
+			integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+			crossorigin="anonymous"></script>
+		<script src="../build/pi.min.js"></script>
+		<style>
+			body, html {
+				height: 100%;
+				overflow: hidden;
+			}
+			.file-box {
+				display: inline-block;
+				width: calc(50% - 30px);
+				height: calc(100% - 80px);
+				margin: 10px;
+				border: 2px dashed black;
+				text-align: center;
+				background-repeat: no-repeat;
+				background-size: contain;
+				image-rendering: pixelated;
+				image-rendering: crisp-edges;
+			}
+			.file-box div {
+				position: relative;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.is-dragover {
+				background-color: #aaa;
+			}
+			.error {
+				color: red;
+			}
+		</style>
+	</head>
+<body>
+	<div class="file-box">
+		<div>
+			Drag and drop file or
+			<input type="file" class="input-file" name="image" accept="image/png, image/jpeg" />
+		</div>
+	</div>
+	<div class="file-box">
+		<div>
+			Drag and drop file or
+			<input type="file" class="input-file" name="image" accept="image/png, image/jpeg" />
+		</div>
+	</div>
+	<div id="msg">&nbsp;</div>
+	<input id="show" type="button" value="Hide" />
+	<input id="diffSlider" type="range" min="0" max="255" value="100" />
+	<label><input id="switchPrimary" type="checkbox" />Switch Primary</label>
+	<script>
+		let $fileBox = $(".file-box");
+		let $fileInput = $(".input-file");
+		let $show = $("#show");
+		let droppedFiles = false;
+		let screen, screen2, hidden;
+		let $diffSlider = $("#diffSlider");
+		let $primary = $("#switchPrimary");
+		$primary.on("change", function () {
+			compareImages();
+		} );
+		$diffSlider.on("change", function () {
+			compareImages();
+		} );
+		hidden = false;
+		$show.hide();
+		$show.on("click", function () {
+			var $screen = $(screen.canvas());
+			if(!hidden) {
+				$screen.hide();
+				hidden = true;
+			} else {
+				$screen.show();
+				hidden = false;
+			}
+		});
+		$fileBox.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		});
+		$fileBox.on('dragover dragenter', function() {
+			$fileBox.addClass('is-dragover');
+		});
+		$fileBox.on('dragleave dragend drop', function() {
+			$fileBox.removeClass('is-dragover');
+		});
+		$fileBox.on('drop', function(e) {
+			droppedFiles = e.originalEvent.dataTransfer.files[0];
+			$fileInput.prop('files', e.originalEvent.dataTransfer.files);
+			showImage(droppedFiles,$(this));
+		});
+		$fileInput.on("change", function(e) {
+			showImage(e.target.files[0], $(this));
+		});
+
+		let file1 = getQueryVariable( "file1" );
+		let file2 = getQueryVariable( "file2" );
+		showImage( file1, $( $fileBox[ 0 ] ), true );
+		showImage( file2, $( $fileBox[ 1 ] ), true );
+
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split('=');
+				if (decodeURIComponent(pair[0]) == variable) {
+					return decodeURIComponent(pair[1]);
+				}
+			}
+		}
+	
+		function showImage(imgFile, $imgBox, isSrc) {
+			let img = new Image();
+			let canvas = document.createElement("canvas");
+			let context = canvas.getContext("2d", { "willReadFrequently": true } );
+			if( isSrc ) {
+				img.src = imgFile;
+			} else {
+				img.src = URL.createObjectURL(imgFile);
+			}
+			img.onload = function() {
+				canvas.width = img.width;
+				canvas.height = img.height;
+				context.drawImage(img, 0, 0);
+				compareImages();
+				//$("#data-url").val(canvas.toDataURL("image/webp"));
+			};
+			if( isSrc ) {
+				$imgBox.css("background-image", "url('" + imgFile + "')");	
+			} else {
+				$imgBox.css(
+					"background-image",
+					"url('" + URL.createObjectURL(imgFile) + "')"
+				);
+			}
+			$imgBox.data("canvas", canvas);
+		}
+
+		function compareImages() {
+			var count, canvas1, canvas2, canvas3, context1, context2, context3, canvas4, context4, simAlpha, temp;
+			simAlpha = $diffSlider.val();
+			count = 0;
+			$fileBox.each( function () {
+				if( $(this).data("canvas") ) {
+					count += 1;
+					if( canvas1 ) {
+						canvas2 = $(this).data("canvas");
+					} else {
+						canvas1 = $(this).data("canvas");
+					}
+				}
+			} );
+			if(count !== 2) {
+				return;
+			}
+			if(canvas1.width !== canvas2.width || canvas1.height !== canvas2.height) {
+				$("#msg").html("Both images must have the same dimensions.");
+				$("#msg").addClass("error");
+				return;
+			} else {
+				$("#msg").html("Images compared successfully.");
+				$("#msg").removeClass("error");
+			}
+
+			if( $primary.is( ":checked" ) ) {
+				temp = canvas1;
+				canvas1 = canvas2;
+				canvas2 = temp;
+			}
+			context1 = canvas1.getContext( "2d", { "willReadFrequently": true } );
+			context2 = canvas2.getContext( "2d", { "willReadFrequently": true } );
+			if(screen) {
+				screen.removeScreen();
+			}
+			if(screen2) {
+				screen2.removeScreen();
+			}
+			screen = pi.screen( {
+				"aspect": canvas1.width + "x" + canvas1.height,
+				"isMultiple": true
+			} );
+			canvas3 = screen.canvas();
+			context3 = canvas3.getContext( "2d", { "willReadFrequently": true } );
+			canvas3.style.border = "1px solid black";
+			// screen2 = pi.screen( {
+			// 	"aspect": canvas1.width + "x" + canvas1.height,
+			// 	"isMultiple": true
+			// } );
+			// canvas4 = screen2.canvas();
+			// context4 = canvas4.getContext( "2d", { "willReadFrequently": true } );
+
+			let data1 = context1.getImageData(0, 0, canvas1.width, canvas1.height);
+			let data2 = context2.getImageData(0, 0, canvas2.width, canvas2.height);
+			context3.putImageData(data2, 0, 0);
+			let data3 = context3.getImageData(0, 0, canvas3.width, canvas3.height);
+			let avg = 0;
+			let roundAvg = 0;
+			for(let i = 0; i < data1.data.length; i += 4) {
+				let r1 = data1.data[i]
+				let g1 = data1.data[i + 1];
+				let b1 = data1.data[i + 2];
+				let a1 = data1.data[i + 3];
+				let r2 = data2.data[i];
+				let g2 = data2.data[i + 1];
+				let b2 = data2.data[i + 2];
+				let a2 = data2.data[i + 3];
+				roundAvg = (r1 + g1 + b1) / 3;
+				avg += roundAvg;
+				let dr = r1 - r2;
+				let dg = g1 - g2;
+				let db = b1 - b2;
+				let da = a1 - a2;
+				let d = dr * dr + dg * dg + db * db + da * da;
+				if( d > 2 ) {
+					data3.data[ i + 3 ] = 255;
+				} else {
+					data3.data[ i + 3 ] = simAlpha;
+				}
+				if( da * da > 2 && a2 === 0) {
+					data3.data[ i ] = r1;
+					data3.data[ i + 1 ] = g1;
+					data3.data[ i + 2 ] = b1;
+					data3.data[ i + 3 ] = 255;
+				}
+			}
+			avg = avg / ( data1.data.length / 4);
+			if( avg > 128 ) {
+				canvas3.style.backgroundColor = "white";
+			} else {
+				canvas3.style.backgroundColor = "black";
+			}
+			context3.putImageData(data3, 0, 0);
+			$show.show();
+		}
+	</script>
+</body>
+</html>

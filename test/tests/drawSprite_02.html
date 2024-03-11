@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw Sprite 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "drawSprite_02"
+			name = "drawSprite 02"
+			width = 320
+			height = 200
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+	<script>
+		var spriteData, smallestFrame, largestFrame, i, size;
+
+		$.loadSpritesheet( "images/Fruits.png", "fruits" );
+		$.loadSpritesheet( "images/8x8 fantasytiles.png", "fantasy" );
+		
+		$.ready( function () {
+			$.screen( "320x200" );
+			$.setBgColor( 15 );
+			$.setColor( 16 );
+
+			$.drawSprite( "fantasy", 0, 112, 112 );
+
+			$.drawSprite( "fruits", 0, 5, 4 );
+			$.drawSprite( "fruits", 1, 5, 36 );
+			$.drawSprite( "fruits", 2, 5, 68 );
+			$.drawSprite( "fruits", 3, 5, 100 );
+			$.drawSprite( "fruits", 4, 5, 132 );
+			$.drawSprite( "fruits", 5, 5, 164 );
+
+			$.drawSprite( "fruits", 6, 37, 4 );
+			$.drawSprite( "fruits", 7, 37, 36 );
+			$.drawSprite( "fruits", 8, 37, 68 );
+			$.drawSprite( "fruits", 9, 37, 100 );
+			$.drawSprite( "fruits", 10, 37, 132 );
+			$.drawSprite( "fruits", 11, 37, 164 );
+
+			$.drawSprite( "fruits", 12, 70, 4 );
+			$.drawSprite( "fruits", 13, 70, 68 );
+			$.drawSprite( "fruits", 14, 70, 132 );
+
+			$.drawSprite( "fruits", 15, 128, 68 );
+
+			spriteData = $.getSpritesheetData( "fruits" );
+			$.setPos( 25, 1 );
+			$.print( "Frames: " + spriteData.frameCount );
+			smallestFrame = { "index": 0, "size": 99999999 };
+			largestFrame = { "index": 0, "size": 0 };
+			for( i = 0; i < spriteData.frames.length; i++ ) {
+				size = spriteData.frames[ i ].width * spriteData.frames[ i ].height;
+				if( smallestFrame.size > size ) {
+					smallestFrame.size = size;
+					smallestFrame.index = i;
+					smallestFrame.frame = spriteData.frames[ i ];
+				}
+				if( largestFrame.size < size ) {
+					largestFrame.size = size;
+					largestFrame.index = i;
+					largestFrame.frame = spriteData.frames[ i ];
+				}
+			}
+			$.setPos( 25, 2 );
+			$.print(
+				"Smallest Frame: " + smallestFrame.index + " (" +
+				smallestFrame.frame.width + "X" + smallestFrame.frame.height + ")"
+			);
+			$.setPos( 25, 3 );
+			$.print(
+				"Largest Frame: " + largestFrame.index + " (" +
+				largestFrame.frame.width + "X" + largestFrame.frame.height + ")"
+			);
+		} );
+	</script>
+</body>
+</html>

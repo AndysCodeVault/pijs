@@ -1,0 +1,33 @@
+name = "ingamepads"
+description = "Gets the most recent gamepad status."
+isScreen = false
+parameters = [ ]
+seeAlso = [ "ongamepad" ]
+category = "gamepad"
+returns = """
+An array of gamepad objects.
+"""
+example = """
+var x, y, frame;
+$.screen( "300x200" );
+$.setColor( 15 );
+x = 150;
+y = 100;
+frame = requestAnimationFrame( run );
+function run( dt ) {
+	var pads, factor;
+	factor = dt / 2500;
+	pads = $.ingamepads();
+	$.cls();
+	if( pads.length > 0 ) {
+		x = $.util.clamp( x + pads[ 0 ].axes2[ 0 ] * factor, 0, 299 );
+		y = $.util.clamp( y + pads[ 0 ].axes2[ 1 ] * factor, 0, 199 );
+		$.circle( Math.floor( x ), Math.floor( y ) , 10 );
+		$.pset( Math.floor( x ), Math.floor( y ) );
+	}
+	frame = requestAnimationFrame( run );
+}
+"""
+onclose = """
+cancelAnimationFrame( frame );
+"""

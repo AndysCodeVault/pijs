@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Offkey 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "offkey_01"
+			name = "offkey 01"
+			width = 300
+			height = 200
+			commands = """
+				KP "z"
+				KP "a"
+				KP "a"
+				KP "b"
+				KP "a"
+				KP "b"
+				KP "f"
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready( function () {
+		$.screen( "300x200" );
+		$.print( "Press key A." );
+		$.render();
+		$.onkey( "a", "down", press );
+	} );
+	function press( e ) {
+		$.print( "You pressed " + e.key + "." );
+		$.print( "Now press and hold the key B." );
+		$.offkey( "a", "down", press );
+		$.onkey( "b", "down", press2 );
+		$.onkey( "b", "up", press3 );
+		$.render();
+	}
+	function press2( e ) {
+		$.print( "You pressed " + e.key + "." );
+		$.print( "Now release the key B." );
+		$.offkey( "b", "down", press2 );
+		$.render();
+	}
+	function press3( e ) {
+		$.print( "You released " + e.key + "." );
+		$.print( "Now press any key." );
+		$.onkey( "any", "down", press4 );
+		$.offkey( "b", "up", press3 );
+		$.render();
+	}
+	function press4( e ) {
+		$.print( "You pressed " + e.key + "." );
+		$.print( "We are done sir, thank you for a lot of fun sir." );
+		$.render();
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+name = "offmouse"
+isScreen = true
+parameters = [ "mode", "fn" ]
+description = """
+Removes an onmouse event.
+"""
+pdata = [
+	"The mode must be a string and can be up, down, or move.",
+	"The function that was used to create the hitbox by the onclick command."
+]
+seeAlso = [
+	"clearEvents", "inmouse", "onmouse", "startMouse", "stopMouse"
+]
+category = "mouse"
+example = """
+$.screen( "300x200" );
+$.print( "Move mouse to paint screen, click to stop." );
+$.onmouse( "move", mouseMove );
+$.onmouse( "up", mouseStop, true );
+
+// Mouse move function
+function mouseMove( data ) {
+	$.setPosPx( data.x, data.y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Mouse stop function
+function mouseStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.offmouse( "move", mouseMove );
+}
+"""

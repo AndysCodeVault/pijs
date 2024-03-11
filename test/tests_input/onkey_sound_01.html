@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onkey & Sound 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "onkey_sound_01"
+			name = "onkey and sound 01"
+			width = 300
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	var sound;
+	sound = $.createAudioPool( "sounds/star.wav", 6 );
+	$.ready( function () {
+		$.screen( "300x200" );
+		$.print( "Press any key to make a sound." );
+		$.render();
+		$.onkey( "any", "down", start );
+	} );
+	function start() {
+		$.playAudioPool( sound );
+		$.print( "Sound is playing" );
+		$.render();
+	}
+</script>
+</body>
+</html>

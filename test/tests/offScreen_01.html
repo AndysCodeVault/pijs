@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Offscreen 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "offScreen_01"
+			name = "offScreen 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		var offscreenId = $.screen("50x50", null, true);
+		$.setColor(4);
+		$.print("Offscreen Screen");
+		$.circle(25, 25, 24);
+		$.render();
+		$.screen("200x200");
+		$.print("Onscreen canvas");
+		$.line(20, 20, 70, 70);
+		$.line(20, 70, 70, 20);
+		$.line(120, 120, 170, 170);
+		$.line(120, 170, 170, 120);
+		$.drawImage(offscreenId, 20, 20);
+		$.drawImage(offscreenId, 120, 120);
+		$.render();
+	});
+</script>
+</body>
+</html>

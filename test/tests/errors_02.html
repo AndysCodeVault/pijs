@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Errors 02</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "errors_02"
+			name = "errors 02"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+
+$.setErrorMode( "throw" );
+$.screen( "200x200" );
+try {
+	$.draw( 75 );
+} catch( ex ) {
+	$.print( ex );
+}
+$.draw( "b r1 b d20 c5 r43 u11 r116 u8" );
+$.setErrorMode( "none" );
+$.draw( 75 );
+$.draw( "b d40 c2 l160" );
+$.setErrorMode( "log" );
+$.draw( 75 );
+$.draw( "b d40 c3 r180" );
+
+</script>
+</body>
+</html>

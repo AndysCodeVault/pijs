@@ -1,0 +1,18 @@
+name = "findColor"
+isScreen = true
+description = "Given a color value, find the index from the color palette."
+parameters = [ "color", "tolerance", "isAddToPalette" ]
+pdata = [
+	"The color to be found.",
+	"[OPTIONAL] The percentage of how close the color has to be to match. Returns the fist match.",
+	"[OPTIONAL] Add the color to the palette if its not found."
+]
+seeAlso = [ "setColor" ]
+category = "color"
+returns = "The color index of the color found"
+example = """
+$.screen("300x200");
+var color = $.findColor("red");
+$.setColor(color);
+$.print("The index of red is " + color + ".");
+"""

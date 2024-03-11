@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ellipse 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "ellipse_03"
+			name = "Ellipse 03"
+			width = 300
+			height = 210
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<script src="../libs/seedrandom.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+
+Math.seedrandom( 'constant' );
+var $screen;
+
+$screen = $.screen( { "aspect": "300x210", "isMultiple": true } );
+$screen.setPixelMode( false );
+$screen.setPen( "circle", 6 );
+var pens = [ "circle", "pixel", "square" ];
+
+for( var i = 0; i < 7; i++ ) {
+	$.setPen(
+		pens[ Math.floor( Math.random() * pens.length ) ],
+		Math.floor( Math.random() * 10 ) + 1
+	);
+	var c = Math.floor( Math.random() * 14 ) + 1;
+	var c2 = Math.floor( Math.random() * 14 ) + 45;
+	var x = Math.floor( Math.random() * 80 ) + 10;
+	var y = Math.floor( Math.random() * 150 ) + 10;
+	var radius = Math.floor( Math.random() * 50 ) + 1;
+	var radius2 = Math.floor( Math.random() * 50 ) + 1;
+
+	$.setColor( c2 );
+	$screen.setPixelMode( false );
+	$screen.ellipse( x + 50, y, radius, radius2, c );
+	$screen.setPixelMode( true );
+	$screen.ellipse( x + 180, y, radius, radius2, c );
+}
+
+</script>
+</body>
+</html>

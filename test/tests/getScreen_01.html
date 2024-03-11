@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GetScreen 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "getScreen_01"
+			name = "GetScreen 01"
+			width = 200
+			height = 80
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+	<div id="div0" style="height: 20px;"></div>
+	<div id="div1" style="height: 20px;"></div>
+<script>
+$.ready( function () {
+	var screen0, screen1;
+	screen0 = $.screen( "50x20", document.getElementById( "div0" ) );
+	screen1 = $.screen( "50x20", document.getElementById( "div1" ) );
+	$.getScreen( 0 ).print( "Screen 0" );
+	$.getScreen( 0 ).render();
+	$.getScreen( 1 ).print( "Screen 1" );
+	$.getScreen( 1 ).render();
+	$.render();
+} );
+</script>
+</body>
+</html>

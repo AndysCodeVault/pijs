@@ -1,0 +1,105 @@
+<input type="button" value="Click Me" id="click_me" />
+<script>
+function createSound(
+	cmdName, audioContext, frequency, volume, attackTime, sustainTime,
+	decayTime, stopTime, oType, waveTables, delay
+) {
+	var oscillator, envelope, wave, real, imag, currentTime, overlap,
+		soundId, master;
+
+	oscillator = audioContext.createOscillator();
+	envelope = audioContext.createGain();
+	master = audioContext.createGain();
+	master.gain.value = 1;
+
+	overlap = 0.0000001;
+
+	oscillator.frequency.value = frequency;
+	if( oType === "custom" ) {
+		real = waveTables[ 0 ];
+			imag = waveTables[ 1 ];
+			wave = audioContext.createPeriodicWave( real, imag );
+			oscillator.setPeriodicWave( wave );
+	} else {
+		oscillator.type = oType;
+	}
+
+	if( attackTime === 0 ) {
+		envelope.gain.value = volume;
+	} else {
+		envelope.gain.value = 0;
+	}
+
+	oscillator.connect( envelope );
+	envelope.connect( master );
+	master.connect( audioContext.destination );
+
+	try {
+
+		currentTime = audioContext.currentTime + delay;
+
+		// Set the attack
+		if( attackTime > 0 ) {
+			envelope.gain.setValueCurveAtTime(
+				new Float32Array( [ 0, volume ] ),
+				currentTime,
+				attackTime
+			);
+
+			// Add value to current time to prevent overlap of time curves
+			currentTime += overlap;
+		}
+
+		// Set the sustain
+		if( sustainTime > 0 ) {
+			envelope.gain.setValueCurveAtTime(
+				new Float32Array( [ volume, 0.8 * volume ] ),
+				currentTime + attackTime,
+				sustainTime
+			);
+
+			// Add value to current time to prevent overlap of time curves
+			currentTime += overlap;
+		}
+
+		// Set the decay
+		if( decayTime > 0 ) {
+			envelope.gain.setValueCurveAtTime(
+				new Float32Array( [ 0.8 * volume, 0.1 * volume, 0 ] ),
+				currentTime + attackTime + sustainTime,
+				decayTime
+			);
+		}
+
+		oscillator.start( currentTime );
+		oscillator.stop( currentTime + stopTime );
+
+
+	} catch( ex ) {
+		console.log( cmdName, ex );
+	}
+}
+
+
+document.getElementById("click_me").onclick = function () {
+	var context, ac;
+
+	context = window.AudioContext || window.webkitAudioContext;
+	ac = new context();
+
+	var volume = 0.75;
+	var attack = 0.25;
+	var duration = 1;
+	var decay = 0.25;
+	var stopTime = 3;
+	var delay = 0;
+	for( var i = 0; i < 1000; i += 1 ) {
+		var freq = Math.random() * 200 + 100;
+		duration = Math.random() * 0.1;
+		attack = Math.random() * 0.1;
+		decay = Math.random() * 0.1;
+		createSound( "click_me", ac, freq, volume, attack, duration, decay, stopTime, "triangle", null, delay );
+		delay += duration + attack + decay;
+	}
+}
+</script>

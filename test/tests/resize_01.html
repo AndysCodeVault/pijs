@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Resize 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "resize_01"
+			name = "resize 01"
+			width = 400
+			height = 400
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+	<body style="overflow: hidden;">
+		<div id="screen1" style="position: absolute; width: 50%; height: 100%;"></div>
+		<div id="screen2" style="position: absolute; width: 50%; height: 100%; left: 50%;"></div>
+		<script>
+			$.ready(function () {
+				var screen1 = $.screen("100x100", document.getElementById("screen1"));
+				$.print("Screen 1");
+				$.circle(50,50, 20);
+				$.render();
+				var screen2 = $.screen("100x100", document.getElementById("screen2"));
+				$.print("Screen 2");
+				$.circle(50,50, 20);
+				$.render();
+			});
+		</script>
+	</body>
+</html>

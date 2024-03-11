@@ -1,0 +1,13 @@
+name = "getPal"
+isScreen = true
+description = "Gets the current color palette from the screen and returns an array with all the color data."
+parameters = [ ]
+seeAlso = [ "findColor", "getDefaultPal", "getPixel", "setBgColor", "setColor", "setPalColor", "swapColor" ]
+category = "color"
+returns = "An array of color data for the current screen's color palette."
+example = """
+$.screen("300x200");
+var pal = $.getPal();
+$.setColor( 2 );
+$.print( pal[ 2 ].s );
+"""

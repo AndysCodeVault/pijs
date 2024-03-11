@@ -1,0 +1,38 @@
+name = "draw"
+description = "Draws lines on the screen defined by a string."
+isScreen = true
+parameters = [ "drawString" ]
+pdata = [
+ "Case insensitive string that contains commands for drawing.",
+  """
+<ul style='margin:0'>
+<li><span class='gray'>"B"</span> (blind) before a line move designates that the line move will be hidden.</li>
+<li><span class='gray'>"Cn"</span> designates the color attribute.</li>
+<li><span class='gray'>"Mn, n"</span> can move to another coordinate (x, y) area of the screen.</li>
+<li><span class='gray'>"N"</span> Will return to the starting position after the line is drawn.</li>
+<li><span class='gray'>"Pn"</span> is used to paint enclosed objects.</li>
+<li><span class='gray'>"Dn"</span> draws a line vertically DOWN n pixels.</li>
+<li><span class='gray'>"En"</span> draws a diagonal / line going UP and RIGHT n pixels each direction.</li>
+<li><span class='gray'>"Fn"</span> draws a diagonal  line going DOWN and RIGHT n pixels each direction.</li>
+<li><span class='gray'>"Gn"</span> draws a diagonal / LINE going DOWN and LEFT n pixels each direction.</li>
+<li><span class='gray'>"Hn"</span> draws a diagonal  LINE going UP and LEFT n pixels each direction.</li>
+<li><span class='gray'>"Ln"</span> draws a line horizontally LEFT n pixels.</li>
+<li><span class='gray'>"Rn"</span> draws a line horizontally RIGHT n pixels.</li>
+<li><span class='gray'>"Un"</span> draws a line vertically UP n pixels.</li>
+<li><span class='gray'>"An"</span> can use values of 1 to 3 to rotate up to 3 90 degree(270) angles.</li>
+<li><span class='gray'>"TAn"</span> can use any n angle from -360 to 0 to 360 to rotate a DRAW (Turn Angle).</li>
+</ul>"""
+]
+seeAlso = [
+	"arc", "bezier", "circle", "ellipse", "line", "rect", "paint", "point", "pset", "setColor"
+]
+category = "primatives"
+example = """
+$.screen( "300x200" );
+$.pset( 150, 100 );
+$.draw( "C2 R15 D15 L30 U15 R15" );						// Draw House
+$.draw( "B G4 C1 L6 D6 R6 U6 BG3 P1" ); 				// Draw Window
+$.draw( "B E3 B R14 C1 L6 D6 R6 U6 BG3 P1" ); 	// Draw Window
+$.draw( "B E3 B R1 P2" );										// Paint House
+$.draw( "B E4 B U C6 H15 G15 B R5 P6" );				// Draw Roof
+"""

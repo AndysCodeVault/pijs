@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QBS Test Results</title>
+	<style>
+		img {
+			max-width: calc(50% - 25px);
+		}
+		span {
+			font-weight: bold;
+			background-color: black;
+			font-size: larger;
+			padding: 5px;
+		}
+		.error {
+			color: red;
+		}
+		.good {
+			color: green;
+		}
+		.neutral {
+			color: gold;
+		}
+		.link {
+			margin-bottom: 15px;
+    		font-size: large;
+		}
+	</style>
+</head>
+<body>
+	<h1>Test Results</h1>
+	<div id="test_stats"><div id='stats'></div>
+			<span class='error'>Discrepancies Found</span>
+			<span class='neutral'>1 new images not verified.</span>
+		
+			<ol>
+				<li><a href='#test_0'>FilterImg 01 - Not Verified</a></li>
+			</ol></div>
+	<hr />
+	<div id="unit_tests"></div>
+	<div id="web_tests">
+	
+		<div id='test_0'></div>
+		<h2>FilterImg 01</h2>
+		<div class='link'><a href='http://localhost:8080/test/tests/filterImg_01.html' target='_blank'>http://localhost:8080/test/tests/filterImg_01.html</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href='#stats'>Go back</a></div>
+		<span class='neutral'>Not Verified</span><br />
+		<img src='tests/screenshots/filterImg_01.png' />
+		<img src='tests/screenshots/filterImg_01_new.png' /></div>
+	<div id="performance_tests"></div>
+</body>
+</html>

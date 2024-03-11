@@ -1,0 +1,30 @@
+name = "setColor"
+description = "Sets the foreground color."
+isScreen = true
+parameters = [ "color", "isAddToPalette" ]
+pdata = [
+	"The color value to set the foreground color.",
+	"[OPTIONAL] If set to true and the color is not part of the current color palette then it will add it to the color palette."
+]
+seeAlso = [ "setBgColor" ]
+category = "color"
+example = """
+var i, colors, x, y, size;
+
+$.screen( "360x300" );
+colors = $.getPal();
+x = 0;
+y = 0;
+size = 20;
+for( i = 0; i < colors.length; i++ ) {
+	$.setColor( i );
+	$.rect( x, y, size, size );
+	$.setPosPx( x + 1, y + 4 );
+	$.print( i, true );
+	x += size;
+	if( x >= $.width() ) {
+		x = 0;
+		y += size;
+	}
+}
+"""

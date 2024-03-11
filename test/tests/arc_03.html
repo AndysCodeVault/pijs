@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Arc 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "arc_03"
+			name = "Arc 03"
+			width = 160
+			height = 100
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	var a;
+	$.ready( function () {
+		$.screen("160x100");
+		$.setColor(2);
+		for( a = 0; a <= 360; a += 60 ) {
+			$.arc( 80, 50, 30, a, a + 50 );
+		}
+		$.render();
+		$.setPixelMode( false );
+		for( a = 0; a <= 360; a += 60 ) {
+			$.arc( 80, 50, 45, a, a + 50 );
+		}
+	} );
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+name = "getScreen"
+description = "Gets the screen based on a screen id."
+isScreen = false
+parameters = [ "screenId" ]
+pdata = [ "An integer that identifies a screen that was previously created using the screen command." ]
+seeAlso = [ "screen" ]
+category = "graphics"
+returns = "A screen object that contains a reference to all the methods that can be called on a screen."
+example = """
+$.screen( "300x200" );
+var $screen = $.getScreen( 0 );
+$screen.print( "This is screen 0." );
+"""

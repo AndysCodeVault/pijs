@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Screen 06</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "screen_06"
+			name = "Screen 06"
+			width = 580
+			height = 370
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: gray;
+			}
+			div {
+				margin: 5px;
+				display: inline-block;
+				width: 250px;
+				height: 150px;
+				background-color: aliceblue;
+				vertical-align: top;
+			}
+		</style>
+	</head>
+<body>
+	<div id="container1"></div>
+	<div id="container2"></div>
+	<div id="container4"></div>
+	<div id="container3"></div>
+<script>
+	$.ready( function () {
+
+		$.screen( "75 x 75", document.getElementById( "container1" ), false );
+		$.setColor( 15 );
+		$.setFont( 1 );
+		$.print( "75 x 75, container1, with styles." );
+		$.render();
+
+		$.screen( "5 : 2", document.getElementById( "container2" ), false );
+		$.setColor( 15 );
+		$.setFont( 1 );
+		$.print( "5 : 2, container2, with styles." );
+		$.render();
+
+		$.screen( false, document.getElementById( "container3" ), false );
+		$.setColor( 15 );
+		$.setFont( 1 );
+		$.print( "No aspect, container3, with styles." );
+		$.print();
+		$.print( "The quick brown fox jumped over the lazy dog." );
+		$.print();
+		$.render();
+
+		$.screen( "75 e 75", document.getElementById( "container4" ), false, false );
+		$.setColor( 15 );
+		$.setFont( 1 );
+		$.print( "75 e 75, container4, a a a a a with a a a a styles, with stretch." );
+		$.render();
+	} );
+</script>
+</body>
+</html>

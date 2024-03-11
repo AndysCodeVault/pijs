@@ -1,0 +1,17 @@
+name = "cls"
+description = "Clears the screen."
+isScreen = true
+parameters = [ "x", "y", "width", "height" ]
+pdata = [
+  "[OPTIONAL] The x coordinate of the upper left corner of the area to clear.",
+  "[OPTIONAL] The y coordinate of the upper left corner of the area to clear.",
+  "[OPTIONAL] The width of the area to clear.",
+  "[OPTIONAL] The height of the area to clear."
+]
+category = "graphics"
+example = """
+$.screen("300x200");
+$.line(0, 0, 300, 200);
+$.onkey("any", "down", function () {
+\t$.cls();
+});"""

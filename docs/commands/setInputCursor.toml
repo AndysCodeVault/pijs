@@ -1,0 +1,12 @@
+name = "setInputCursor"
+description = "Sets the cursor for the input command."
+isScreen = true
+parameters = [ "cursor" ]
+pdata = [ "A string character or an ascii value from the current font set." ]
+seeAlso = [ "cancelInput", "input" ]
+category = "keyboard"
+example = """
+$.screen( "300x200" );
+$.setInputCursor( "_" );
+$.input( "What is your name? " );
+"""

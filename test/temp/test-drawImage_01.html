@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>QBS Test Results</title>
+	<style>
+		img {
+			max-width: calc(50% - 25px);
+		}
+		span {
+			font-weight: bold;
+			background-color: black;
+			font-size: larger;
+			padding: 5px;
+		}
+		.error {
+			color: red;
+		}
+		.good {
+			color: green;
+		}
+		.neutral {
+			color: gold;
+		}
+		.link {
+			margin-bottom: 15px;
+    		font-size: large;
+		}
+	</style>
+</head>
+<body>
+	<h1>Test Results</h1>
+	<div id="test_stats"><div id='stats'></div>
+			<span class='error'>Discrepancies Found</span>
+			<span class='error'>1 mismatched images.</span>
+		
+			<ol>
+				<li><a href='#test_0'>drawImage 01 - Not Matched</a></li>
+			</ol></div>
+	<hr />
+	<div id="unit_tests"></div>
+	<div id="web_tests">
+	
+		<div id='test_0'></div>
+		<h2>drawImage 01</h2>
+		<div class='link'><a href='http://localhost:8080/test/tests/drawImage_01.html' target='_blank'>http://localhost:8080/test/tests/drawImage_01.html</a>&nbsp;&nbsp;-&nbsp;&nbsp;<a href='#stats'>Go back</a></div>
+		<span class='error'>NOT MATCHED - Difference: 1.81</span><br />
+		<a href='image-compare.html?file1=..%2Ftests%2Fscreenshots%2FdrawImage_01.png&file2=..%2Ftests%2Fscreenshots%2FdrawImage_01_new.png' target='_blank'><img src='../tests/screenshots/drawImage_01.png' /></a>
+		<a href='image-compare.html?file1=..%2Ftests%2Fscreenshots%2FdrawImage_01.png&file2=..%2Ftests%2Fscreenshots%2FdrawImage_01_new.png' target='_blank'><img src='../tests/screenshots/drawImage_01_new.png' /></a></div>
+	<div id="performance_tests"></div>
+</body>
+</html>

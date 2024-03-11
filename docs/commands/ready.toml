@@ -1,0 +1,18 @@
+name = "ready"
+description = """
+	Specify a function to execute when Pi.js is fully loaded. This is necessary when loading reasources
+	such as images and sounds.  When the images get fully loaded the ready function will get called.
+	The ready function will only get called once, if more resources are loaded later on a seperate ready
+	method must be called.
+"""
+isScreen = false
+parameters = [ "fn" ]
+pdata = [ "The function you want to execute once loading is completed." ]
+category = "functional"
+example = """
+$.screen( "300x200" );
+$.loadImage( "/images/monkey.png", "monkey" );
+$.ready( function () {
+	$.drawImage( "monkey", 150, 100, 0, 0.5, 0.5 );
+} );
+"""

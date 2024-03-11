@@ -1,0 +1,25 @@
+name = "getImage"
+description = """
+Gets an area of pixels from the screen and draws it an in-memory image that can be used with the
+drawImage function.
+"""
+isScreen = true
+parameters = [ "name", "x1", "y1", "x2", "y2" ]
+pdata = [
+	"[OPTIONAL]. The name of the image for reference.",
+	"First horizontal coordiante.",
+	"First vertical coordinate.",
+	"Second horizontal coordiante.",
+	"Second vertical coordinate."
+]
+returns = "The name or id of the image."
+seeAlso = [
+	"put"
+]
+category = "images"
+example = """
+$.screen( "300x200" );
+$.circle( 150, 110, 50, 4 );
+var circle = $.getImage( null, 100, 40, 200, 160 );
+$.drawImage( circle, 20, 80 );
+"""

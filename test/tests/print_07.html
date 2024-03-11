@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Print 07</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "print_07"
+			name = "Print 07"
+			width = 620
+			height = 400
+			delay = 0
+			commands = """
+				DL 100
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+	</head>
+<body>
+	<script>
+		$.ready(function () {
+			$.screen( "620x400" );
+			$.setFont("bold   48px   serif");
+			$.print("The quick brown fox jumped over the lazy dog.");
+			$.setFont("20pt Arial");
+			$.print("The slow green turtle crawled under the smart ox.");
+			$.setFont("italic small-caps bold 12px arial");
+			$.print("There are 10 kinds of people in this world. Those who understand binary and those that don't.");
+			$.setFont("36px sans-serif");
+			$.print("Another line of text.");
+			$.setFont("30pt Times New Roman");
+			$.print("Time is changing.");
+			$.setFont("28pt Courier New");
+			$.print("Courier New: This is a heading.");
+			$.setFont("18pt Lucida Console");
+			$.print("NaNa NaBooBoo, You Can't Get Me!");
+			$.setFont("26pt Copperplat");
+			$.print("Super Rocket Power!");
+			$.setFont("23pt Rockwell Extra Bold");
+			$.print("Rockwell Extra Bold");
+			$.setFont("24pt Roboto");
+			$.print("I want to be a tank! Oh, I know why, because they are too strong, they can just push the slime away.");
+			$.render();
+		});
+	</script>
+</body>
+</html>

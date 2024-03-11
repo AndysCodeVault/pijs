@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Onmouse 03</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "onmouse_03"
+			name = "onmouse 03"
+			width = 240
+			height = 200
+			commands = """
+				DL 10
+				MV 40, 40
+				MD
+				MV 205, 105, 50
+				MU
+				SL "#turn"
+				MC
+				SL ""
+				MV 40, 105
+				MD
+				MV 205, 40, 50
+				MU
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				color: white;
+				background-color: blue;
+				margin: 10px;
+			}
+			#screen {
+				width: 200px;
+				height: 100px;
+			}
+		</style>
+	</head>
+<body>
+
+<div id="screen"></div>
+<input type="button" value="Turn off mouse" id="turn" />
+<script>
+	var isDrawing = false;
+	$.screen( "200x100", "screen" );
+	$.print( "Click button below to turn on/off mouse event listeners." );
+	$.onmouse( "down", function ( mouse, customData ) {
+		console.log( customData );
+		$.pset( mouse.x, mouse.y );
+	}, null, null, "My Mouse Down" );
+	$.onmouse( "move", function ( mouse ) {
+		if( mouse.buttons > 0 ) {
+			$.pset( mouse.x, mouse.y );
+		}
+	} );
+
+	var turn = document.getElementById( "turn" );
+	var isOn = true;
+	turn.onclick = function () {
+		if( isOn ) {
+			turn.value = "Turn on mouse";
+			$.stopMouse();
+			$.print( "Mouse turned off." );
+		} else {
+			turn.value = "Turn off mouse";
+			$.startMouse();
+			$.print( "Mouse turned on." );
+		}
+		isOn = !( isOn );
+	}
+
+</script>
+</body>
+</html>

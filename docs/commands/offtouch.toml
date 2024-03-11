@@ -1,0 +1,38 @@
+name = "offtouch"
+isScreen = true
+parameters = [ "mode", "fn" ]
+description = """
+Removes an ontouch event.
+"""
+pdata = [
+	"The mode must be a string and can be start, end, or move.",
+	"The function that was used to create the hitbox by the onpress command."
+]
+seeAlso = [
+	"clearEvents", "intouch", "ontouch", "setPinchZoom", "startTouch", "stopTouch"
+]
+category = "touch"
+example = """
+$.screen( "300x200" );
+$.print( "Touch and drag to paint screen, touch up to stop." );
+$.ontouch( "move", touchMove );
+$.ontouch( "end", touchStop, true );
+
+// Touch move function
+function touchMove( touches ) {
+	$.setPosPx( touches[ 0 ].x, touches[ 0 ].y );
+	var pos = $.getPos();
+	$.setPos( pos.col, pos.row );
+	$.setColor( 8 );
+	$.print( "+", true );
+}
+
+// Touch stop function
+function touchStop() {
+	$.setColor( 14 );
+	var pos = $.getPos();
+	$.setPos( pos.col - 4, pos.row );
+	$.print( "Stopped!", true );
+	$.offtouch( "move", touchMove );
+}
+"""

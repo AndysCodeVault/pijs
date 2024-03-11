@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Intouch 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "intouch_01"
+			name = "intouch 01"
+			width = 320
+			height = 200
+			commands = """
+				DL 30
+				SL "canvas"
+				TS 10, 10
+				TM 310, 190, 3
+				TE
+				TS 10, 190
+				TM 310, 10, 3
+				TE
+
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+$.ready( function () {
+	var last = {x: 0, y: 0};
+	var isDrawing = false;
+	$.screen( "320x200" );
+	$.startTouch();
+	$.setPinchZoom( false );
+	$.setColor( 16 );
+	$.rect( 0, 0, 8, 14 );
+	$.paint( 1, 1, 16 );
+	$.setColor( 15 );
+	var corner = $.get(0, 0, 8, 14);
+	setInterval( function () {
+		var touches = $.intouch();
+		$.put( corner, 0, 0 );
+		$.setPos(0, 0);
+		$.print( touches.length );
+		if( touches.length > 0 ) {
+			for( var i = 0; i < touches.length; i++ ) {
+				var touchData = touches[ i ];
+				if( ! isDrawing ) {
+					$.pset( touchData.x, touchData.y );
+				} else if( touchData.x !== last.x || touchData.y !== last.y ) {
+					$.line( last.x, last.y, touchData.x, touchData.y);
+				}
+				last.x = touchData.x;
+				last.y = touchData.y;
+				isDrawing = true;
+			}
+		} else {
+			isDrawing = false;
+		}
+		$.render();
+
+		var keys = $.inkey();
+		for( i = 0; i < 10; i++) {
+			if( keys[ "Digit" + i ] ) {
+				$.setColor( i );
+			}
+		}
+
+	}, 15 );
+} );
+</script>
+</body>
+</html>

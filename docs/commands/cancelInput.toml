@@ -1,0 +1,15 @@
+name = "cancelInput"
+description = "Cancels all previous input commands."
+isScreen = true
+parameters = [ "name" ]
+pdata = [ "[OPTIONAL] The name provided to the input command." ]
+seeAlso = [ "input" ]
+category = "keyboard"
+example = """
+$.screen("300x200");
+$.print("\\n");
+$.input("What is your name?", null);
+$.onkey( "Escape", "down", function () {  
+\t$.print("\\nInput Canceled");
+\t$.cancelInput();
+}, true );"""

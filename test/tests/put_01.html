@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Put 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "put_01"
+			name = "Put 01"
+			width = 640
+			height = 400
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen("40x40");
+		$.setColor(4);
+		$.put(
+			[
+				[4,4,4,4,4],
+				[4,0,0,0,4],
+				[4,0,0,0,4],
+				[4,0,0,0,4],
+				[4,4,4,4,4]
+			], 5, 5
+		);
+		$.render();
+	});
+</script>
+</body>
+</html>

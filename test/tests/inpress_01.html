@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Inpress 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			file = "inpress_01"
+			name = "inpress 01"
+			width = 160
+			height = 100
+			commands = """
+				MV 10, 10
+				MD
+				MV 70, 90, 10
+				MU
+				SL "canvas"
+				TS 90, 10
+				TM 150, 90, 10
+				TE
+			"""
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				color: white;
+				background-color: blue;
+				margin: 10px;
+			}
+		</style>
+	</head>
+<body>
+
+<script>
+	$.ready( function () {
+		var last = { x: 0, y: 0 };
+		var isDrawing = false;
+		$.screen( "160x100" );
+		$.setAutoRender( false );
+		$.set( { "enableContextMenu": false } );
+		$.startMouse();
+		$.setColor( 16 );
+		$.rect( 0, 0, 8, 14 );
+		$.paint( 1, 1, 16 );
+		$.setColor( 15 );
+		var corner = $.get( 0, 0, 18, 8 );
+		animation();
+		function animation () {
+			var mouse = $.inpress();
+			$.put( corner, 0, 0 );
+			$.setPos( 0, 0 );
+			$.print( mouse.buttons );
+			if( mouse.buttons > 0 ) {
+				if( ! isDrawing ) {
+					$.pset( mouse.x, mouse.y );
+				} else if( mouse.x !== last.x || mouse.y !== last.y ) {
+					$.line( last.x, last.y, mouse.x, mouse.y );
+				}
+				last.x = mouse.x;
+				last.y = mouse.y;
+				isDrawing = true;
+			} else {
+				isDrawing = false;
+			}
+			$.render();
+
+			var keys = $.inkey();
+			for( i = 0; i < 10; i++ ) {
+				if( keys[ "Digit" + i ] ) {
+					$.setColor( i );
+				}
+			}
+			requestAnimationFrame( animation );
+		}
+	} );
+</script>
+
+</body>
+</html>

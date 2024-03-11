@@ -1,0 +1,58 @@
+name = "startKeyboard"
+description = """
+Starts tracking keyboard input. This gets automatically called the 
+first time any keyboard method (inkey, onkey, input) gets called so
+calling startKeyboard is not necessary unless you explicitly call
+stopKeyboard.
+"""
+isScreen = false
+parameters = [ ]
+seeAlso = [ "inkey", "input", "onkey", "stopKeyboard" ]
+category = "keyboard"
+example = """
+$.screen( "300x200" );
+
+var hitboxColor = 2;
+var hitbox = {
+	"x": 175,
+	"y": 75,
+	"width": 100,
+	"height": 100
+};
+var msg = "";
+var isGreen = true;
+
+$.onclick( clickBox, false, hitbox );
+$.onkey( "any", "down", function ( key ) {
+	msg = "You pressed " + key.key + ".";
+	drawScreen();
+} );
+$.onkey( "any", "up", function ( key ) {
+	msg = "";
+	drawScreen();
+} );
+
+drawScreen();
+
+function drawScreen() {
+	$.cls();
+	$.setColor( 7 );
+	$.print( "Press any key" );
+	$.print( "Click the box to toggle keyboard." );
+	$.print( msg );
+	$.setColor( hitboxColor );
+	$.rect( hitbox );
+}
+
+function clickBox() {
+	isGreen = !isGreen;
+	if( isGreen ) {
+		hitboxColor = 2;
+		$.startKeyboard();
+	} else {
+		$.stopKeyboard();
+		hitboxColor = 4;
+	}
+	drawScreen();
+}
+"""

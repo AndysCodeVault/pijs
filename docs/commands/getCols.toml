@@ -1,0 +1,17 @@
+name = "getCols"
+description="Gets the max number of printable characters in a row on the screen."
+isScreen = true
+parameters = [ ]
+seeAlso = [ "getPos", "getPosPx", "getRows", "print", "setFont", "setFontSize", "setPos", "setPosPx" ]
+category = "print"
+returns = "An integer containing the max number of printable characters for a row on the screen."
+example = """
+// Print a line of *'s on the top of the screen
+$.screen( "300x200" );
+var cols = $.getCols();
+var msg = "";
+for( var i = 0; i < cols; i++ ) {
+	msg += "*";
+}
+$.print( msg );
+"""

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pset 01</title>
+		<script type="text/toml">
+			[[TOML_START]]
+			test = "screenshot.js"
+			file = "pset_01"
+			name = "Pset 01"
+			width = 200
+			height = 200
+			delay = 0
+			[[TOML_END]]
+		</script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
+		<style>
+			html, body {
+				background-color: grey;
+			}
+		</style>
+	</head>
+<body>
+<script>
+	$.ready(function () {
+		$.screen("100x100");
+		var y = 0;
+		for(var x = 0; x < 100; x++) {
+			$.pset(x, y);
+			$.pset(x, 99 - y);
+			y += 1;
+		}
+		$.render();
+	});
+</script>
+</body>
+</html>
