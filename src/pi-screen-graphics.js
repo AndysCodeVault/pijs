@@ -1132,7 +1132,7 @@ function getPixel( screenData, args ) {
 		b: data[ i + 2 ],
 		a: data[ i + 3 ]
 	} );
-	return screenData.screenObj.findColor( c );
+	return c;
 }
 
 // CLS command

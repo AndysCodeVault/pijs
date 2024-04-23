@@ -2,7 +2,7 @@
 
 // Third Party Libraries
 const puppeteer = require('puppeteer');
-const { TimeoutError } = require('puppeteer/Errors');
+//const { TimeoutError } = require('puppeteer/Errors');
 const FS = require( "fs" );
 const PNG = require( "pngjs" ).PNG;
 const TOML = require( "@iarna/toml" );

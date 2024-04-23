@@ -728,6 +728,14 @@ $.ready( function () {
 } );
 onExampleClose = function () {};
 }
+examples['point'] = function() {
+$.screen( "300x200" , 'canvasContainer');
+$.setColor( 5 );
+$.pset( 55, 55 );
+var pixel = $.point( 55, 55 );
+$.print( pixel );
+onExampleClose = function () {};
+}
 examples['print'] = function() {
 $.screen( "300x200" , 'canvasContainer');
 $.print( "Welcome to PI JS", false, true );
@@ -964,6 +972,17 @@ for( i = 0; i < colors.length; i++ ) {
 		y += size;
 	}
 }
+onExampleClose = function () {};
+}
+examples['setColors'] = function() {
+var font = $.loadFont( "font-goofy-2.png", 8, 14 );
+$.ready( function () {
+	$.screen( "300x200" , 'canvasContainer');
+	$.setFont( font );
+	$.print( "Hello World" );
+	$.setColors( [ 1, 2, 3, 4 ] );
+	$.print( "Hello World" );
+} );
 onExampleClose = function () {};
 }
 examples['setContainerBgColor'] = function() {

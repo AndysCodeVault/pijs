@@ -29,3 +29,10 @@ version = "1.2.1"
 changes = [
 	"Fixed a bug with setPalColor not updating findColor cache.",
 ]
+
+[[change]]
+
+version = "1.2.3"
+changes = [
+	"Fixed a bug with getPixel not returning the color data."
+]

@@ -1,11 +1,11 @@
 /*
 * https://www.pijs.org/
 * Pi.js
-* Version: 1.2.2
+* Version: 1.2.3
 * Copyright Andy Stubbs
 * Released under the Apache License 2.0
 * https://www.apache.org/licenses/LICENSE-2.0
-* Date: 2023-10-22
+* Date: 2024-04-21
 * @preserve
 */
 
@@ -6309,7 +6309,7 @@ function getPixel( screenData, args ) {
 		b: data[ i + 2 ],
 		a: data[ i + 3 ]
 	} );
-	return screenData.screenObj.findColor( c );
+	return c;
 }
 
 // CLS command

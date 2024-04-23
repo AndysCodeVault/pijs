@@ -5,7 +5,7 @@ parameters = [
   "width",
   "height",
   "charSet",
-  "isBitmap"
+  "isEncoded"
 ]
 description = "Loads a font from an image or encoded string."
 pdata = [
@@ -13,7 +13,7 @@ pdata = [
   "The width of each character in the font.",
   "The height of each character in the font.",
   "[OPTIONAL] A string or an array of integers containing the ascii value for each font character in order.",
-  "[OPTIONAL] Boolean to use the font as a bitmap font versus a pixel font. Pixel fonts (default) are slower but can change colors."
+  "[OPTIONAL] Boolean to load the font from an encoded string."
 ]
 returns = "The id of the font."
 seeAlso = [ "print", "setDefaultFont", "setFont" ]

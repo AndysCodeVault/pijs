@@ -15,7 +15,9 @@
 			"""
 			[[TOML_END]]
 		</script>
-		<script src="../../build/qbs.min.js"></script>
+		<!-- [Pi.js Script]-->
+		<script src="../../build/pi-latest.js"></script>
+		<!-- [/Pi.js Script]-->
 		<style>
 			html, body {
 				background-color: gray;
@@ -58,7 +60,6 @@
 		);
 		$.ready( function () {
 			$.screen( "300x100", "div" );
-			$.setColors( [ 7, 1, 4, 2, 8 ] );
 			$.setFont( font );
 			$.print(
 				"The quick brown fox jumped over the lazy dog. 0123456789θ"
