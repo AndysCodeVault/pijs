@@ -5,7 +5,7 @@
 * Copyright Andy Stubbs
 * Released under the Apache License 2.0
 * https://www.apache.org/licenses/LICENSE-2.0
-* Date: 2024-04-21
+* Date: 2024-04-23
 * @preserve
 */
 
@@ -6753,11 +6753,6 @@ function loadImage( args ) {
 	if( typeof name !== "string" ) {
 		name = "" + m_piData.imageCount;
 		m_piData.imageCount += 1;
-	} else if( m_piData.images[ name ] ) {
-		m_piData.log(
-			"loadImage: name " + name + " is already used; name must be unique."
-		);
-		return;
 	}
 
 	m_piData.images[ name ] = {
@@ -6854,11 +6849,6 @@ function loadSpritesheet( args ) {
 	if( typeof name !== "string" ) {
 		name = "" + m_piData.imageCount;
 		m_piData.imageCount += 1;
-	} else if( m_piData.images[ name ] ) {
-		m_piData.log(
-			"loadSpritesheet: name " + name + " is already used; name must be unique."
-		);
-		return;
 	}
 
 	// Load the frames when the image gets loaded

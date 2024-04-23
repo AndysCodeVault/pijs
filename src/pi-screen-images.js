@@ -45,11 +45,6 @@ function loadImage( args ) {
 	if( typeof name !== "string" ) {
 		name = "" + m_piData.imageCount;
 		m_piData.imageCount += 1;
-	} else if( m_piData.images[ name ] ) {
-		m_piData.log(
-			"loadImage: name " + name + " is already used; name must be unique."
-		);
-		return;
 	}
 
 	m_piData.images[ name ] = {
@@ -146,11 +141,6 @@ function loadSpritesheet( args ) {
 	if( typeof name !== "string" ) {
 		name = "" + m_piData.imageCount;
 		m_piData.imageCount += 1;
-	} else if( m_piData.images[ name ] ) {
-		m_piData.log(
-			"loadSpritesheet: name " + name + " is already used; name must be unique."
-		);
-		return;
 	}
 
 	// Load the frames when the image gets loaded

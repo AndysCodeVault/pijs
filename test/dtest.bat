@@ -1,5 +1,5 @@
 @echo off
-echo Deleting test\tests\screenshots\drawImage_02.png
-del d:\AndysCodeVault\pijs\test\tests\screenshots\drawImage_02.png
-echo Renaming d:\AndysCodeVault\pijs\test\tests\screenshots\drawImage_02_new.png
-move d:\AndysCodeVault\pijs\test\tests\screenshots\drawImage_02_new.png d:\AndysCodeVault\pijs\test\tests\screenshots\drawImage_02.png
+echo Deleting test\tests\screenshots\draw_02.png
+del c:\docs\src\codevault\pijs\test\tests\screenshots\draw_02.png
+echo Renaming c:\docs\src\codevault\pijs\test\tests\screenshots\draw_02_new.png
+move c:\docs\src\codevault\pijs\test\tests\screenshots\draw_02_new.png c:\docs\src\codevault\pijs\test\tests\screenshots\draw_02.png
