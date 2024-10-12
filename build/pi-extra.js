@@ -1,11 +1,11 @@
 /*
 * https://www.pijs.org/
 * Pi.js
-* Version: 1.2.3
+* Version: 1.2.4
 * Copyright Andy Stubbs
 * Released under the Apache License 2.0
 * https://www.apache.org/licenses/LICENSE-2.0
-* Date: 2024-04-23
+* Date: 2024-10-12
 * @preserve
 */
 
@@ -9191,7 +9191,6 @@ function setVolume( args ) {
 				) 
 			);
 		}
-		return trackId
 	}
 
 	pi._.addCommand( "stopPlay", stopPlay, false, false, [ "trackId" ] );
