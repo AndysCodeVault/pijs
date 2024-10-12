@@ -1,6 +1,6 @@
 {
   "name": "pijs",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Graphics and sound library",
   "main": "build.js",
   "directories": {

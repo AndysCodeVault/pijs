@@ -285,7 +285,6 @@
 				) 
 			);
 		}
-		return trackId
 	}
 
 	pi._.addCommand( "stopPlay", stopPlay, false, false, [ "trackId" ] );

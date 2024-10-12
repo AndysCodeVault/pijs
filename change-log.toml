@@ -7,7 +7,7 @@ changes = [
 	"Fixed a bug with $.play() fixed the usage of commas to allow notes to play simultaneously.",
 	"Fixed a bug with $.stopPlay() to stop the current track if a trackId is provided.",
 	"Fixed a bug with $.play() when playing multiple songs should now work properly.",
-	"Added compatiblity for $.play() with QBasic play strings, by automatically removing MF and MB from the playstring.  Which was causing an issue with the parser. MF(play in foreground) and MB(play in background) don't apply to Pi.js because all music will play in the background with Pi.js due to the asynchronous nature of JavaScript."
+	"Added compatiblity for $.play() with QBasic play strings, by automatically removing MF and MB from the playstring.  Which was causing an issue with the parser. MF(play in foreground) and MB(play in background) don't apply to Pi.js because all music will play in the background with Pi.js due to the asynchronous nature of JavaScript.",
 ]
 
 [[change]]
@@ -26,13 +26,16 @@ changes = [
 [[change]]
 
 version = "1.2.1"
-changes = [
-	"Fixed a bug with setPalColor not updating findColor cache.",
-]
+changes = ["Fixed a bug with setPalColor not updating findColor cache."]
 
 [[change]]
 
 version = "1.2.3"
+changes = ["Fixed a bug with getPixel not returning the color data."]
+
+[[change]]
+
+version = "1.2.4"
 changes = [
-	"Fixed a bug with getPixel not returning the color data."
+	"Removed the return value for the play method. The ability to replay tracks has been removed so no need to return a trackId",
 ]
